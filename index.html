@@ -86,4 +86,79 @@ button{
     cursor:pointer;
 }
 
-/
+/* RESPONSIVE */
+@media(max-width:768px){
+    .grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width:480px){
+    .grid{
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">📻 Radios Patagónicas</div>
+
+<div class="player">
+<audio id="player" controls></audio>
+</div>
+
+<div class="search">
+<input type="text" id="searchInput" placeholder="Buscar radio..." onkeyup="buscarRadio()">
+</div>
+
+<div class="grid" id="radioGrid">
+
+<div class="card" data-name="pueblo viejo">
+<h3>Pueblo Viejo 89.9</h3>
+<p>General Roca</p>
+<button onclick="playRadio('https://s3.netradiofm.com/p/6042/stream')">Escuchar</button>
+</div>
+
+<div class="card" data-name="antena libre">
+<h3>Antena Libre 89.1</h3>
+<p>General Roca</p>
+<button onclick="playRadio('https://cdn.instream.audio/:9140/stream')">Escuchar</button>
+</div>
+
+<div class="card" data-name="lu19">
+<h3>LU19 AM 690</h3>
+<p>Cipolletti</p>
+<button onclick="playRadio('https://streaming01.radionline.com.ar/lu19')">Escuchar</button>
+</div>
+
+</div>
+
+<script>
+
+function playRadio(url){
+    var player = document.getElementById("player");
+    player.src = url;
+    player.load();
+    player.play().catch(()=>{});
+}
+
+function buscarRadio(){
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+        let name = card.getAttribute("data-name");
+        if(name.includes(input)){
+            card.style.display = "block";
+        }else{
+            card.style.display = "none";
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>
