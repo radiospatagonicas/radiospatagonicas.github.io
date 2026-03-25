@@ -13,24 +13,42 @@ body{
     color:white;
 }
 
+/* HEADER */
 .header{
     background:#3b6edc;
     padding:15px;
     text-align:center;
+    font-size:18px;
     font-weight:bold;
 }
 
+/* PLAYER */
 .player{
     position:sticky;
     top:0;
     background:#111;
     padding:10px;
+    z-index:10;
 }
 
 audio{
     width:100%;
 }
 
+/* BUSCADOR */
+.search{
+    padding:10px;
+}
+
+.search input{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    font-size:14px;
+}
+
+/* GRID */
 .grid{
     display:grid;
     grid-template-columns: repeat(3, 1fr);
@@ -38,6 +56,7 @@ audio{
     padding:10px;
 }
 
+/* TARJETAS */
 .card{
     background:#2b2b2b;
     padding:10px;
@@ -45,67 +64,26 @@ audio{
     text-align:center;
 }
 
+.card h3{
+    margin:5px 0;
+    font-size:14px;
+}
+
+.card p{
+    margin:0;
+    font-size:11px;
+    color:#aaa;
+}
+
 button{
     width:100%;
+    margin-top:8px;
     padding:8px;
     border:none;
     border-radius:6px;
     background:#3b6edc;
     color:white;
+    cursor:pointer;
 }
 
-/* celular */
-@media(max-width:768px){
-    .grid{
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media(max-width:480px){
-    .grid{
-        grid-template-columns: 1fr;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="header">📻 Radios Patagónicas</div>
-
-<div class="player">
-<audio id="player" controls></audio>
-</div>
-
-<div class="grid">
-
-<div class="card">
-<h3>Pueblo Viejo 89.9</h3>
-<p>General Roca</p>
-<button onclick="playRadio('https://s3.netradiofm.com/p/6042/stream')">Escuchar</button>
-</div>
-
-<div class="card">
-<h3>Antena Libre 89.1</h3>
-<p>General Roca</p>
-<button onclick="playRadio('https://cdn.instream.audio/:9140/stream')">Escuchar</button>
-</div>
-
-<div class="card">
-<h3>LU19 AM 690</h3>
-<p>Cipolletti</p>
-<button onclick="playRadio('https://streaming01.radionline.com.ar/lu19')">Escuchar</button>
-</div>
-
-</div>
-
-<script>
-function playRadio(url){
-    var player = document.getElementById("player");
-    player.src = url;
-    player.load();
-    player.play();
-}
-</script>
-
-</body>
-</html>
+/
