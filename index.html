@@ -56,7 +56,7 @@ audio{
     padding:10px;
 }
 
-/* TARJETAS */
+/* CARD */
 .card{
     background:#2b2b2b;
     padding:10px;
@@ -84,6 +84,16 @@ button{
     background:#3b6edc;
     color:white;
     cursor:pointer;
+}
+
+/* RANKING */
+.badge{
+    margin-top:5px;
+    font-size:11px;
+    background:#ff9800;
+    padding:3px 6px;
+    border-radius:6px;
+    display:inline-block;
 }
 
 /* RESPONSIVE */
@@ -118,19 +128,22 @@ button{
 <div class="card" data-name="pueblo viejo">
 <h3>Pueblo Viejo 89.9</h3>
 <p>General Roca</p>
-<button onclick="playRadio('https://s3.netradiofm.com/p/6042/stream')">Escuchar</button>
+<button onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream')">Escuchar</button>
+<div class="badge">0</div>
 </div>
 
 <div class="card" data-name="antena libre">
 <h3>Antena Libre 89.1</h3>
 <p>General Roca</p>
-<button onclick="playRadio('https://cdn.instream.audio/:9140/stream')">Escuchar</button>
+<button onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">Escuchar</button>
+<div class="badge">0</div>
 </div>
 
 <div class="card" data-name="lu19">
 <h3>LU19 AM 690</h3>
 <p>Cipolletti</p>
-<button onclick="playRadio('https://streaming01.radionline.com.ar/lu19')">Escuchar</button>
+<button onclick="playRadio(this, 'https://streaming01.radionline.com.ar/lu19')">Escuchar</button>
+<div class="badge">0</div>
 </div>
 
 </div>
@@ -143,7 +156,20 @@ function playRadio(btn, url){
     var player = document.getElementById("player");
     player.src = url;
     player.load();
-    player.play().catch(()=>
+    player.play().catch(()=>{});
+
+    let card = btn.parentElement;
+    let nombre = card.getAttribute("data-name");
+
+    if(!contador[nombre]){
+        contador[nombre] = 0;
+    }
+
+    contador[nombre]++;
+
+    card.querySelector(".badge").innerText = contador[nombre];
+
+    ordenarRanking();
 }
 
 function buscarRadio(){
@@ -158,6 +184,19 @@ function buscarRadio(){
             card.style.display = "none";
         }
     });
+}
+
+function ordenarRanking(){
+    let grid = document.getElementById("radioGrid");
+    let cards = Array.from(grid.children);
+
+    cards.sort((a,b)=>{
+        let aCount = parseInt(a.querySelector(".badge").innerText);
+        let bCount = parseInt(b.querySelector(".badge").innerText);
+        return bCount - aCount;
+    });
+
+    cards.forEach(card => grid.appendChild(card));
 }
 
 </script>
