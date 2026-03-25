@@ -137,11 +137,13 @@ button{
 
 <script>
 
-function playRadio(url){
+let contador = {};
+
+function playRadio(btn, url){
     var player = document.getElementById("player");
     player.src = url;
     player.load();
-    player.play().catch(()=>{});
+    player.play().catch(()=>
 }
 
 function buscarRadio(){
