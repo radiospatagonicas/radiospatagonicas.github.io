@@ -24,6 +24,15 @@ header{
     font-weight:bold;
 }
 
+/* AHORA SONANDO */
+.now{
+    text-align:center;
+    padding:10px;
+    font-size:14px;
+    background:#222;
+    color:#0f0;
+}
+
 /* PLAYER */
 .player{
     width:95%;
@@ -32,6 +41,23 @@ header{
 
 audio{
     width:100%;
+}
+
+/* FILTRO CIUDADES */
+.filters{
+    display:flex;
+    overflow-x:auto;
+    gap:10px;
+    padding:10px;
+}
+
+.filters button{
+    flex:0 0 auto;
+    padding:8px 12px;
+    border:none;
+    border-radius:20px;
+    background:#333;
+    color:white;
 }
 
 /* BUSCADOR */
@@ -63,21 +89,12 @@ audio{
     text-align:center;
 }
 
-/* NOMBRE */
-.name{
-    font-size:15px;
-    margin-bottom:3px;
-}
-
-/* CIUDAD */
-.city{
-    font-size:12px;
-    color:#aaa;
-    margin-bottom:8px;
-}
+/* TEXTO */
+.name{ font-size:15px; }
+.city{ font-size:12px; color:#aaa; margin-bottom:8px; }
 
 /* BOTÓN */
-button{
+button.play{
     width:100%;
     padding:12px;
     border:none;
@@ -89,15 +106,11 @@ button{
 
 /* RESPONSIVE */
 @media(max-width:768px){
-    .grid{
-        grid-template-columns:repeat(2,1fr);
-    }
+    .grid{ grid-template-columns:repeat(2,1fr); }
 }
 
 @media(max-width:480px){
-    .grid{
-        grid-template-columns:1fr;
-    }
+    .grid{ grid-template-columns:1fr; }
 }
 
 </style>
@@ -107,8 +120,18 @@ button{
 
 <header>📻 Radios Patagónicas</header>
 
+<div class="now" id="nowPlaying">
+🎧 No hay radio seleccionada
+</div>
+
 <div class="player">
 <audio id="player" controls></audio>
+</div>
+
+<div class="filters">
+<button onclick="filtrarCiudad('todas')">Todas</button>
+<button onclick="filtrarCiudad('roca')">Roca</button>
+<button onclick="filtrarCiudad('cipolletti')">Cipolletti</button>
 </div>
 
 <div class="search">
@@ -117,445 +140,63 @@ button{
 
 <div class="grid" id="radioGrid">
 
-<!-- EJEMPLOS -->
-
-<div class="card" data-name="antena libre roca">
+<div class="card" data-city="roca" data-name="antena libre roca">
 <div class="name">Antena Libre 89.1</div>
 <div class="city">General Roca</div>
-<button onclick="playRadio('https://cdn.instream.audio/:9140/stream')">▶ Escuchar</button>
+<button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">
+▶ Escuchar
+</button>
 </div>
 
-<div class="card" data-name="pueblo viejo roca">
+<div class="card" data-city="roca" data-name="pueblo viejo roca">
 <div class="name">Pueblo Viejo 89.9</div>
 <div class="city">General Roca</div>
-<button onclick="playRadio('https://s3.netradiofm.com/p/6042/stream')">▶ Escuchar</button>
+<button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream')">
+▶ Escuchar
+</button>
 </div>
 
-<div class="card" data-name="lu18 roca">
-<div class="name">LU18 AM 640</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streamingraddios.online/proxy/valle?mp=/;')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="lu19 cipolletti">
+<div class="card" data-city="cipolletti" data-name="lu19 cipolletti">
 <div class="name">LU19 AM 690</div>
 <div class="city">Cipolletti</div>
-<button onclick="playRadio('https://sonic.host-live.com/8064/stream')">▶ Escuchar</button>
+<button class="play" onclick="playRadio(this, 'https://streaming01.radionline.com.ar/lu19')">
+▶ Escuchar
+</button>
 </div>
 
-<div class="card" data-name="am 550 neuquen">
-<div class="name">LRG 208 AM 550</div>
-<div class="city">Neuquén</div>
-<button onclick="playRadio('https://sonic.host-live.com:10851/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="lu5 neuquen">
-<div class="name">LU5 AM 600</div>
-<div class="city">Neuquén</div>
-<button onclick="playRadio('https://live.lu5am.com:8443/LU5')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="am 740 allen">
-<div class="name">La Carretera AM 740</div>
-<div class="city">Allen</div>
-<button onclick="playRadio('https://streaming3.locucionar.com/proxy/lacarretera740?mp=/stream:17584')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="am 970 neuquen">
-<div class="name">LRA43 AM 970</div>
-<div class="city">Neuquén</div>
-<button onclick="playRadio('https://sa.mp3.icecast.magma.edge-access.net/sc_rad73')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="lu16 regina">
-<div class="name">LU16 AM 1000</div>
-<div class="city">Villa Regina</div>
-<button onclick="playRadio('https://radio01.ferozo.com/proxy/ra01001162?mp=/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="am 1400 neuquen">
-<div class="name">LRG202 AM 1400</div>
-<div class="city">Neuquén</div>
-<button onclick="playRadio('https://cdn.instream.audio/:9366/stream?nocache=1774299487469')">▶ Escuchar</button>
-</div>
-
- 
-<div class="card" data-name="nuevo tiempo roca">
-<div class="name">Nuevo Tiempo 87.9</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streamradio.novotempo.com/CDN-RADIO-ES/smil:rntBuenosAiresAR.smil/playlist.m3u8')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="urbana roca">
-<div class="name">Frec Urbana 88.3</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming01.shockmedia.com.ar:10582/stream?icy=http')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="los 40 roca">
-<div class="name">Los 40 Fm 88.7</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://radios.solumedia.com:6158/stream?icy=http')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="total roca">
-<div class="name">Radio Total 89.5</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming3.locucionar.com/proxy/fmtotal985?mp=/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="popular roca">
-<div class="name">Popular 90.3</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://stream.zeno.fm/0r0xa792kwzuv')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="agua roca">
-<div class="name">Agua de Vida 90.7</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://genexservicios.com:8110/;?1774543495564')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="rivadavia roca">
-<div class="name">Rivadavia 91.1</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://playerservices.streamtheworld.com/api/livestream-redirect/RIVADAVIAAAC.aac')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="esperanza roca">
-<div class="name">Esperanza 91.3</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://stream.zeno.fm/unb669s6e0huv')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="fiesta roca">
-<div class="name">Fiesta 91.7</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://srv1.streamingradio.ar/8128/stream/')">▶ Escuchar</button>
-</div>
-
-<div class="card" data-name="rn roca">
-<div class="name">RN radio 91.9</div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://01.solumedia.com.ar:9012/stream')">▶ Escuchar</button>
-</div>   
- 
-
-<div class="card" roca="">
-<div class="name">Red 92.1 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://radios.solumedia.com/6426/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card"cristal roca="">
-<div class="name">Cristal 92.5 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://s2.netradiofm.com:9754/;')">▶ Escuchar</button>
-</div>
-
-<div class="card" roca="">
-<div class="name">Radio 92.7 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://media.radios.ar:9270/')">▶ Escuchar</button>
-</div>
-
-<div class="card" carolina roca="">
-<div class="name">Carolina 92.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://s3.netradiofm.com/p/6040/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" retro roca="">
-<div class="name">Retro 93.3 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://server7.hostradios.com:7100/;?1774203646206')">▶ Escuchar</button>
-</div>
-
-<div class="card" literal roca="">
-<div class="name">Literal 93.5 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://live.lu5am.com:8443/cnn-roca')">▶ Escuchar</button>
-</div>
-
-<div class="card" remember roca="">
-<div class="name">Remember 93.7 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://masservidor.net/8128/stream/;type=mp3')">▶ Escuchar</button>
-</div>
-
-<div class="card" vision roca="">
-<div class="name">Visión Eterna 93.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://stream.zeno.fm/0r0xa792kwzuv')">▶ Escuchar</button>
-</div>
-
-<div class="card" ciudad roca="">
-<div class="name">Ciudad 94.1 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://radios.solumedia.com:6002/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" cima roca="">
-<div class="name">La Cima 94.5 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('http://server9.veemesoft.com.ar:11010/;')">▶ Escuchar</button>
-</div>
-
-<div class="card" patagonia roca="">
-<div class="name">Patagonia 94.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://emisora.radiosplay.com.ar/8140/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" station roca="">
-<div class="name">Station Radio 95.1 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://stm2.livecastradio.com:20046/;')">▶ Escuchar</button>
-</div> 
-
-
-<div class="card" estacion roca="">
-<div class="name">Estación Diez 95.5 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://sonic.host-live.com/8068/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" argentina roca="">
-<div class="name">Argentina 95.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming6.locucionar.com:24144/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" super roca="">
-<div class="name">La Super 96.3 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://sc.host-live.com/8070/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" muro roca="">
-<div class="name">Scombros 96.7 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://stream.zeno.fm/0r0xa792kwzuv')">▶ Escuchar</button>
-</div>
-
-<div class="card" altisimo roca="">
-<div class="name">El Altísimo 96.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://stream-177.zeno.fm/nv7b67397ehvv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiJudjdiNjczOTdlaHZ2IiwiaG9zdCI6InN0cmVhbS0xNzcuemVuby5mbSIsInJ0dGwiOjUsImp0aSI6Ilp5TmVnS0VrUldHOUs3U1lzTFRYMnciLCJpYXQiOjE3NzQyMDIyMjUsImV4cCI6MTc3NDIwMjI4NX0.4Ia4ozKIDK15fSAbs0fB8ZTHhBKQgonr2qX13btUUQY')">▶ Escuchar</button>
-</div>
-
-<div class="card" feeling roca="">
-<div class="name">Feeling 97.1 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://radio14.servidorderadio.net/8642/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" genesis infobae="">
-<div class="name">Genesis 97.5 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://24423.live.streamtheworld.com/INFOBAE.mp3')">▶ Escuchar</button>
-</div>
-
-<div class="card" familiera roca="">
-<div class="name">La Familiera 97.7 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://radio14.servidorderadio.net/8250/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" malvinas alegria="">
-<div class="name">Malvinas 97.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming.escuchanosonline.com:7101/stream')">▶ Escuchar</button>
-</div> 
-
- 
-<div class="card" show roca="">
-<div class="name">Show CDC 98.3 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://stream-179.zeno.fm/qxwo41t2ixxtv?zt=eyJhbGciOiJIUzI1NiJ9.eyJzdHJlYW0iOiJxeHdvNDF0Mml4eHR2IiwiaG9zdCI6InN0cmVhbS0xNzkuemVuby5mbSIsInJ0dGwiOjUsImp0aSI6IlozYVNadTdVU2tpc3hrNXZuTmlZY3ciLCJpYXQiOjE3NzQxNzY2NDcsImV4cCI6MTc3NDE3NjcwN30.RICRmLHwk-oPIXibj3wzYpK8A-thnwIG332kwZ70aF4')">▶ Escuchar</button>
-</div>
-
-<div class="card" kaos roca="">
-<div class="name">Kaos 98.7 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming2.locucionar.com/proxy/estacionzero?mp=/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" color roca="">
-<div class="name">Color 99.3 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streamingraddios.online/proxy/cozzi?mp=/;')">▶ Escuchar</button>
-</div>
-
-<div class="card" cien roca="">
-<div class="name">La Cien 99.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://playerservices.streamtheworld.com/api/livestream-redirect/FM999_56.mp3')">▶ Escuchar</button>
-</div>
-
-<div class="card" agape roca="">
-<div class="name">Agape 100.3 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://sa.mp3.icecast.magma.edge-access.net/sc_rad37')">▶ Escuchar</button>
-</div>
-
-<div class="card" deseos roca="">
-<div class="name">Deseos 100.5 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming6.locucionar.com:24076/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" latina roca="">
-<div class="name">Latina 100.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streamingraddios.online/proxy/luradioe?mp=/;')">▶ Escuchar</button>
-</div>
-
-<div class="card" pop roca="">
-<div class="name">Pop Radio 101.5 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://popradio.stweb.tv/popradio/live/chunks.m3u8')">▶ Escuchar</button>
-</div>
-
-<div class="card" la red roca="">
-<div class="name">La Red 101.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://playerservices.streamtheworld.com/api/livestream-redirect/LA_RED_AM910AAC.aac')">▶ Escuchar</button>
-</div>
-
-<div class="card" emociones roca="">
-<div class="name">Emociones 102.5 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://sonicpanel.hostradios.com/8162/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" one roca="">
-<div class="name">One Radio 102.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://one.stweb.tv/one/live/playlist.m3u8')">▶ Escuchar</button>
-</div>
-
-<div class="card" dayla roca="">
-<div class="name">Dayla Malen 103.1 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://cdn.instream.audio/stream/9790')">▶ Escuchar</button>
-</div>
-
- <div class="card" radio 10 roca="">
-<div class="name">Radio 10 Fm 103.3 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://radio10.stweb.tv/radio10/live/chunks.m3u8')">▶ Escuchar</button>
-</div>
-
-<div class="card" vida nueva roca="">
-<div class="name">Vida Nueva 103.5 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming5.locucionar.com/proxy/vidanuevafm?mp=/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" max roca="">
-<div class="name">Max 103.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://sonicpanel.hostradios.com/8196/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" cadena 3 roca="">
-<div class="name">Cadena 3 Fm 104.5 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://playerservices.streamtheworld.com/api/livestream-redirect/AM700.mp3')">▶ Escuchar</button>
-</div>
-
-<div class="card" dance roca="">
-<div class="name">Sound Dance 104.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://media.xweb.ar/stream/gravity')">▶ Escuchar</button>
-</div>
-
-<div class="card" luz roca="">
-<div class="name">Luz Verdadera 105.3 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming2.locucionar.com/proxy/ministeriopeniel?mp=/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" sound radio roca="">
-<div class="name">Sound Radio 105.7 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming01.shockmedia.com.ar:10942/stream?icy=http')">▶ Escuchar</button>
-</div>
-
-<div class="card" la voz roca="">
-<div class="name">Fm 105.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://stream.zeno.fm/0r0xa792kwzuv')">▶ Escuchar</button>
-</div>
-
-<div class="card" monumental roca="">
-<div class="name">Monumental 106.1 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming01.shockmedia.com.ar:10346/stream?icy=http')">▶ Escuchar</button>
-</div>
-
-<div class="card" tropical roca="">
-<div class="name">La Cima Trop 106.7 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('http://centova2.veemesoft.com.ar:8597/live')">▶ Escuchar</button>
-</div>
-
-<div class="card"  roca="">
-<div class="name">Fm 106.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://nl.digitalrm.pt:8052/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" dsports roca="">
-<div class="name">DSports 107.3 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://streaming1.locucionar.com/proxy/nueva107?mp=/stream:13398')">▶ Escuchar</button>
-</div>
-
-<div class="card" radio maria roca="">
-<div class="name">Radio María 107.7 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://dreamsiteradiocp2.com/proxy/rmargentina2?mp=/stream')">▶ Escuchar</button>
-</div>
-
-<div class="card" exitos roca="">
-<div class="name">Éxitos 107.9 </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('https://radiostreamingserver.com.ar/stream/tropibox/live')">▶ Escuchar</button>
-</div>
-
-<div class="card" rock roca="">
-<div class="name">La Cima Rock webradio </div>
-<div class="city">General Roca</div>
-<button onclick="playRadio('http://server12.veemesoft.com.ar:19416/;')">▶ Escuchar</button>
-</div>
-   
-    
 </div>
 
 <script>
 
 let player = document.getElementById("player");
+let now = document.getElementById("nowPlaying");
 let current = "";
 
-/* PLAY LIMPIO */
-function playRadio(url){
+/* PLAY + MARQUESINA */
+function playRadio(btn, url){
+
+    let card = btn.parentElement;
+    let name = card.querySelector(".name").innerText;
+    let city = card.querySelector(".city").innerText;
 
     if(current === url){
         player.pause();
+        now.innerText = "⏸️ Pausado";
         current = "";
         return;
     }
 
     player.pause();
     player.src = "";
-    
+
     setTimeout(()=>{
         player.src = url;
         player.play();
         current = url;
-    }, 200);
+
+        now.innerText = "🎧 Estás escuchando: " + name + " - " + city;
+
+    },200);
 }
 
 /* BUSCADOR */
@@ -564,8 +205,21 @@ function buscarRadio(){
     let cards = document.querySelectorAll(".card");
 
     cards.forEach(card=>{
-        let name = card.getAttribute("data-name").toLowerCase();
+        let name = card.getAttribute("data-name");
         card.style.display = name.includes(input) ? "block" : "none";
+    });
+}
+
+/* FILTRO CIUDAD */
+function filtrarCiudad(ciudad){
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card=>{
+        if(ciudad === "todas"){
+            card.style.display = "block";
+        }else{
+            card.style.display = card.getAttribute("data-city") === ciudad ? "block" : "none";
+        }
     });
 }
 
