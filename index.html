@@ -18,11 +18,13 @@ body{
 header{
     text-align:center;
     padding:15px;
-    font-size:22px;
     background:#1a1a1a;
 }
+header img{
+    width:220px;
+    max-width:90%;
+}
 
-/* AHORA SONANDO */
 .now{
     text-align:center;
     padding:10px;
@@ -31,14 +33,12 @@ header{
     font-size:14px;
 }
 
-/* PLAYER */
 .player{
     width:95%;
     margin:10px auto;
 }
 audio{ width:100%; }
 
-/* PUBLICIDAD */
 .ads{
     width:95%;
     margin:10px auto;
@@ -53,7 +53,6 @@ audio{ width:100%; }
     text-decoration:none;
 }
 
-/* FILTROS */
 .filters{
     display:flex;
     overflow-x:auto;
@@ -68,7 +67,6 @@ audio{ width:100%; }
     color:white;
 }
 
-/* BUSCADOR */
 .search{
     width:95%;
     margin:10px auto;
@@ -80,7 +78,6 @@ audio{ width:100%; }
     border-radius:10px;
 }
 
-/* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -107,7 +104,6 @@ button.play{
     color:white;
 }
 
-/* FOOTER */
 .footer{
     text-align:center;
     padding:20px;
@@ -118,7 +114,6 @@ button.play{
     color:#00ccff;
 }
 
-/* RESPONSIVE */
 @media(max-width:768px){
     .grid{ grid-template-columns:repeat(2,1fr); }
 }
@@ -131,7 +126,10 @@ button.play{
 
 <body>
 
-<header>📻 Radios Patagónicas</header>
+<header>
+📻 Radios Patagónicas
+<!-- cuando subas el logo reemplazás por img -->
+</header>
 
 <div class="now" id="nowPlaying">
 🎧 No hay radio seleccionada
@@ -141,12 +139,10 @@ button.play{
 <audio id="player" controls></audio>
 </div>
 
-<!-- PUBLICIDAD -->
 <div class="ads">
 <a href="#" target="_blank">📢 Publicite aquí</a>
 </div>
 
-<!-- FILTRO -->
 <div class="filters">
 <button onclick="filtrarProvincia('todas')">Todas</button>
 <button onclick="filtrarProvincia('rionegro')">Río Negro</button>
@@ -156,12 +152,10 @@ button.play{
 <button onclick="filtrarProvincia('tdf')">Tierra del Fuego</button>
 </div>
 
-<!-- BUSCADOR -->
 <div class="search">
 <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio o ciudad...">
 </div>
 
-<!-- RADIOS -->
 <div class="grid">
 
 <!-- EJEMPLO -->
@@ -173,130 +167,8 @@ button.play{
 </button>
 </div>
 
-<div class="card" data-provincia="rionegro" data-name="pueblo viejo roca">
-<div class="name">Pueblo Viejo 89.9</div>
-<div class="city">General Roca</div>
-<button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream')">
-▶ Escuchar
-</button>
 </div>
 
-<div class="card" data-provincia="rionegro" data-name="lu 18 am 640 roca">
-<div class="name">LU18 AM 640</div>
-<div class="city">General Roca</div>
-<button class="play" onclick="playRadio(this, 'https://streamingraddios.online/proxy/valle?mp=/;')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="rionegro" data-name="lu 19 am 690 cipolletti">
-<div class="name">LU19 AM 690</div>
-<div class="city">Cipolletti</div>
-<button class="play" onclick="playRadio(this, 'https://sonic.host-live.com/8064/stream')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="neuquen" data-name="am 550 neuquen">
-<div class="name">LRG208 AM 550</div>
-<div class="city">Neuquén</div>
-<button class="play" onclick="playRadio(this, 'https://sonic.host-live.com:10851/stream')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="neuquen" data-name="lu 5 neuquen">
-<div class="name">LU5 AM 600</div>
-<div class="city">Neuquén</div>
-<button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5?type=.mp3&_=1')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="rionegro" data-name="carretera allen">
-<div class="name">La Carretera AM 740</div>
-<div class="city">Allen</div>
-<button class="play" onclick="playRadio(this, 'https://streaming3.locucionar.com/proxy/lacarretera740?mp=/stream:17584')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="neuquen" data-name="nacional neuquen">
-<div class="name">LRA 43 Nacional Neuquén AM 970</div>
-<div class="city">Neuquén</div>
-<button class="play" onclick="playRadio(this, 'https://sa.mp3.icecast.magma.edge-access.net/sc_rad73')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="rionegro" data-name="lu 16 regina">
-<div class="name">LU16 Río Negro AM 1000</div>
-<div class="city">Villa Regina</div>
-<button class="play" onclick="playRadio(this, 'https://radio01.ferozo.com/proxy/ra01001162?mp=/stream')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="neuquen" data-name="cumbre neuquen">
-<div class="name">LRG202 AM 1400 </div>
-<div class="city">Neuquén</div>
-<button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9366/stream?nocache=1774299487469')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="rionegro" data-name="nuevo tiempo roca">
-<div class="name">Nuevo Tiempo 87.9</div>
-<div class="city">General Roca</div>
-<button class="play" onclick="playRadio(this, 'https://streamradio.novotempo.com/CDN-RADIO-ES/smil:rntBuenosAiresAR.smil/playlist.m3u8')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="rionegro" data-name="urbana roca">
-<div class="name">Frec. Urbana 88.3</div>
-<div class="city">General Roca</div>
-<button class="play" onclick="playRadio(this, 'https://streaming01.shockmedia.com.ar:10582/stream?icy=http')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="rionegro" data-name="los 40 roca">
-<div class="name">Los 40 - 88.7</div>
-<div class="city">General Roca</div>
-<button class="play" onclick="playRadio(this, 'https://radios.solumedia.com:6158/stream?icy=http')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="rionegro" data-name="radio total roca">
-<div class="name">Radio Total 89.5</div>
-<div class="city">General Roca</div>
-<button class="play" onclick="playRadio(this, 'https://streaming.escuchanosonline.com:7137/stream')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="rionegro" data-name="popular roca">
-<div class="name">Popular 90.3</div>
-<div class="city">General Roca</div>
-<button class="play" onclick="playRadio(this, 'https://stream.zeno.fm/0r0xa792kwzuv')">
-▶ Escuchar
-</button>
-</div>
-
-<div class="card" data-provincia="rionegro" data-name="agua vida roca">
-<div class="name">Agua de Vida 90.7</div>
-<div class="city">General Roca</div>
-<button class="play" onclick="playRadio(this, 'https://genexservicios.com:8110/;?1774634150155')">
-▶ Escuchar
-</button>
-</div>
-
-    
-</div>
-
-<!-- CONTACTO -->
 <div class="footer">
 📩 ¿Querés sumar tu radio o corregir datos?
 <br><br>
@@ -307,7 +179,6 @@ Enviar mensaje
 
 <script>
 
-/* PLAYER */
 let player = document.getElementById("player");
 let now = document.getElementById("nowPlaying");
 let current = "";
@@ -318,6 +189,12 @@ function playRadio(btn, url){
     let card = btn.parentElement;
     let name = card.querySelector(".name").innerText;
     let city = card.querySelector(".city").innerText;
+
+    // reset botones
+    document.querySelectorAll(".play").forEach(b=>{
+        b.style.background = "#0077ff";
+        b.innerText = "▶ Escuchar";
+    });
 
     if(current === url){
         player.pause();
@@ -335,6 +212,10 @@ function playRadio(btn, url){
         current = url;
 
         now.innerText = "🎧 Estás escuchando: " + name + " - " + city;
+
+        // botón activo
+        btn.style.background = "#00cc66";
+        btn.innerText = "⏸️ Sonando";
 
     },200);
 }
@@ -367,3 +248,6 @@ function filtrarProvincia(prov){
 
 </body>
 </html>
+
+
+✔ botón cambia
