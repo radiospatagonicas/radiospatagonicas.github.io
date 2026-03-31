@@ -196,6 +196,7 @@ button.share{
 <button class="share" onclick="compartirRadio(this)">
 🔗 Compartir
 </button>
+
 </div>
 
 </div>
@@ -227,3 +228,96 @@ function playRadio(btn, url){
         now.innerText = "⏸️ Pausado";
         current = "";
         return;
+    }
+
+    player.pause();
+    player.src = "";
+
+    setTimeout(()=>{
+        player.src = url;
+        player.play();
+        current = url;
+
+        now.innerText = "🎧 Estás escuchando: " + name + " - " + city;
+
+        const newUrl = window.location.pathname + "?radio=" + id;
+        window.history.pushState({}, "", newUrl);
+
+    },200);
+}
+
+/* COMPARTIR */
+function compartirRadio(btn){
+
+    let card = btn.parentElement;
+    let id = card.getAttribute("data-id");
+    let name = card.querySelector(".name").innerText;
+
+    let url = window.location.origin + window.location.pathname + "?radio=" + id;
+
+    if(navigator.share){
+        navigator.share({
+            title: name,
+            text: "Escuchá esta radio:",
+            url: url
+        });
+    } else {
+        navigator.clipboard.writeText(url);
+        alert("Link copiado 👍");
+    }
+}
+
+/* BUSCADOR */
+function buscarRadio(){
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card=>{
+        let name = card.getAttribute("data-name");
+        card.style.display = name.includes(input) ? "block" : "none";
+    });
+}
+
+/* FILTRO */
+function filtrarProvincia(prov){
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card=>{
+        if(prov === "todas"){
+            card.style.display = "block";
+        }else{
+            card.style.display = card.getAttribute("data-provincia") === prov ? "block" : "none";
+        }
+    });
+}
+
+/* AUTO PLAY DESDE LINK */
+function getRadioFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("radio");
+}
+
+function playRadioById(id){
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card=>{
+        if(card.getAttribute("data-id") === id){
+            let btn = card.querySelector(".play");
+            btn.click();
+        }
+    });
+}
+
+window.addEventListener("load", ()=>{
+    let id = getRadioFromURL();
+    if(id){
+        setTimeout(()=>{
+            playRadioById(id);
+        },500);
+    }
+});
+
+</script>
+
+</body>
+</html>
