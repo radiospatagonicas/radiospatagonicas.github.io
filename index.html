@@ -3,29 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>📻 Radios Patagónicas</title>
+<title>Radios Patagónicas</title>
 
 <style>
-
 body{
     margin:0;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     background:#0d0d0d;
     color:white;
 }
 
+/* HEADER */
 header{
     text-align:center;
     padding:15px;
     background:#1a1a1a;
 }
-
 .logo{
-    max-width:260px;
+    max-width:240px;
     width:90%;
 }
-
 .slogan{
     font-size:13px;
     color:#aaa;
@@ -37,7 +34,6 @@ header{
     padding:10px;
     background:#222;
     color:#00ffcc;
-    font-size:14px;
 }
 
 /* PLAYER */
@@ -58,7 +54,7 @@ audio{ width:100%; }
     padding:15px;
     background:#333;
     border-radius:10px;
-    color:#fff;
+    color:white;
     text-decoration:none;
 }
 
@@ -96,7 +92,14 @@ audio{ width:100%; }
     gap:10px;
     padding:10px;
 }
+@media(max-width:768px){
+    .grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:480px){
+    .grid{ grid-template-columns:1fr; }
+}
 
+/* CARD */
 .card{
     background:#1e1e1e;
     padding:12px;
@@ -104,21 +107,30 @@ audio{ width:100%; }
     text-align:center;
 }
 
+/* ACTIVA */
+.card.active{
+    box-shadow:0 0 10px #00cc66;
+}
+
+/* TEXTO */
 .name{ font-size:15px; }
 .city{ font-size:12px; color:#aaa; margin-bottom:8px; }
 
 /* BOTONES */
-<button class="play" 
-onclick="playRadio(this, 'URL')">
+.play{
     width:100%;
     padding:12px;
     border:none;
     border-radius:8px;
-    background:#0077ff;
+    background:#2a2a2a;
     color:white;
 }
+.play.active{
+    background:#00cc66 !important;
+    color:black;
+}
 
-button.share{
+.share{
     margin-top:5px;
     width:100%;
     padding:8px;
@@ -133,20 +145,9 @@ button.share{
 .footer{
     text-align:center;
     padding:20px;
-    font-size:13px;
     color:#aaa;
 }
-.footer a{
-    color:#00ccff;
-}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-    .grid{ grid-template-columns:repeat(2,1fr); }
-}
-@media(max-width:480px){
-    .grid{ grid-template-columns:1fr; }
-}
+.footer a{ color:#00ccff; }
 
 </style>
 </head>
@@ -158,297 +159,4 @@ button.share{
     <div class="slogan">El sonido del sur</div>
 </header>
 
-<div class="now" id="nowPlaying">
-🎧 No hay radio seleccionada
-</div>
-
-<div class="player">
-<audio id="player" controls></audio>
-</div>
-
-<div class="ads">
-<a href="#">📢 Publicite aquí</a>
-</div>
-
-<div class="filters">
-<button onclick="filtrarProvincia('todas')">Todas</button>
-<button onclick="filtrarProvincia('rionegro')">Río Negro</button>
-<button onclick="filtrarProvincia('neuquen')">Neuquén</button>
-<button onclick="filtrarProvincia('chubut')">Chubut</button>
-<button onclick="filtrarProvincia('santacruz')">Santa Cruz</button>
-<button onclick="filtrarProvincia('tdf')">Tierra del Fuego</button>
-</div>
-
-<div class="search">
-<input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio o ciudad...">
-</div>
-
-<div class="grid">
-
-<!-- EJEMPLO -->
-<div class="card" data-id="antena-libre" data-provincia="rionegro" data-name="antena libre roca">
-<div class="name">Antena Libre 89.1</div>
-<div class="city">General Roca</div>
-
-<button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">
-▶ Escuchar
-</button>
-
-<button class="share" onclick="compartirRadio(this)">
-🔗 Compartir
-</button>
-
-</div>
-
-<div class="card" data-id="pueblo-viejo" data-provincia="rionegro" data-name="pueblo viejo roca">
-
-<div class="name">Pueblo Viejo 89.9</div>
-
-<div class="city">General Roca</div>
-
-
-
-<button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream')">
-
-▶ Escuchar
-</button>
-
-
-
-<button class="share" onclick="compartirRadio(this)">
-
-🔗 Compartir
-</button>
-
-
-
-</div>
-
-
-<div class="card" data-id="lu18-am640" data-provincia="rionegro" data-name="lu18 am640 roca">
-
-<div class="name">LU18 AM 640</div>
-
-<div class="city">General Roca</div>
-
-
-
-<button class="play" onclick="playRadio(this, 'https://streamingraddios.online/proxy/valle?mp=/;')">
-
-▶ Escuchar
-</button>
-
-
-
-<button class="share" onclick="compartirRadio(this)">
-
-🔗 Compartir
-</button>
-
-
-
-</div>
-
-
-<div class="card" data-id="lu19-am690" data-provincia="rionegro" data-name="lu19 am690 roca">
-
-<div class="name">LU19 AM 690</div>
-
-<div class="city">General Roca</div>
-
-
-
-<button class="play" onclick="playRadio(this, 'https://sonic.host-live.com/8064/stream')">
-
-▶ Escuchar
-</button>
-
-
-
-<button class="share" onclick="compartirRadio(this)">
-
-🔗 Compartir
-</button>
-
-
-
-</div>
-
-
-<div class="card" data-id="lrg208-am550" data-provincia="neuquen" data-name="lrg208 am550 roca">
-
-<div class="name">LRG208 AM 550</div>
-
-<div class="city">Neuquén</div>
-
-
-
-<button class="play" onclick="playRadio(this, 'https://sonic.host-live.com:10851/stream')">
-
-▶ Escuchar
-</button>
-
-
-
-<button class="share" onclick="compartirRadio(this)">
-
-🔗 Compartir
-</button>
-
-
-
-</div>
-
-
-<div class="card" data-id="lra43-nacional" data-provincia="neuquen" data-name="lra43 nacional neuquen">
-
-<div class="name">LRA 43 Nacional AM 970</div>
-
-<div class="city">Neuquén</div>
-
-
-
-<button class="play" onclick="playRadio(this, 'https://sa.mp3.icecast.magma.edge-access.net/sc_rad73')">
-
-▶ Escuchar
-</button>
-
-
-
-<button class="share" onclick="compartirRadio(this)">
-
-🔗 Compartir
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-    
-</div>
-
-<div class="footer">
-📩 ¿Querés sumar tu radio o corregir datos?
-<br><br>
-<a href="mailto:radiospatagonicas@gmail.com">
-Enviar mensaje
-</a>
-</div>
-
-<script>
-
-let player = document.getElementById("player");
-let now = document.getElementById("nowPlaying");
-let current = "";
-
-/* PLAY */
-function playRadio(btn, url){
-
-    let card = btn.parentElement;
-    let name = card.querySelector(".name").innerText;
-    let city = card.querySelector(".city").innerText;
-    let id = card.getAttribute("data-id");
-
-    if(current === url){
-        player.pause();
-        now.innerText = "⏸️ Pausado";
-        current = "";
-        return;
-    }
-
-    player.pause();
-    player.src = "";
-
-    setTimeout(()=>{
-        player.src = url;
-        player.play();
-        current = url;
-
-        now.innerText = "🎧 Estás escuchando: " + name + " - " + city;
-
-        const newUrl = window.location.pathname + "?radio=" + id;
-        window.history.pushState({}, "", newUrl);
-
-    },200);
-}
-
-/* COMPARTIR */
-function compartirRadio(btn){
-
-    let card = btn.parentElement;
-    let id = card.getAttribute("data-id");
-    let name = card.querySelector(".name").innerText;
-
-    let url = window.location.origin + window.location.pathname + "?radio=" + id;
-
-    if(navigator.share){
-        navigator.share({
-            title: name,
-            text: "Escuchá esta radio:",
-            url: url
-        });
-    } else {
-        navigator.clipboard.writeText(url);
-        alert("Link copiado 👍");
-    }
-}
-
-/* BUSCADOR */
-function buscarRadio(){
-    let input = document.getElementById("searchInput").value.toLowerCase();
-    let cards = document.querySelectorAll(".card");
-
-    cards.forEach(card=>{
-        let name = card.getAttribute("data-name");
-        card.style.display = name.includes(input) ? "block" : "none";
-    });
-}
-
-/* FILTRO */
-function filtrarProvincia(prov){
-    let cards = document.querySelectorAll(".card");
-
-    cards.forEach(card=>{
-        if(prov === "todas"){
-            card.style.display = "block";
-        }else{
-            card.style.display = card.getAttribute("data-provincia") === prov ? "block" : "none";
-        }
-    });
-}
-
-/* AUTO PLAY DESDE LINK */
-function getRadioFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("radio");
-}
-
-function playRadioById(id){
-    let cards = document.querySelectorAll(".card");
-
-    cards.forEach(card=>{
-        if(card.getAttribute("data-id") === id){
-            let btn = card.querySelector(".play");
-            btn.click();
-        }
-    });
-}
-
-window.addEventListener("load", ()=>{
-    let id = getRadioFromURL();
-    if(id){
-        setTimeout(()=>{
-            playRadioById(id);
-        },500);
-    }
-});
-
-</script>
-
-</body>
-</html>
+<div class="now" id
