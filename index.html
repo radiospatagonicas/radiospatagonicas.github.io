@@ -3,138 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Radios Patagónicas</title>
+
+<title>📻 Radios Patagónicas</title>
 
 <style>
-body {
-  background: #111;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  text-align: center;
+
+body{
+    margin:0;
+    font-family: Arial;
+    background:#0d0d0d;
+    color:white;
 }
 
-h1 {
-  margin: 20px 0 5px;
+header{
+    text-align:center;
+    padding:15px;
+    background:#1a1a1a;
 }
 
-.slogan {
-  font-size: 14px;
-  color: #aaa;
-  margin-bottom: 20px;
+.logo{
+    max-width:260px;
+    width:90%;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 10px;
-  padding: 10px;
+.slogan{
+    font-size:13px;
+    color:#aaa;
 }
 
-.radio {
-  background: #222;
-  padding: 10px;
-  border-radius: 10px;
+/* AHORA SONANDO */
+.now{
+    text-align:center;
+    padding:10px;
+    background:#222;
+    color:#00ffcc;
+    font-size:14px;
 }
 
-.radio.active {
-  background: #007BFF;
+/* PLAYER */
+.player{
+    width:95%;
+    margin:10px auto;
+}
+audio{ width:100%; }
+
+/* PUBLICIDAD */
+.ads{
+    width:95%;
+    margin:10px auto;
+    text-align:center;
+}
+.ads a{
+    display:block;
+    padding:15px;
+    background:#333;
+    border-radius:10px;
+    color:#fff;
+    text-decoration:none;
 }
 
-.name {
-  font-weight: bold;
-  margin-bottom: 8px;
+/* FILTROS */
+.filters{
+    display:flex;
+    overflow-x:auto;
+    gap:10px;
+    padding:10px;
+}
+.filters button{
+    padding:8px 12px;
+    border:none;
+    border-radius:20px;
+    background:#333;
+    color:white;
 }
 
-button {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+/* BUSCADOR */
+.search{
+    width:95%;
+    margin:10px auto;
 }
+.search input{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    padding:10px;
+}
+
+.card{
+    background:#1e1e1e;
+    padding:12px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.name{ font-size:15px; }
+.city{ font-size:12px; color:#aaa; margin-bottom:8px; }
+
+/* BOTONES */
+button.play{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#0077ff;
+    color:white;
+}
+
+button.share{
+    margin-top:5px;
+    width:100%;
+    padding:8px;
+    border:none;
+    border-radius:8px;
+    background:#444;
+    color:#ccc;
+    font-size:12px;
+}
+
+/* FOOTER */
+.footer{
+    text-align:center;
+    padding:20px;
+    font-size:13px;
+    color:#aaa;
+}
+.footer a{
+    color:#00ccff;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:480px){
+    .grid{ grid-template-columns:1fr; }
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>RADIOS PATAGÓNICAS</h1>
-<div class="slogan">El sonido del sur</div>
+<header>
+    <img src="logo.png" class="logo">
+    <div class="slogan">El sonido del sur</div>
+</header>
+
+<div class="now" id="nowPlaying">
+🎧 No hay radio seleccionada
+</div>
+
+<div class="player">
+<audio id="player" controls></audio>
+</div>
+
+<div class="ads">
+<a href="#">📢 Publicite aquí</a>
+</div>
+
+<div class="filters">
+<button onclick="filtrarProvincia('todas')">Todas</button>
+<button onclick="filtrarProvincia('rionegro')">Río Negro</button>
+<button onclick="filtrarProvincia('neuquen')">Neuquén</button>
+<button onclick="filtrarProvincia('chubut')">Chubut</button>
+<button onclick="filtrarProvincia('santacruz')">Santa Cruz</button>
+<button onclick="filtrarProvincia('tdf')">Tierra del Fuego</button>
+</div>
+
+<div class="search">
+<input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio o ciudad...">
+</div>
 
 <div class="grid">
 
-  <!-- RADIO 1 -->
-  <div class="radio" data-id="sonix">
-    <div class="name">FM Sonix</div>
-    <audio src="URL_STREAM_SONIX"></audio>
-    <button onclick="playRadio(this)">▶</button>
-  </div>
+<!-- EJEMPLO -->
+<div class="card" data-id="antena-libre" data-provincia="rionegro" data-name="antena libre roca">
+<div class="name">Antena Libre 89.1</div>
+<div class="city">General Roca</div>
 
-  <!-- RADIO 2 -->
-  <div class="radio" data-id="antena-libre">
-    <div class="name">Antena Libre</div>
-    <audio src="URL_STREAM_ANTENA"></audio>
-    <button onclick="playRadio(this)">▶</button>
-  </div>
+<button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">
+▶ Escuchar
+</button>
+
+<button class="share" onclick="compartirRadio(this)">
+🔗 Compartir
+</button>
 
 </div>
 
+</div>
+
+<div class="footer">
+📩 ¿Querés sumar tu radio o corregir datos?
+<br><br>
+<a href="mailto:radiospatagonicas@gmail.com">
+Enviar mensaje
+</a>
+</div>
+
 <script>
-function playRadio(button) {
-  const radio = button.closest(".radio");
-  const audio = radio.querySelector("audio");
-  const id = radio.getAttribute("data-id");
 
-  // detener todas
-  document.querySelectorAll("audio").forEach(a => {
-    a.pause();
-    a.currentTime = 0;
-  });
+let player = document.getElementById("player");
+let now = document.getElementById("nowPlaying");
+let current = "";
 
-  // reproducir
-  audio.play();
+/* PLAY */
+function playRadio(btn, url){
 
-  // marcar activa
-  document.querySelectorAll(".radio").forEach(r => r.classList.remove("active"));
-  radio.classList.add("active");
+    let card = btn.parentElement;
+    let name = card.querySelector(".name").innerText;
+    let city = card.querySelector(".city").innerText;
+    let id = card.getAttribute("data-id");
 
-  // actualizar URL
-  const newUrl = window.location.pathname + "?radio=" + id;
-  window.history.pushState({}, "", newUrl);
-}
-
-// detectar radio en URL
-function getRadioFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("radio");
-}
-
-// reproducir desde link
-function playRadioById(id) {
-  const radio = document.querySelector(.radio[data-id="${id}"]);
-  if (radio) {
-    const audio = radio.querySelector("audio");
-
-    document.querySelectorAll("audio").forEach(a => {
-      a.pause();
-      a.currentTime = 0;
-    });
-
-    audio.play();
-
-    document.querySelectorAll(".radio").forEach(r => r.classList.remove("active"));
-    radio.classList.add("active");
-
-    radio.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-}
-
-// al cargar la página
-window.addEventListener("load", () => {
-  const id = getRadioFromURL();
-  if (id) {
-    playRadioById(id);
-  }
-});
-</script>
-
-</body>
-</html>
+    if(current === url){
+        player.pause();
+        now.innerText = "⏸️ Pausado";
+        current = "";
+        return;
