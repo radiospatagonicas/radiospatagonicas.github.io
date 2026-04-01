@@ -1,12 +1,22 @@
 <!DOCTYPE html>
-<html>
-<body style="background:black; color:white; text-align:center; padding:40px;">
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radios Patagónicas</title>
+</head>
 
-<h2>TEST REAL</h2>
+<body style="background:#111; color:#fff; text-align:center; font-family:Arial; padding:20px;">
 
-<audio controls>
-  <source src="https://icecast.vgtrk.cdnvideo.ru/vestifm_mp3_192kbps" type="audio/mpeg">
-</audio>
+<h1>Radios Patagónicas</h1>
+
+<button onclick="document.getElementById('player').src='https://www.w3schools.com/html/horse.mp3';document.getElementById('player').play();">
+▶ Probar audio
+</button>
+
+<br><br>
+
+<audio id="player" controls style="width:100%; max-width:400px;"></audio>
 
 </body>
 </html>
