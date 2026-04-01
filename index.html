@@ -209,6 +209,7 @@ audio{ width:100%; }
 
 <script>
 
+<script>
 let player = document.getElementById("player");
 let now = document.getElementById("nowPlaying");
 let current = "";
@@ -232,81 +233,37 @@ function playRadio(btn, url){
         c.classList.remove("active");
     });
 
-    if(current === url){
-        player.pause();
-        now.innerText = "⏸️ Pausado";
-        current = "";
-        return;
-    }
+    // cortar audio SIEMPRE
+    player.pause();
+    player.src = "";
+    player.load();
 
-    player.src = url;
-    player.play();
-    current = url;
+    // pequeño delay (CLAVE)
+    setTimeout(()=>{
 
-    now.innerText = "🎧 Estás escuchando: " + name + " - " + city;
+        player.src = url;
 
-    btn.classList.add("active");
-    btn.innerText = "⏸ Pausar";
-    card.classList.add("active");
+        player.play().then(()=>{
 
-    const newUrl = window.location.pathname + "?radio=" + id;
-    window.history.pushState({}, "", newUrl);
-}
+            current = url;
 
-/* COMPARTIR */
-function compartirRadio(btn){
-    let card = btn.parentElement;
-    let id = card.getAttribute("data-id");
-    let name = card.querySelector(".name").innerText;
+            now.innerText = "🎧 Estás escuchando: " + name + " - " + city;
 
-    let url = window.location.origin + window.location.pathname + "?radio=" + id;
+            btn.classList.add("active");
+            btn.innerText = "⏸ Pausar";
+            card.classList.add("active");
 
-    if(navigator.share){
-        navigator.share({
-            title: name,
-            text: "Escuchá esta radio:",
-            url: url
+            const newUrl = window.location.pathname + "?radio=" + id;
+            window.history.pushState({}, "", newUrl);
+
+        }).catch(error=>{
+            now.innerText = "⚠️ No se pudo reproducir";
+            console.log(error);
         });
-    } else {
-        navigator.clipboard.writeText(url);
-        alert("Link copiado 👍");
-    }
-}
 
-/* BUSCAR */
-function buscarRadio(){
-    let input = document.getElementById("searchInput").value.toLowerCase();
-    document.querySelectorAll(".card").forEach(card=>{
-        let name = card.getAttribute("data-name");
-        card.style.display = name.includes(input) ? "block" : "none";
-    });
+    },300);
 }
-
-/* FILTRO */
-function filtrarProvincia(prov){
-    document.querySelectorAll(".card").forEach(card=>{
-        if(prov === "todas"){
-            card.style.display = "block";
-        }else{
-            card.style.display = card.getAttribute("data-provincia") === prov ? "block" : "none";
-        }
-    });
-}
-
-/* AUTO PLAY */
-function getRadioFromURL(){
-    return new URLSearchParams(window.location.search).get("radio");
-}
-
-window.addEventListener("load", ()=>{
-    let id = getRadioFromURL();
-    if(id){
-        let card = document.querySelector([data-id="${id}"]);
-        if(card){
-            card.querySelector(".play").click();
-        }
-    }
-});
+</script>
 
 </script>
 
