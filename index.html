@@ -92,56 +92,39 @@
 </div>
 
 <script>
-  const player = document.getElementById("player");
+ const player = document.getElementById("player");
 const now = document.getElementById("nowPlaying");
-let currentUrl = "";
 
 function playRadio(btn, url) {
     const card = btn.parentElement;
     const name = card.querySelector(".name").innerText;
 
-    // 1. LIMPIEZA INSTANTÁNEA (Visual)
-    document.querySelectorAll(".card").forEach(c => {
-        c.style.border = "1px solid #333";
-        c.style.boxShadow = "none";
-    });
+    // 1. LIMPIEZA TOTAL Y RÁPIDA
+    // Volvemos al borde original gris oscuro de 1px
+    document.querySelectorAll(".card").forEach(c => c.style.border = "1px solid #333");
     document.querySelectorAll(".play").forEach(b => {
         b.style.background = "#0077ff";
-        b.innerHTML = "▶ Escuchar";
-        b.style.boxShadow = "none";
+        b.innerText = "▶ Escuchar";
     });
 
-    // 2. Si es la misma y suena, pausa rápida
-    if (currentUrl === url && !player.paused) {
+    // 2. CAMBIO DE SEÑAL INSTANTÁNEO
+    // Si ya está sonando esta misma, la frenamos
+    if (player.src === url && !player.paused) {
         player.pause();
-        currentUrl = "";
         now.innerText = "⏸️ Pausado";
         return;
     }
 
-    // 3. REPRODUCCIÓN VELOZ
-    // No usamos .load() para ganar milisegundos
+    // 3. DISPARO DIRECTO (Sin esperas ni validaciones pesadas)
     player.src = url;
-    btn.innerHTML = "⌛ Conectando...";
+    player.play(); 
 
-    player.play().then(() => {
-        currentUrl = url;
-        
-        // Efecto Moderno: Borde sutil y sombra de luz (Glow)
-        card.style.border = "1px solid #00ffcc";
-        card.style.boxShadow = "0 0 10px rgba(0, 255, 204, 0.2)";
-        
-        // El botón ahora no cambia a verde pleno, se mantiene azul pero con sombra
-        btn.style.background = "#0077ff"; 
-        btn.innerHTML = "⏸️ Sonando ahora";
-        btn.style.boxShadow = "0 0 15px rgba(0, 119, 255, 0.5)";
-        
-        now.innerText = "🎧 " + name;
-        now.style.color = "#00ffcc";
-    }).catch(err => {
-        btn.innerHTML = "▶ Reintentar";
-        now.innerText = "⚠️ Stream no disponible";
-    });
+    // Visual moderno: solo el botón cambia y la tarjeta se marca sutilmente
+    btn.style.background = "#1a1a1a"; // Color oscuro elegante al sonar
+    btn.innerText = "🔊 Sonando...";
+    card.style.border = "1px solid #0077ff"; // Borde azul fino, no verde
+    
+    now.innerText = "🎧 " + name;
 }
 
 function buscarRadio() {
@@ -164,17 +147,16 @@ function compartirRadio(id, nombre) {
     window.open("https://api.whatsapp.com/send?text=" + msg, "_blank");
 }
 
+// Esto solo corre una vez al entrar, no afecta la velocidad de los botones
 window.onload = function() {
     const params = new URLSearchParams(window.location.search);
     const rId = params.get('radio');
     if (rId) {
         const el = document.getElementById(rId);
         if (el) {
-            setTimeout(() => {
-                el.scrollIntoView({ behavior: 'smooth' });
-                el.style.border = "1px solid #00ffcc";
-                now.innerHTML = "👇 Dale Play a la radio recomendada";
-            }, 500);
+            el.scrollIntoView({ behavior: 'smooth' });
+            el.style.border = "1px solid #0077ff";
+            now.innerHTML = "👇 Elegiste " + el.querySelector(".name").innerText + ". ¡Dale Play!";
         }
     }
 }
