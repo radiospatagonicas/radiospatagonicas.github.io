@@ -218,88 +218,30 @@
 </div>
 
 <script>
-    const player = document.getElementById("player");
-    const now = document.getElementById("nowPlaying");
-    let currentUrl = "";
+   function compartirRadio(id, nombre) {
+    const urlBase = window.location.origin + window.location.pathname;
+    const urlCompartir = urlBase + '?radio=' + id;
+    const mensaje = encodeURIComponent("📻 Te comparto esta emisora de Radios Patagónicas: " + nombre + " 🎧 Escuchala acá: " + urlCompartir);
+    
+    window.open("https://api.whatsapp.com/send?text=" + mensaje, "_blank");
+}
 
-    function playRadio(btn, url) {
-        const card = btn.parentElement;
-        const name = card.querySelector(".name").innerText;
-        const city = card.querySelector(".city").innerText;
-
-        // Resetear todos los botones de la lista
-        document.querySelectorAll(".play").forEach(b => {
-            b.style.background = "#0077ff";
-            b.innerText = "▶ Escuchar";
-        });
-
-        if (currentUrl === url) {
-            player.pause();
-            now.innerText = "⏸️ Pausado: " + name;
-            currentUrl = "";
-            return;
-        }
-
-        player.pause();
-        player.src = url;
-        player.play().catch(e => {
-            alert("Error: El stream no está disponible ahora.");
-            now.innerText = "❌ Error de conexión";
-        });
-
-        currentUrl = url;
-        now.innerText = "🎧 Escuchando: " + name + " (" + city + ")";
-        btn.style.background = "#00cc66";
-        btn.innerText = "⏸️ Sonando";
-    }
-
-    function buscarRadio() {
-        let input = document.getElementById("searchInput").value.toLowerCase();
-        let cards = document.querySelectorAll(".card");
-        cards.forEach(card => {
-            let name = card.getAttribute("data-name");
-            card.style.display = name.includes(input) ? "block" : "none";
-        });
-    }
-
-    function filtrarProvincia(prov) {
-        let cards = document.querySelectorAll(".card");
-        cards.forEach(card => {
-            if (prov === "todas") {
-                card.style.display = "block";
-            } else {
-                card.style.display = card.getAttribute("data-provincia") === prov ? "block" : "none";
-            }
-        });
-    }
-
-    // FUNCIÓN PARA COMPARTIR
-    function compartirRadio(id) {
-        const urlBase = window.location.protocol + '//' + window.location.host + window.location.pathname;
-        const urlCompartir = urlBase + '?radio=' + id;
-        
-        navigator.clipboard.writeText(urlCompartir).then(() => {
-            alert("Enlace copiado. ¡Ya podés pegarlo en WhatsApp!");
-        });
-    }
-
-    // MAGIA: AUTO-PLAY AL ENTRAR CON LINK
-    window.onload = function() {
-        const params = new URLSearchParams(window.location.search);
-        const radioId = params.get('radio');
-        
-        if (radioId) {
-            const tarjeta = document.getElementById(radioId);
-            if (tarjeta) {
-                // Pequeño delay para asegurar que el navegador permita el audio
-                setTimeout(() => {
-                    const btn = tarjeta.querySelector('.play');
-                    btn.click();
-                    tarjeta.scrollIntoView({ behavior: 'smooth' });
-                }, 800);
-            }
+window.onload = function() {
+    const params = new URLSearchParams(window.location.search);
+    const radioId = params.get('radio');
+    
+    if (radioId) {
+        const tarjeta = document.getElementById(radioId);
+        if (tarjeta) {
+            setTimeout(() => {
+                tarjeta.scrollIntoView({ behavior: 'smooth' });
+                tarjeta.style.border = "2px solid #00ffcc";
+                document.getElementById("nowPlaying").innerHTML = "👇 Hacé clic en REPRODUCIR para escuchar la radio recomendada";
+                document.getElementById("nowPlaying").style.color = "#00ffcc";
+            }, 500);
         }
     }
+}
 </script>
 
 </body>
