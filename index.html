@@ -1,28 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Test Radio</title>
-</head>
+<html>
+<body style="background:black; color:white; text-align:center;">
 
-<body style="background:black; color:white; text-align:center; padding:40px;">
+<h2>Test automático</h2>
 
-<h1>TEST RADIO</h1>
-
-<button onclick="sonar()">▶ PROBAR</button>
-
-<br><br>
-
-<audio id="player" controls style="width:100%;"></audio>
-
-<script>
-function sonar(){
-  var player = document.getElementById("player");
-  player.src = "https://stream-ssl.alsolnet.com/los40";
-  player.play();
-}
-</script>
+<audio controls autoplay>
+  <source src="https://stream-ssl.alsolnet.com/los40" type="audio/mpeg">
+</audio>
 
 </body>
 </html>
