@@ -6,32 +6,28 @@
     <title>📻 Radios Patagónicas</title>
     <style>
         body { margin:0; font-family: Arial, sans-serif; background:#0d0d0d; color:white; }
-        header { text-align:center; padding:15px; background:#1a1a1a; font-weight: bold; font-size: 1.2em; }
-        .now { text-align:center; padding:10px; background:#222; color:#00ffcc; font-size:14px; min-height: 20px; border-bottom: 1px solid #333; }
+        header { text-align:center; padding:15px; background:#1a1a1a; font-weight: bold; }
+        .now { text-align:center; padding:10px; background:#222; color:#00ffcc; font-size:14px; min-height: 20px; }
         .player { width:95%; margin:10px auto; }
         audio { width:100%; height: 40px; }
         .filters { display:flex; overflow-x:auto; gap:10px; padding:10px; scrollbar-width: none; }
         .filters::-webkit-scrollbar { display: none; }
-        .filters button { padding:8px 15px; border:none; border-radius:20px; background:#333; color:white; white-space: nowrap; cursor: pointer; }
+        .filters button { padding:8px 15px; border:none; border-radius:20px; background:#333; color:white; cursor: pointer; }
         .search { width:95%; margin:10px auto; }
-        .search input { width:100%; padding:12px; border:none; border-radius:10px; box-sizing: border-box; background: #222; color: white; }
-        .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; padding:10px; }
-        .card { background:#1e1e1e; padding:15px; border-radius:12px; text-align:center; border: 1px solid #333; transition: 0.3s; }
-        .name { font-size:15px; font-weight: bold; margin-bottom: 3px; }
+        .search input { width:100%; padding:12px; border:none; border-radius:10px; background: #222; color: white; width:100%; box-sizing:border-box; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:10px; padding:10px; }
+        .card { background:#1e1e1e; padding:15px; border-radius:12px; text-align:center; border: 1px solid #333; }
+        .name { font-size:15px; font-weight: bold; }
         .city { font-size:12px; color:#aaa; margin-bottom:12px; }
-        button.play { width:100%; padding:12px; border:none; border-radius:8px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; }
-        .share-link { display: block; margin-top: 15px; font-size: 12px; color: #00ccff; cursor: pointer; text-decoration: none; font-weight: bold; }
-        .footer { text-align:center; padding:30px; font-size:13px; color:#aaa; line-height: 1.6; }
-        .footer a { color:#00ccff; text-decoration: none; }
-        @media(max-width:768px){ .grid { grid-template-columns:repeat(2,1fr); } }
-        @media(max-width:480px){ .grid { grid-template-columns:1fr; } }
+        button.play { width:100%; padding:12px; border:none; border-radius:8px; background:#0077ff; color:white; font-weight: bold; cursor: pointer; }
+        .share-link { display: block; margin-top: 15px; font-size: 12px; color: #00ccff; cursor: pointer; font-weight: bold; }
+        .footer { text-align:center; padding:30px; font-size:12px; color:#aaa; }
     </style>
 </head>
 <body>
 
 <header>📻 Radios Patagónicas</header>
-
-<div class="now" id="nowPlaying">🎧 Seleccioná una emisora para comenzar</div>
+<div class="now" id="nowPlaying">Seleccioná una radio</div>
 
 <div class="player">
     <audio id="player" controls></audio>
@@ -41,108 +37,82 @@
     <button onclick="filtrarProvincia('todas')">Todas</button>
     <button onclick="filtrarProvincia('rionegro')">Río Negro</button>
     <button onclick="filtrarProvincia('neuquen')">Neuquén</button>
-    <button onclick="filtrarProvincia('chubut')">Chubut</button>
-    <button onclick="filtrarProvincia('santacruz')">Santa Cruz</button>
-    <button onclick="filtrarProvincia('tdf')">Tierra del Fuego</button>
 </div>
 
 <div class="search">
-    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio, ciudad o sigla...">
+    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio...">
 </div>
 
 <div class="grid" id="radioGrid">
-
-    <div class="card" id="lu5" data-provincia="neuquen" data-name="lu5 am 600 neuquen capital">
+    <div class="card" id="lu5" data-provincia="neuquen" data-name="lu5 am 600">
         <div class="name">LU5 AM 600</div>
         <div class="city">Neuquén Capital</div>
         <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5')">▶ Escuchar</button>
         <div class="share-link" onclick="compartirRadio('lu5', 'LU5 AM 600')">🟢 Compartir por WhatsApp</div>
     </div>
-
-    <div class="card" id="antena-libre" data-provincia="rionegro" data-name="antena libre 89.1 roca unco">
-        <div class="name">Antena Libre 89.1</div>
-        <div class="city">General Roca</div>
-        <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartirRadio('antena-libre', 'Antena Libre 89.1')">🟢 Compartir por WhatsApp</div>
-    </div>
-
-    <div class="card" id="pueblo-viejo" data-provincia="rionegro" data-name="pueblo viejo 89.9 roca stefenelli">
-        <div class="name">Pueblo Viejo 89.9</div>
-        <div class="city">General Roca</div>
-        <button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartirRadio('pueblo-viejo', 'Pueblo Viejo 89.9')">🟢 Compartir por WhatsApp</div>
-    </div>
-
-</div>
-
-<div class="footer">
-    📩 ¿Querés sumar tu radio o corregir datos?<br>
-    <a href="mailto:radiospatagonicas@gmail.com?subject=Contacto Radios Patagónicas">Enviar mensaje</a>
 </div>
 
 <script>
     const player = document.getElementById("player");
     const now = document.getElementById("nowPlaying");
-    let currentUrl = "";
+    let currentBtn = null;
 
     function playRadio(btn, url) {
-        const card = btn.parentElement;
-        const name = card.querySelector(".name").innerText;
+        // Si tocamos la misma que ya suena, pausamos y reseteamos
+        if (currentBtn === btn) {
+            if (!player.paused) {
+                player.pause();
+                resetButtons();
+                now.innerText = "⏸️ Pausado";
+                return;
+            }
+        }
 
-        // Resetear todos los botones
+        resetButtons();
+        
+        // Configuración visual previa
+        btn.innerText = "⌛ Cargando...";
+        btn.style.background = "#444";
+        
+        player.src = url;
+        player.play().then(() => {
+            currentBtn = btn;
+            btn.style.background = "#00cc66";
+            btn.innerText = "⏸️ Sonando";
+            now.innerText = "🎧 Escuchando: " + btn.parentElement.querySelector(".name").innerText;
+        }).catch(err => {
+            // Si falla (por bloqueo de móvil), reseteamos el botón para que no quede trabado
+            resetButtons();
+            now.innerText = "⚠️ Error: Dale Play de nuevo";
+            console.error("Error de reproducción", err);
+        });
+    }
+
+    function resetButtons() {
         document.querySelectorAll(".play").forEach(b => {
             b.style.background = "#0077ff";
             b.innerText = "▶ Escuchar";
-        });
-
-        if (currentUrl === url) {
-            player.pause();
-            now.innerText = "⏸️ Pausado";
-            currentUrl = "";
-            return;
-        }
-
-        player.pause();
-        player.src = url;
-        player.load(); // Asegura la carga del stream
-        
-        player.play().then(() => {
-            currentUrl = url;
-            now.innerText = "🎧 Escuchando: " + name;
-            now.style.color = "#00ffcc";
-            btn.style.background = "#00cc66";
-            btn.innerText = "⏸️ Sonando";
-        }).catch(err => {
-            console.log("Error de audio:", err);
-            now.innerText = "⚠️ Error: Hacé clic para reproducir";
         });
     }
 
     function buscarRadio() {
         let input = document.getElementById("searchInput").value.toLowerCase();
-        let cards = document.querySelectorAll(".card");
-        cards.forEach(card => {
+        document.querySelectorAll(".card").forEach(card => {
             let name = card.getAttribute("data-name");
             card.style.display = name.includes(input) ? "block" : "none";
         });
     }
 
     function filtrarProvincia(prov) {
-        let cards = document.querySelectorAll(".card");
-        cards.forEach(card => {
-            if (prov === "todas") {
-                card.style.display = "block";
-            } else {
-                card.style.display = card.getAttribute("data-provincia") === prov ? "block" : "none";
-            }
+        document.querySelectorAll(".card").forEach(card => {
+            card.style.display = (prov === "todas" || card.getAttribute("data-provincia") === prov) ? "block" : "none";
         });
     }
 
     function compartirRadio(id, nombre) {
-        const urlBase = window.location.origin + window.location.pathname;
-        const urlCompartir = urlBase + '?radio=' + id;
-        const mensaje = encodeURIComponent("📻 Te comparto esta emisora de Radios Patagónicas: " + nombre + " 🎧 Escuchala acá: " + urlCompartir);
-        window.open("https://api.whatsapp.com/send?text=" + mensaje, "_blank");
+        const url = window.location.href.split('?')[0] + '?radio=' + id;
+        const msg = encodeURIComponent("📻 Escuchá " + nombre + " en Radios Patagónicas: " + url);
+        window.open("https://api.whatsapp.com/send?text=" + msg, "_blank");
     }
 
     window.onload = function() {
@@ -154,13 +124,11 @@
                 setTimeout(() => {
                     tarjeta.scrollIntoView({ behavior: 'smooth' });
                     tarjeta.style.border = "2px solid #00ffcc";
-                    now.innerHTML = "👇 Hacé clic en REPRODUCIR para escuchar la radio recomendada";
-                    now.style.color = "#00ffcc";
-                }, 800);
+                    now.innerHTML = "👇 Dale Play a la radio recomendada";
+                }, 500);
             }
         }
     }
 </script>
-
 </body>
 </html>
