@@ -243,7 +243,11 @@ function playRadio(btn, url){
 
         player.src = url;
 
-        player.play().then(()=>{
+        function testAudio(){
+    let player = document.getElementById("player");
+    player.src = "https://stream-ssl.alsolnet.com/los40";
+    player.play();
+}
 
             current = url;
 
