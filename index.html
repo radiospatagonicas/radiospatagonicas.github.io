@@ -4,48 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📻 Radios Patagónicas</title>
-
     <style>
         body { margin:0; font-family: Arial, sans-serif; background:#0d0d0d; color:white; }
         header { text-align:center; padding:15px; background:#1a1a1a; font-weight: bold; font-size: 1.2em; }
-        
-        .now { text-align:center; padding:10px; background:#222; color:#00ffcc; font-size:14px; min-height: 20px; }
-        
+        .now { text-align:center; padding:10px; background:#222; color:#00ffcc; font-size:14px; min-height: 20px; border-bottom: 1px solid #333; }
         .player { width:95%; margin:10px auto; }
-        audio { width:100%; height: 35px; }
-
+        audio { width:100%; height: 40px; }
         .filters { display:flex; overflow-x:auto; gap:10px; padding:10px; scrollbar-width: none; }
         .filters::-webkit-scrollbar { display: none; }
         .filters button { padding:8px 15px; border:none; border-radius:20px; background:#333; color:white; white-space: nowrap; cursor: pointer; }
-
         .search { width:95%; margin:10px auto; }
         .search input { width:100%; padding:12px; border:none; border-radius:10px; box-sizing: border-box; background: #222; color: white; }
-
         .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; padding:10px; }
-        .card { background:#1e1e1e; padding:15px; border-radius:12px; text-align:center; position: relative; border: 1px solid #333; }
-        
+        .card { background:#1e1e1e; padding:15px; border-radius:12px; text-align:center; border: 1px solid #333; transition: 0.3s; }
         .name { font-size:15px; font-weight: bold; margin-bottom: 3px; }
         .city { font-size:12px; color:#aaa; margin-bottom:12px; }
-
-        button.play { width:100%; padding:12px; border:none; border-radius:8px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        
-        /* Estilo para el botón de compartir */
-        .share-link { display: block; margin-top: 12px; font-size: 11px; color: #00ccff; cursor: pointer; opacity: 0.7; }
-        .share-link:hover { opacity: 1; text-decoration: underline; }
-
+        button.play { width:100%; padding:12px; border:none; border-radius:8px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; }
+        .share-link { display: block; margin-top: 15px; font-size: 12px; color: #00ccff; cursor: pointer; text-decoration: none; font-weight: bold; }
         .footer { text-align:center; padding:30px; font-size:13px; color:#aaa; line-height: 1.6; }
         .footer a { color:#00ccff; text-decoration: none; }
-
         @media(max-width:768px){ .grid { grid-template-columns:repeat(2,1fr); } }
         @media(max-width:480px){ .grid { grid-template-columns:1fr; } }
     </style>
 </head>
-
 <body>
 
 <header>📻 Radios Patagónicas</header>
 
-<div class="now" id="nowPlaying">🎧 Seleccioná una emisora</div>
+<div class="now" id="nowPlaying">🎧 Seleccioná una emisora para comenzar</div>
 
 <div class="player">
     <audio id="player" controls></audio>
@@ -70,180 +56,111 @@
         <div class="name">LU5 AM 600</div>
         <div class="city">Neuquén Capital</div>
         <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5')">▶ Escuchar</button>
-        <span class="share-link" onclick="compartirRadio('lu5')">🔗 Compartir esta radio</span>
+        <div class="share-link" onclick="compartirRadio('lu5', 'LU5 AM 600')">🟢 Compartir por WhatsApp</div>
     </div>
 
     <div class="card" id="antena-libre" data-provincia="rionegro" data-name="antena libre 89.1 roca unco">
         <div class="name">Antena Libre 89.1</div>
         <div class="city">General Roca</div>
         <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">▶ Escuchar</button>
-        <span class="share-link" onclick="compartirRadio('antena-libre')">🔗 Compartir esta radio</span>
+        <div class="share-link" onclick="compartirRadio('antena-libre', 'Antena Libre 89.1')">🟢 Compartir por WhatsApp</div>
     </div>
-    
-  <div class="card" id="pueblo-viejo" data-provincia="rionegro" data-name="pueblo viejo 89.9 roca stefenelli">
-    <div class="name">Pueblo Viejo 89.9</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('pueblo-viejo')">🔗 Compartir esta radio</span>
-</div>
-    <div class="card" id="lu18" data-provincia="rionegro" data-name="lu 18 el valle roca">
-    <div class="name">LU18 AM 640</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://streamingraddios.online/proxy/valle?mp=/;')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio(lu18')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="lu19" data-provincia="rionegro" data-name="lu 19 la voz del comahue cipo">
-    <div class="name">LU19 AM 690</div>
-    <div class="city">Cipolletti</div>
-    <button class="play" onclick="playRadio(this, 'https://sonic.host-live.com/8064/stream')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('lu19')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="lrg208-am550" data-provincia="neuquen" data-name="lrg 208 am550 la primera neuquen">
-    <div class="name">LRG208 AM 550</div>
-    <div class="city">Neuquén</div>
-    <button class="play" onclick="playRadio(this, 'https://sonic.host-live.com:10851/stream')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('lrg208-am550')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="la-carretera" data-provincia="rionegro" data-name="la carretera allen">
-    <div class="name">La Carretera AM 740</div>
-    <div class="city">Allen</div>
-    <button class="play" onclick="playRadio(this, 'https://streaming3.locucionar.com/proxy/lacarretera740?mp=/stream:17584')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('la-carretera')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="nacional-neuquen" data-provincia="neuquen" data-name="nacional neuquen">
-    <div class="name">LRA 43 Nacional AM 970</div>
-    <div class="city">Neuquén</div>
-    <button class="play" onclick="playRadio(this, 'https://sa.mp3.icecast.magma.edge-access.net/sc_rad73')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('nacional-neuquen')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="lu16" data-provincia="rionegro" data-name="lu 16 rio negro regina">
-    <div class="name">LU16 AM 1000</div>
-    <div class="city">Villa Regina</div>
-    <button class="play" onclick="playRadio(this, 'https://radio01.ferozo.com/proxy/ra01001162?mp=/stream')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('lu16')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="cumbre" data-provincia="neuquen" data-name="cumbre am1400 neuquen">
-    <div class="name">LRG202 AM 1400</div>
-    <div class="city">Neuquén</div>
-    <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9366/stream?nocache=1774299487469')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('cumbre')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="nuevo-mundo" data-provincia="rionegro" data-name="nuevo mundo roca">
-    <div class="name">Nuevo Mundo 87.9</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://streamradio.novotempo.com/CDN-RADIO-ES/smil:rntBuenosAiresAR.smil/playlist.m3u8')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('nuevo-mundo')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="frecuencia-urbana" data-provincia="rionegro" data-name="frecuencia-urbana roca">
-    <div class="name">Frec Urbana 88.3</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://streaming01.shockmedia.com.ar:10582/stream?icy=http')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('frecuencia-urbana')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="los-40" data-provincia="rionegro" data-name="los 40 principales roca">
-    <div class="name">Los 40 - 88.7</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://radios.solumedia.com:6158/stream?icy=http')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('los-40')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="radio-popular" data-provincia="rionegro" data-name="popular roca">
-    <div class="name">Popular 90.3</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://stream.zeno.fm/0r0xa792kwzuv')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('radio-popular')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="agua-vida" data-provincia="rionegro" data-name="agua de vida roca">
-    <div class="name">Agua de Vida 90.7</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://genexservicios.com:8110/;?1774634150155')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('agua-vida')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="rivadavia" data-provincia="rionegro" data-name="rivadavia roca">
-    <div class="name">Rivadavia 91.1</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://playerservices.streamtheworld.com/api/livestream-redirect/RIVADAVIAAAC.aac')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('rivadavia')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="esperanza" data-provincia="rionegro" data-name="esperanza roca">
-    <div class="name">Esperanza 91.3</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://stream.zeno.fm/0r0xa792kwzuv')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('esperanza')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="fiesta" data-provincia="rionegro" data-name="fiesta roca">
-    <div class="name">Fiesta 91.7</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://srv1.streamingradio.ar/8128/stream/')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('fiesta')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="rn-radio" data-provincia="rionegro" data-name="rn diario rio negro roca">
-    <div class="name">RN Radio 91.9</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://01.solumedia.com.ar:9012/stream')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('rn-radio')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="red-92" data-provincia="rionegro" data-name="red 92 roca">
-    <div class="name">Fm 92.1</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://radios.solumedia.com/6426/stream')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('red-92')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="radio-cristal" data-provincia="rionegro" data-name="radio cristal roca">
-    <div class="name">Cristal 92.5</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://s2.netradiofm.com:9754/;')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('radio-cristal')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="trini" data-provincia="rionegro" data-name="trini 2x4 roca">
-    <div class="name">Fm 92.7</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://media.radios.ar:9270')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('trini')">🔗 Compartir esta radio</span>
-</div>
-<div class="card" id="carolina" data-provincia="rionegro" data-name="fm carolina roca">
-    <div class="name">Carolina 92.9</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6040/stream')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('carolina')">🔗 Compartir esta radio</span>
-</div>
 
-    
+    <div class="card" id="pueblo-viejo" data-provincia="rionegro" data-name="pueblo viejo 89.9 roca stefenelli">
+        <div class="name">Pueblo Viejo 89.9</div>
+        <div class="city">General Roca</div>
+        <button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream')">▶ Escuchar</button>
+        <div class="share-link" onclick="compartirRadio('pueblo-viejo', 'Pueblo Viejo 89.9')">🟢 Compartir por WhatsApp</div>
+    </div>
+
 </div>
 
 <div class="footer">
     📩 ¿Querés sumar tu radio o corregir datos?<br>
     <a href="mailto:radiospatagonicas@gmail.com?subject=Contacto Radios Patagónicas">Enviar mensaje</a>
-    <br><br>
-    <small>Hecho por y para apasionados del dial.</small>
 </div>
 
 <script>
-   function compartirRadio(id, nombre) {
-    const urlBase = window.location.origin + window.location.pathname;
-    const urlCompartir = urlBase + '?radio=' + id;
-    const mensaje = encodeURIComponent("📻 Te comparto esta emisora de Radios Patagónicas: " + nombre + " 🎧 Escuchala acá: " + urlCompartir);
-    
-    window.open("https://api.whatsapp.com/send?text=" + mensaje, "_blank");
-}
+    const player = document.getElementById("player");
+    const now = document.getElementById("nowPlaying");
+    let currentUrl = "";
 
-window.onload = function() {
-    const params = new URLSearchParams(window.location.search);
-    const radioId = params.get('radio');
-    
-    if (radioId) {
-        const tarjeta = document.getElementById(radioId);
-        if (tarjeta) {
-            setTimeout(() => {
-                tarjeta.scrollIntoView({ behavior: 'smooth' });
-                tarjeta.style.border = "2px solid #00ffcc";
-                document.getElementById("nowPlaying").innerHTML = "👇 Hacé clic en REPRODUCIR para escuchar la radio recomendada";
-                document.getElementById("nowPlaying").style.color = "#00ffcc";
-            }, 500);
+    function playRadio(btn, url) {
+        const card = btn.parentElement;
+        const name = card.querySelector(".name").innerText;
+
+        // Resetear todos los botones
+        document.querySelectorAll(".play").forEach(b => {
+            b.style.background = "#0077ff";
+            b.innerText = "▶ Escuchar";
+        });
+
+        if (currentUrl === url) {
+            player.pause();
+            now.innerText = "⏸️ Pausado";
+            currentUrl = "";
+            return;
+        }
+
+        player.pause();
+        player.src = url;
+        player.load(); // Asegura la carga del stream
+        
+        player.play().then(() => {
+            currentUrl = url;
+            now.innerText = "🎧 Escuchando: " + name;
+            now.style.color = "#00ffcc";
+            btn.style.background = "#00cc66";
+            btn.innerText = "⏸️ Sonando";
+        }).catch(err => {
+            console.log("Error de audio:", err);
+            now.innerText = "⚠️ Error: Hacé clic para reproducir";
+        });
+    }
+
+    function buscarRadio() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        let cards = document.querySelectorAll(".card");
+        cards.forEach(card => {
+            let name = card.getAttribute("data-name");
+            card.style.display = name.includes(input) ? "block" : "none";
+        });
+    }
+
+    function filtrarProvincia(prov) {
+        let cards = document.querySelectorAll(".card");
+        cards.forEach(card => {
+            if (prov === "todas") {
+                card.style.display = "block";
+            } else {
+                card.style.display = card.getAttribute("data-provincia") === prov ? "block" : "none";
+            }
+        });
+    }
+
+    function compartirRadio(id, nombre) {
+        const urlBase = window.location.origin + window.location.pathname;
+        const urlCompartir = urlBase + '?radio=' + id;
+        const mensaje = encodeURIComponent("📻 Te comparto esta emisora de Radios Patagónicas: " + nombre + " 🎧 Escuchala acá: " + urlCompartir);
+        window.open("https://api.whatsapp.com/send?text=" + mensaje, "_blank");
+    }
+
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        const radioId = params.get('radio');
+        if (radioId) {
+            const tarjeta = document.getElementById(radioId);
+            if (tarjeta) {
+                setTimeout(() => {
+                    tarjeta.scrollIntoView({ behavior: 'smooth' });
+                    tarjeta.style.border = "2px solid #00ffcc";
+                    now.innerHTML = "👇 Hacé clic en REPRODUCIR para escuchar la radio recomendada";
+                    now.style.color = "#00ffcc";
+                }, 800);
+            }
         }
     }
-}
 </script>
 
 </body>
 </html>
-
