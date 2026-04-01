@@ -5,60 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📻 Radios Patagónicas</title>
     <style>
-        /* DISEÑO MODERNO Y LIMPIO */
-        body { margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background:#0a0a0a; color:#eee; }
-        header { text-align:center; padding:20px; background:#111; font-weight: bold; font-size: 1.2em; border-bottom: 1px solid #222; }
+        /* CSS PREMIUM: Combinación de Oscuro y Cobre Vintage */
+        body { 
+            margin:0; 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            background:#0d0d0d; /* Fondo casi negro para que resalte todo */
+            color:#e0e0e0; 
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
         
-        .now { text-align:center; padding:12px; background:#1a1a1a; color:#00ffcc; font-size:13px; min-height: 20px; border-bottom: 1px solid #222; }
+        /* HEADER: Aquí va tu logo */
+        header { 
+            text-align:center; 
+            padding:30px 15px; 
+            background: linear-gradient(180deg, #161616 0%, #111 100%);
+            border-bottom: 2px solid #a87f5e; /* Línea de cobre como el logo */
+        }
         
-        .player-container { position: sticky; top: 0; z-index: 100; background: #111; padding: 10px 0; }
+        .logo-site-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: -15px; /* Ajuste para el texto incorrecto */
+        }
+        
+        .logo-site { 
+            max-width:300px; /* Tamaño ideal en PC */
+            width:80%;       /* Tamaño ideal en Móvil */
+            height:auto; 
+            border-radius: 50%; /* Como el logo es redondo, esto ayuda */
+            box-shadow: 0 10px 30px rgba(168, 127, 94, 0.2); /* Brillo tenue cobre */
+        }
+        
+        /* SOLUCIÓN AL TEXTO INCORRECTO: Tapamos el texto 'radios patagónicas.com' */
+        .logo-fix {
+            position: absolute;
+            bottom: 22px; /* Ajustar esto según el logo final */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%; /* Ancho de la franja que tapa */
+            height: 25px; /* Alto de la franja que tapa */
+            background: #111; /* Mismo fondo que el header */
+            border-radius: 4px;
+        }
+
+        /* REPRODUCTOR FIJO: Estilo minimalista */
+        .player-sticky { position: sticky; top: 0; z-index: 100; background: #111; padding: 10px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .now { text-align:center; padding:10px; color:#00ffcc; font-size:13px; font-weight: 500; }
         .player { width:90%; margin:0 auto; }
-        audio { width:100%; height: 40px; border-radius: 8px; }
+        audio { width:100%; height: 35px; border-radius: 8px; filter: invert(100%); opacity: 0.8; }
 
-        .ads { width:90%; margin:15px auto; text-align:center; }
-        .ads a { display:block; padding:10px; background:#1a1a1a; border-radius:6px; color:#555; text-decoration:none; font-size: 12px; border: 1px solid #222; }
+        /* ESPACIOS DE PUBLICIDAD (BANNERS) */
+        .ads-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 90%; margin: 15px auto; }
+        .ad-banner { display: block; background: #1a1a1a; padding: 15px; border-radius: 8px; border: 1px dashed #444; color: #666; text-decoration: none; text-align: center; font-size: 11px; }
+        .ad-banner:hover { border-color: #a87f5e; color: #a87f5e; }
 
-        .filters { display:flex; overflow-x:auto; gap:8px; padding:10px; scrollbar-width: none; }
+        /* FILTROS Y BUSCADOR */
+        .filters { display:flex; overflow-x:auto; gap:8px; padding:10px 15px; scrollbar-width: none; }
         .filters::-webkit-scrollbar { display: none; }
-        .filters button { padding:8px 16px; border:none; border-radius:20px; background:#222; color:white; cursor: pointer; font-size: 13px; transition: 0.2s; }
-        .filters button:active { background: #0077ff; }
+        .filters button { padding:8px 16px; border:none; border-radius:20px; background:#1e1e1e; color:#eee; cursor: pointer; font-size: 13px; border: 1px solid #333; }
+        .filters button:active, .filters button.active { background: #a87f5e; border-color: #a87f5e; }
 
-        .search { width:95%; margin:10px auto; }
+        .search { width:90%; margin:10px auto; }
         .search input { width:100%; padding:14px; border:none; border-radius:10px; box-sizing: border-box; background: #1a1a1a; color: white; font-size: 16px; border: 1px solid #333; }
+        .search input:focus { border-color: #a87f5e; outline: none; }
 
-        .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:15px; padding:15px; }
+        /* GRID DE RADIOS: Aquí es donde sumamos el espacio para logos */
+        .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap:15px; padding:15px; }
         
-        /* CARD: Sin bordes de colores, efecto de profundidad suave */
-        .card { background:#161616; padding:20px; border-radius:15px; text-align:center; border: 1px solid #222; transition: 0.3s; }
-        .card.active { border-color: #0077ff; background: #1c1c1c; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .card { background:#161616; padding:20px; border-radius:16px; text-align:center; border: 1px solid #222; transition: 0.3s; position: relative; }
+        .card.on { border-color: #a87f5e; background: #1c1c1c; box-shadow: 0 10px 25px rgba(168, 127, 94, 0.1); }
         
-        .name { font-size:17px; font-weight: bold; margin-bottom: 4px; }
+        /* ESPACIO FIJO PARA LOGO DE CADA RADIO */
+        .radio-logo {
+            width: 70px;          /* Ancho fijo */
+            height: 70px;         /* Alto fijo */
+            object-fit: contain;  /* Ajusta la imagen sin deformarla */
+            margin: 0 auto 15px auto;
+            background: #222;     /* Fondo por si el logo es transparente */
+            border-radius: 50%;   /* Redondos quedan muy modernos */
+            display: flex; align-items: center; justify-content: center; /* Centrado perfecto */
+            overflow: hidden;
+            border: 2px solid #2a2a2a;
+        }
+        .radio-logo img { max-width: 90%; max-height: 90%; }
+        
+        .name { font-size:17px; font-weight: bold; margin-bottom: 3px; color: #fff; }
         .city { font-size:11px; color:#666; margin-bottom:15px; text-transform: uppercase; }
 
-        button.play { width:100%; padding:14px; border:none; border-radius:10px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        button.play { width:100%; padding:14px; border:none; border-radius:10px; background: linear-gradient(135deg, #a87f5e, #8c684d); color:white; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
         button.play.on { background: #fff; color: #000; }
         
         .share-link { display: inline-block; margin-top: 15px; font-size: 11px; color: #444; cursor: pointer; }
 
-        .footer { text-align:center; padding:40px; font-size:13px; color:#444; }
-        .footer a { color:#0077ff; text-decoration: none; }
+        .footer { text-align:center; padding:50px; font-size:13px; color:#444; border-top: 1px solid #222; margin-top: auto; }
+        .footer a { color:#a87f5e; text-decoration: none; font-weight: 500; }
 
-        @media(max-width:480px){ .grid { grid-template-columns:1fr; } }
+        @media(max-width:768px){ .logo-fix { height: 18px; bottom: 15px; } }
+        @media(max-width:480px){ .grid { grid-template-columns:1fr; } .ads-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-<header>📻 Radios Patagónicas</header>
+<header>
+    <div class="logo-site-container">
+        <img src="tu-logo.png" alt="Radios Patagónicas" class="logo-site">
+        <div class="logo-fix"></div> </div>
+</header>
 
-<div class="player-container">
-    <div class="now" id="nowPlaying">🎧 Seleccioná una radio</div>
+<div class="player-sticky">
+    <div class="now" id="nowPlaying">🎧 Elegí tu emisora</div>
     <div class="player">
-        <audio id="player" controls></audio>
+        <audio id="player" controls autoplay></audio>
     </div>
 </div>
 
-<div class="ads">
-    <a href="mailto:radiospatagonicas@gmail.com">📢 ESPACIO DISPONIBLE - CONTACTO</a>
+<div class="ads-grid">
+    <a href="mailto:radiospatagonicas@gmail.com" class="ad-banner">ANUNCIE AQUÍ (1)</a>
+    <a href="mailto:radiospatagonicas@gmail.com" class="ad-banner">ANUNCIE AQUÍ (2)</a>
+    <a href="mailto:radiospatagonicas@gmail.com" class="ad-banner">ANUNCIE AQUÍ (3)</a>
+    <a href="mailto:radiospatagonicas@gmail.com" class="ad-banner">ANUNCIE AQUÍ (4)</a>
 </div>
 
 <div class="filters">
@@ -68,30 +133,30 @@
 </div>
 
 <div class="search">
-    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio o ciudad...">
+    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar por nombre, ciudad o frecuencia...">
 </div>
 
 <div class="grid" id="radioGrid">
     
-    <div class="card" id="pueblo-viejo" data-provincia="rionegro" data-name="pueblo viejo 89.9 roca stefenelli">
-        <div class="name">Pueblo Viejo 89.9</div>
-        <div class="city">General Roca</div>
-        <button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartir('pueblo-viejo', 'Pueblo Viejo 89.9')">🟢 Compartir por WhatsApp</div>
-    </div>
+    <div class="card" id="lu5" data-provincia="neuquen" data-name="lu5 am 600 neuquen capital">
+        
+        <div class="radio-logo">
+            <img src="https://www.lu5am.com/images/lu5am.com_new_final.png" alt="LU5">
+        </div>
 
-    <div class="card" id="lu18" data-provincia="rionegro" data-name="lu18 am 640 radio el valle roca">
-        <div class="name">LU 18 AM 640</div>
-        <div class="city">General Roca</div>
-        <button class="play" onclick="playRadio(this, 'https://streaming.enlaceip.com.ar:8000/lu18am640')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartir('lu18', 'LU 18 AM 640')">🟢 Compartir por WhatsApp</div>
+        <div class="name">LU5 AM 600</div>
+        <div class="city">Neuquén Capital</div>
+        <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5')">▶ Escuchar</button>
+        <div class="share-link" onclick="compartir('lu5', 'LU5 AM 600')">🟢 Compartir por WhatsApp</div>
     </div>
 
 </div>
 
 <div class="footer">
     📩 radiospatagonicas@gmail.com<br><br>
-    <a href="mailto:radiospatagonicas@gmail.com?subject=Sugerencia">Sumar mi Radio o Sugerencias</a>
+    <a href="mailto:radiospatagonicas@gmail.com?subject=Contacto">Sumar mi Radio o Sugerencias</a>
+    <br><br>
+    <small>© 2026 Radios Patagónicas - Documentando el Dial.</small>
 </div>
 
 <script>
@@ -99,26 +164,22 @@
     const now = document.getElementById("nowPlaying");
 
     function playRadio(btn, url) {
-        // Limpieza visual inmediata
-        document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+        document.querySelectorAll(".card").forEach(c => c.classList.remove("on"));
         document.querySelectorAll(".play").forEach(b => {
             b.classList.remove("on");
             b.innerText = "▶ Escuchar";
         });
 
-        // Si ya está sonando esta misma, pausamos
         if (player.src === url && !player.paused) {
             player.pause();
             now.innerText = "⏸️ Pausado";
             return;
         }
 
-        // Reproducción rápida
         player.src = url;
         player.play();
 
-        // Estilo activo
-        btn.parentElement.classList.add("active");
+        btn.parentElement.classList.add("on");
         btn.classList.add("on");
         btn.innerText = "⏸️ Sonando";
         now.innerText = "🎧 " + btn.parentElement.querySelector(".name").innerText;
@@ -151,7 +212,7 @@
             if (card) {
                 setTimeout(() => {
                     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    card.classList.add("active");
+                    card.classList.add("on");
                 }, 500);
             }
         }
@@ -160,4 +221,3 @@
 
 </body>
 </html>
-     
