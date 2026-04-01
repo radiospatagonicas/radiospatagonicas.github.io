@@ -6,31 +6,54 @@
     <title>📻 Radios Patagónicas</title>
     <style>
         body { margin:0; font-family: Arial, sans-serif; background:#0d0d0d; color:white; }
-        header { text-align:center; padding:15px; background:#1a1a1a; font-weight: bold; }
-        .now { text-align:center; padding:10px; background:#222; color:#00ffcc; font-size:14px; min-height: 20px; }
+        header { text-align:center; padding:15px; background:#1a1a1a; font-weight: bold; font-size: 1.2em; }
+        
+        .now { text-align:center; padding:10px; background:#222; color:#00ffcc; font-size:14px; min-height: 20px; border-bottom: 1px solid #333; }
+        
         .player { width:95%; margin:10px auto; }
         audio { width:100%; height: 40px; }
+
+        /* SECTOR PUBLICIDAD */
+        .ads { width:95%; margin:10px auto; text-align:center; }
+        .ads a { display:block; padding:15px; background:#333; border-radius:10px; color:#fff; text-decoration:none; font-weight: bold; border: 1px dashed #555; }
+
         .filters { display:flex; overflow-x:auto; gap:10px; padding:10px; scrollbar-width: none; }
         .filters::-webkit-scrollbar { display: none; }
-        .filters button { padding:8px 15px; border:none; border-radius:20px; background:#333; color:white; cursor: pointer; }
+        .filters button { padding:8px 15px; border:none; border-radius:20px; background:#333; color:white; white-space: nowrap; cursor: pointer; }
+
         .search { width:95%; margin:10px auto; }
-        .search input { width:100%; padding:12px; border:none; border-radius:10px; background: #222; color: white; width:100%; box-sizing:border-box; }
-        .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:10px; padding:10px; }
-        .card { background:#1e1e1e; padding:15px; border-radius:12px; text-align:center; border: 1px solid #333; }
-        .name { font-size:15px; font-weight: bold; }
+        .search input { width:100%; padding:12px; border:none; border-radius:10px; box-sizing: border-box; background: #222; color: white; }
+
+        .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:15px; padding:10px; }
+        
+        /* CARD BASE: Borde gris por defecto */
+        .card { background:#1e1e1e; padding:15px; border-radius:12px; text-align:center; border: 1px solid #333; transition: 0.3s; }
+        
+        .name { font-size:16px; font-weight: bold; margin-bottom: 3px; }
         .city { font-size:12px; color:#aaa; margin-bottom:12px; }
-        button.play { width:100%; padding:12px; border:none; border-radius:8px; background:#0077ff; color:white; font-weight: bold; cursor: pointer; }
+
+        button.play { width:100%; padding:12px; border:none; border-radius:8px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; }
+        
         .share-link { display: block; margin-top: 15px; font-size: 12px; color: #00ccff; cursor: pointer; font-weight: bold; }
-        .footer { text-align:center; padding:30px; font-size:12px; color:#aaa; }
+
+        .footer { text-align:center; padding:40px 20px; font-size:13px; color:#aaa; line-height: 1.6; }
+        .footer a { color:#00ccff; text-decoration: none; font-weight: bold; }
+
+        @media(max-width:480px){ .grid { grid-template-columns:1fr; } }
     </style>
 </head>
 <body>
 
 <header>📻 Radios Patagónicas</header>
-<div class="now" id="nowPlaying">Seleccioná una radio</div>
+
+<div class="now" id="nowPlaying">🎧 Seleccioná una emisora para comenzar</div>
 
 <div class="player">
     <audio id="player" controls></audio>
+</div>
+
+<div class="ads">
+    <a href="mailto:radiospatagonicas@gmail.com">📢 Publicite aquí - Contacto Comercial</a>
 </div>
 
 <div class="filters">
@@ -40,55 +63,118 @@
 </div>
 
 <div class="search">
-    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio...">
+    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio, ciudad o frecuencia...">
 </div>
 
 <div class="grid" id="radioGrid">
-    <div class="card" id="lu5" data-provincia="neuquen" data-name="lu5 am 600">
+    <div class="card" id="lu5" data-provincia="neuquen" data-name="lu5 am 600 neuquen capital">
         <div class="name">LU5 AM 600</div>
         <div class="city">Neuquén Capital</div>
         <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5')">▶ Escuchar</button>
         <div class="share-link" onclick="compartirRadio('lu5', 'LU5 AM 600')">🟢 Compartir por WhatsApp</div>
     </div>
-<div class="card" id="pueblo viejo roca" data-provincia="rionegro" data-name="BUSQUEDA">
-    <div class="name">Pueblo Viejo 89.9</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream)">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio('EL-MISMO-ID-UNICO')">🟢 Compartir por WhatsApp</div>
+
+    <div class="card" id="lu18" data-provincia="rionegro" data-name="lu18 am 640 radio el valle roca">
+        <div class="name">LU 18 AM 640</div>
+        <div class="city">General Roca</div>
+        <button class="play" onclick="playRadio(this, 'https://streaming.enlaceip.com.ar:8000/lu18am640')">▶ Escuchar</button>
+        <div class="share-link" onclick="compartirRadio('lu18', 'LU 18 AM 640')">🟢 Compartir por WhatsApp</div>
+    </div>
 </div>
-<div class="card" id="lu18-am640" data-provincia="rionegro" data-name="lu 18 el valle roca">
-    <div class="name">LU 18 AM 640</div>
-    <div class="city">General Roca</div>
-    <button class="play" onclick="playRadio(this, 'https://streamingraddios.online/proxy/valle?mp=/;')">▶ Escuchar</button>
-    <span class="share-link" onclick="compartirRadio(lu18-am640')">🟢 Compartir por WhatsApp</div>
-</div>
-    
+
+<div class="footer">
+    📩 ¿Querés sumar tu radio o corregir datos?<br><br>
+    <a href="mailto:radiospatagonicas@gmail.com?subject=Contacto Radios Patagónicas">
+        Enviar mensaje a radiospatagonicas@gmail.com
+    </a>
+    <br><br>
+    <small>© 2026 Radios Patagónicas - El mapa de nuestras voces.</small>
 </div>
 
 <script>
-  const urlCompartir = urlBase + '?radio=' + id;
-    const mensaje = encodeURIComponent("📻 Te comparto " + nombre + " en Radios Patagónicas: " + urlCompartir);
-    window.open("https://api.whatsapp.com/send?text=" + mensaje, "_blank");
-}
+    const player = document.getElementById("player");
+    const now = document.getElementById("nowPlaying");
+    let currentUrl = "";
 
-window.onload = function() {
-    const params = new URLSearchParams(window.location.search);
-    const radioId = params.get('radio');
-    
-    if (radioId) {
-        const tarjeta = document.getElementById(radioId);
-        if (tarjeta) {
-            setTimeout(() => {
-                tarjeta.scrollIntoView({ behavior: 'smooth' });
-                // Resaltamos la recomendada
-                tarjeta.style.border = "2px solid #00ffcc";
-                now.innerHTML = "👇 Dale Play para escuchar la radio recomendada";
-            }, 800);
+    function playRadio(btn, url) {
+        const card = btn.parentElement;
+        const name = card.querySelector(".name").innerText;
+
+        // 1. LIMPIEZA: Quitamos bordes verdes y reseteamos botones de TODAS las cards
+        document.querySelectorAll(".card").forEach(c => c.style.border = "1px solid #333");
+        document.querySelectorAll(".play").forEach(b => {
+            b.style.background = "#0077ff";
+            b.innerText = "▶ Escuchar";
+        });
+
+        // 2. Si es la misma y está sonando, pausamos
+        if (currentUrl === url && !player.paused) {
+            player.pause();
+            currentUrl = "";
+            now.innerText = "⏸️ Pausado";
+            return;
+        }
+
+        // 3. Cargar y Reproducir
+        player.pause();
+        player.src = url;
+        btn.innerText = "⌛ Cargando...";
+        btn.style.background = "#444";
+
+        player.play().then(() => {
+            currentUrl = url;
+            card.style.border = "2px solid #00ffcc"; // Solo la activa tiene borde
+            btn.style.background = "#00cc66";
+            btn.innerText = "⏸️ Sonando";
+            now.innerText = "🎧 Escuchando: " + name;
+            now.style.color = "#00ffcc";
+        }).catch(err => {
+            btn.style.background = "#0077ff";
+            btn.innerText = "▶ Escuchar";
+            now.innerText = "⚠️ Error de conexión";
+        });
+    }
+
+    function buscarRadio() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        document.querySelectorAll(".card").forEach(card => {
+            let name = card.getAttribute("data-name");
+            card.style.display = name.includes(input) ? "block" : "none";
+        });
+    }
+
+    function filtrarProvincia(prov) {
+        document.querySelectorAll(".card").forEach(card => {
+            if (prov === "todas") {
+                card.style.display = "block";
+            } else {
+                card.style.display = card.getAttribute("data-provincia") === prov ? "block" : "none";
+            }
+        });
+    }
+
+    function compartirRadio(id, nombre) {
+        const urlBase = window.location.origin + window.location.pathname;
+        const urlCompartir = urlBase + '?radio=' + id;
+        const mensaje = encodeURIComponent("📻 Escuchá " + nombre + " en Radios Patagónicas: " + urlCompartir);
+        window.open("https://api.whatsapp.com/send?text=" + mensaje, "_blank");
+    }
+
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        const radioId = params.get('radio');
+        if (radioId) {
+            const tarjeta = document.getElementById(radioId);
+            if (tarjeta) {
+                setTimeout(() => {
+                    tarjeta.scrollIntoView({ behavior: 'smooth' });
+                    tarjeta.style.border = "2px solid #00ffcc";
+                    now.innerHTML = "👇 Dale Play a la radio recomendada";
+                }, 800);
+            }
         }
     }
-}
-
-// No olvides mantener tus funciones de buscarRadio() y filtrarProvincia() abajo
 </script>
+
 </body>
 </html>
