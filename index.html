@@ -92,88 +92,92 @@
 </div>
 
 <script>
-    const player = document.getElementById("player");
-    const now = document.getElementById("nowPlaying");
-    let currentUrl = "";
+  const player = document.getElementById("player");
+const now = document.getElementById("nowPlaying");
+let currentUrl = "";
 
-    function playRadio(btn, url) {
-        const card = btn.parentElement;
-        const name = card.querySelector(".name").innerText;
+function playRadio(btn, url) {
+    const card = btn.parentElement;
+    const name = card.querySelector(".name").innerText;
 
-        // 1. LIMPIEZA: Quitamos bordes verdes y reseteamos botones de TODAS las cards
-        document.querySelectorAll(".card").forEach(c => c.style.border = "1px solid #333");
-        document.querySelectorAll(".play").forEach(b => {
-            b.style.background = "#0077ff";
-            b.innerText = "▶ Escuchar";
-        });
+    // 1. LIMPIEZA INSTANTÁNEA (Visual)
+    document.querySelectorAll(".card").forEach(c => {
+        c.style.border = "1px solid #333";
+        c.style.boxShadow = "none";
+    });
+    document.querySelectorAll(".play").forEach(b => {
+        b.style.background = "#0077ff";
+        b.innerHTML = "▶ Escuchar";
+        b.style.boxShadow = "none";
+    });
 
-        // 2. Si es la misma y está sonando, pausamos
-        if (currentUrl === url && !player.paused) {
-            player.pause();
-            currentUrl = "";
-            now.innerText = "⏸️ Pausado";
-            return;
-        }
-
-        // 3. Cargar y Reproducir
+    // 2. Si es la misma y suena, pausa rápida
+    if (currentUrl === url && !player.paused) {
         player.pause();
-        player.src = url;
-        btn.innerText = "⌛ Cargando...";
-        btn.style.background = "#444";
-
-        player.play().then(() => {
-            currentUrl = url;
-            card.style.border = "2px solid #00ffcc"; // Solo la activa tiene borde
-            btn.style.background = "#00cc66";
-            btn.innerText = "⏸️ Sonando";
-            now.innerText = "🎧 Escuchando: " + name;
-            now.style.color = "#00ffcc";
-        }).catch(err => {
-            btn.style.background = "#0077ff";
-            btn.innerText = "▶ Escuchar";
-            now.innerText = "⚠️ Error de conexión";
-        });
+        currentUrl = "";
+        now.innerText = "⏸️ Pausado";
+        return;
     }
 
-    function buscarRadio() {
-        let input = document.getElementById("searchInput").value.toLowerCase();
-        document.querySelectorAll(".card").forEach(card => {
-            let name = card.getAttribute("data-name");
-            card.style.display = name.includes(input) ? "block" : "none";
-        });
-    }
+    // 3. REPRODUCCIÓN VELOZ
+    // No usamos .load() para ganar milisegundos
+    player.src = url;
+    btn.innerHTML = "⌛ Conectando...";
 
-    function filtrarProvincia(prov) {
-        document.querySelectorAll(".card").forEach(card => {
-            if (prov === "todas") {
-                card.style.display = "block";
-            } else {
-                card.style.display = card.getAttribute("data-provincia") === prov ? "block" : "none";
-            }
-        });
-    }
+    player.play().then(() => {
+        currentUrl = url;
+        
+        // Efecto Moderno: Borde sutil y sombra de luz (Glow)
+        card.style.border = "1px solid #00ffcc";
+        card.style.boxShadow = "0 0 10px rgba(0, 255, 204, 0.2)";
+        
+        // El botón ahora no cambia a verde pleno, se mantiene azul pero con sombra
+        btn.style.background = "#0077ff"; 
+        btn.innerHTML = "⏸️ Sonando ahora";
+        btn.style.boxShadow = "0 0 15px rgba(0, 119, 255, 0.5)";
+        
+        now.innerText = "🎧 " + name;
+        now.style.color = "#00ffcc";
+    }).catch(err => {
+        btn.innerHTML = "▶ Reintentar";
+        now.innerText = "⚠️ Stream no disponible";
+    });
+}
 
-    function compartirRadio(id, nombre) {
-        const urlBase = window.location.origin + window.location.pathname;
-        const urlCompartir = urlBase + '?radio=' + id;
-        const mensaje = encodeURIComponent("📻 Escuchá " + nombre + " en Radios Patagónicas: " + urlCompartir);
-        window.open("https://api.whatsapp.com/send?text=" + mensaje, "_blank");
-    }
+function buscarRadio() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    document.querySelectorAll(".card").forEach(card => {
+        let name = card.getAttribute("data-name");
+        card.style.display = name.includes(input) ? "block" : "none";
+    });
+}
 
-    window.onload = function() {
-        const params = new URLSearchParams(window.location.search);
-        const radioId = params.get('radio');
-        if (radioId) {
-            const tarjeta = document.getElementById(radioId);
-            if (tarjeta) {
-                setTimeout(() => {
-                    tarjeta.scrollIntoView({ behavior: 'smooth' });
-                    tarjeta.style.border = "2px solid #00ffcc";
-                    now.innerHTML = "👇 Dale Play a la radio recomendada";
-                }, 800);
-            }
+function filtrarProvincia(prov) {
+    document.querySelectorAll(".card").forEach(card => {
+        card.style.display = (prov === "todas" || card.getAttribute("data-provincia") === prov) ? "block" : "none";
+    });
+}
+
+function compartirRadio(id, nombre) {
+    const url = window.location.origin + window.location.pathname + '?radio=' + id;
+    const msg = encodeURIComponent("📻 Escuchá " + nombre + " en Radios Patagónicas: " + url);
+    window.open("https://api.whatsapp.com/send?text=" + msg, "_blank");
+}
+
+window.onload = function() {
+    const params = new URLSearchParams(window.location.search);
+    const rId = params.get('radio');
+    if (rId) {
+        const el = document.getElementById(rId);
+        if (el) {
+            setTimeout(() => {
+                el.scrollIntoView({ behavior: 'smooth' });
+                el.style.border = "1px solid #00ffcc";
+                now.innerHTML = "👇 Dale Play a la radio recomendada";
+            }, 500);
         }
     }
+}
 </script>
 
 </body>
