@@ -183,18 +183,19 @@ audio{ width:100%; }
 
 <div class="grid">
 
-</div>   
 <!-- EJEMPLO -->
-<div class="card" data-id="test" data-provincia="rionegro" data-name="test">
+<div class="card" data-id="antena-libre" data-provincia="rionegro" data-name="antena libre roca">
 
-  <div class="name">Radio Test</div>
-  <div class="city">Test</div>
+<div class="name">Antena Libre 89.1</div>
+<div class="city">General Roca</div>
 
-  <button class="play" onclick="playRadio(this, 'https://stream-ssl.alsolnet.com/los40')">
-    ▶ Escuchar
-  </button>
+<button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">
+▶ Escuchar
+</button>
 
-</div>
+<button class="share" onclick="compartirRadio(this)">
+🔗 Compartir
+</button>
 
 </div>
 
@@ -208,7 +209,6 @@ audio{ width:100%; }
 
 <script>
 
-<script>
 let player = document.getElementById("player");
 let now = document.getElementById("nowPlaying");
 let current = "";
@@ -232,41 +232,81 @@ function playRadio(btn, url){
         c.classList.remove("active");
     });
 
-    // cortar audio SIEMPRE
-    player.pause();
-    player.src = "";
-    player.load();
+    if(current === url){
+        player.pause();
+        now.innerText = "⏸️ Pausado";
+        current = "";
+        return;
+    }
 
-    // pequeño delay (CLAVE)
-    setTimeout(()=>{
-
-        player.src = url;
-
-        function testAudio(){
-    let player = document.getElementById("player");
-    player.src = "https://stream-ssl.alsolnet.com/los40";
+    player.src = url;
     player.play();
+    current = url;
+
+    now.innerText = "🎧 Estás escuchando: " + name + " - " + city;
+
+    btn.classList.add("active");
+    btn.innerText = "⏸ Pausar";
+    card.classList.add("active");
+
+    const newUrl = window.location.pathname + "?radio=" + id;
+    window.history.pushState({}, "", newUrl);
 }
 
-            current = url;
+/* COMPARTIR */
+function compartirRadio(btn){
+    let card = btn.parentElement;
+    let id = card.getAttribute("data-id");
+    let name = card.querySelector(".name").innerText;
 
-            now.innerText = "🎧 Estás escuchando: " + name + " - " + city;
+    let url = window.location.origin + window.location.pathname + "?radio=" + id;
 
-            btn.classList.add("active");
-            btn.innerText = "⏸ Pausar";
-            card.classList.add("active");
-
-            const newUrl = window.location.pathname + "?radio=" + id;
-            window.history.pushState({}, "", newUrl);
-
-        }).catch(error=>{
-            now.innerText = "⚠️ No se pudo reproducir";
-            console.log(error);
+    if(navigator.share){
+        navigator.share({
+            title: name,
+            text: "Escuchá esta radio:",
+            url: url
         });
-
-    },300);
+    } else {
+        navigator.clipboard.writeText(url);
+        alert("Link copiado 👍");
+    }
 }
-</script>
+
+/* BUSCAR */
+function buscarRadio(){
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    document.querySelectorAll(".card").forEach(card=>{
+        let name = card.getAttribute("data-name");
+        card.style.display = name.includes(input) ? "block" : "none";
+    });
+}
+
+/* FILTRO */
+function filtrarProvincia(prov){
+    document.querySelectorAll(".card").forEach(card=>{
+        if(prov === "todas"){
+            card.style.display = "block";
+        }else{
+            card.style.display = card.getAttribute("data-provincia") === prov ? "block" : "none";
+        }
+    });
+}
+
+/* AUTO PLAY */
+function getRadioFromURL(){
+    return new URLSearchParams(window.location.search).get("radio");
+}
+
+window.addEventListener("load", ()=>{
+    let id = getRadioFromURL();
+    if(id){
+        let card = document.querySelector([data-id="${id}"]);
+        if(card){
+            card.querySelector(".play").click();
+        }
+    }
+});
 
 </script>
 
