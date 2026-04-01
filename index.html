@@ -156,7 +156,7 @@ audio{ width:100%; }
 
 <header>
     <img src="logo.png" class="logo">
-    <div class="slogan">Todas las radios en un solo lugar</div>
+    <div class="slogan">El sonido del sur</div>
 </header>
 
 <div class="now" id="nowPlaying">
@@ -175,9 +175,6 @@ audio{ width:100%; }
 <button onclick="filtrarProvincia('todas')">Todas</button>
 <button onclick="filtrarProvincia('rionegro')">Río Negro</button>
 <button onclick="filtrarProvincia('neuquen')">Neuquén</button>
-<button onclick="filtrarProvincia('chubut')">Chubut</button>
-<button onclick="filtrarProvincia('santacruz')">Santa Cruz</button>
-<button onclick="filtrarProvincia('tdf')">Tierra del Fuego</button>
 </div>
 
 <div class="search">
@@ -187,11 +184,14 @@ audio{ width:100%; }
 <div class="grid">
 
 <!-- EJEMPLO -->
-<div class="card" data-id="antena-libre" data-provincia="rionegro" data-name="antena libre 89.1 general roca">
+<div class="card" data-id="antena-libre" data-provincia="rionegro" data-name="antena libre roca">
+
 <div class="name">Antena Libre 89.1</div>
 <div class="city">General Roca</div>
+
 <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">
-▶ Escuchar</button>
+▶ Escuchar
+</button>
 
 <button class="share" onclick="compartirRadio(this)">
 🔗 Compartir
