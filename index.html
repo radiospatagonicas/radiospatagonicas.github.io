@@ -4,19 +4,77 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Radios Patagónicas</title>
+
+<style>
+body{
+    background:#111;
+    color:#fff;
+    font-family:Arial;
+    text-align:center;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:10px;
+    padding:10px;
+}
+
+.card{
+    background:#1c1c1c;
+    padding:10px;
+    border-radius:10px;
+}
+
+button{
+    margin-top:8px;
+    padding:8px;
+    width:100%;
+    border:none;
+    border-radius:6px;
+    background:#333;
+    color:white;
+}
+
+button.active{
+    background:#00c853;
+}
+</style>
+
 </head>
 
-<body style="background:#111; color:#fff; text-align:center; font-family:Arial; padding:20px;">
+<body>
 
 <h1>Radios Patagónicas</h1>
 
-<button onclick="document.getElementById('player').src='https://www.w3schools.com/html/horse.mp3';document.getElementById('player').play();">
-▶ Probar audio
-</button>
+<audio id="player" controls style="width:95%; margin:10px auto;"></audio>
 
-<br><br>
+<div class="grid">
 
-<audio id="player" controls style="width:100%; max-width:400px;"></audio>
+<!-- RADIO EJEMPLO -->
+<div class="card">
+    <div>Radio Test</div>
+    <button onclick="playRadio(this, 'https://stream-ssl.alsolnet.com/los40')">
+        ▶ Escuchar
+    </button>
+</div>
+
+</div>
+
+<script>
+function playRadio(btn, url){
+
+    let player = document.getElementById("player");
+
+    // reset botones
+    document.querySelectorAll("button").forEach(b=>b.classList.remove("active"));
+
+    player.src = url;
+    player.play();
+
+    btn.classList.add("active");
+}
+</script>
 
 </body>
 </html>
