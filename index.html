@@ -5,39 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📻 Radios Patagónicas</title>
     <style>
-        body { margin:0; font-family: Arial, sans-serif; background:#0d0d0d; color:white; }
-        header { text-align:center; padding:15px; background:#1a1a1a; font-weight: bold; font-size: 1.2em; }
+        /* CSS MODERNO Y VELOZ */
+        body { margin:0; font-family: 'Segoe UI', Arial, sans-serif; background:#0d0d0d; color:white; }
+        header { text-align:center; padding:20px; background:#1a1a1a; font-weight: bold; border-bottom: 2px solid #0077ff; }
         
-        .now { text-align:center; padding:10px; background:#222; color:#00ffcc; font-size:14px; min-height: 20px; border-bottom: 1px solid #333; }
+        .now { text-align:center; padding:12px; background:#222; color:#00ccff; font-size:14px; min-height: 20px; }
         
-        .player { width:95%; margin:10px auto; }
-        audio { width:100%; height: 40px; }
+        .player-container { position: sticky; top: 0; z-index: 100; background: #1a1a1a; padding: 10px 0; border-bottom: 1px solid #333; }
+        .player { width:95%; margin:0 auto; }
+        audio { width:100%; height: 40px; border-radius: 8px; }
 
-        /* SECTOR PUBLICIDAD */
-        .ads { width:95%; margin:10px auto; text-align:center; }
-        .ads a { display:block; padding:15px; background:#333; border-radius:10px; color:#fff; text-decoration:none; font-weight: bold; border: 1px dashed #555; }
+        .ads { width:90%; margin:15px auto; text-align:center; }
+        .ads a { display:block; padding:12px; background:#252525; border-radius:8px; color:#888; text-decoration:none; font-size: 13px; border: 1px solid #333; }
 
-        .filters { display:flex; overflow-x:auto; gap:10px; padding:10px; scrollbar-width: none; }
+        .filters { display:flex; overflow-x:auto; gap:8px; padding:10px; scrollbar-width: none; }
         .filters::-webkit-scrollbar { display: none; }
-        .filters button { padding:8px 15px; border:none; border-radius:20px; background:#333; color:white; white-space: nowrap; cursor: pointer; }
+        .filters button { padding:8px 16px; border:none; border-radius:20px; background:#333; color:white; cursor: pointer; font-size: 13px; }
 
         .search { width:95%; margin:10px auto; }
-        .search input { width:100%; padding:12px; border:none; border-radius:10px; box-sizing: border-box; background: #222; color: white; }
+        .search input { width:100%; padding:14px; border:none; border-radius:10px; box-sizing: border-box; background: #222; color: white; font-size: 16px; }
 
-        .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:15px; padding:10px; }
+        .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:12px; padding:10px; }
         
-        /* CARD BASE: Borde gris por defecto */
-        .card { background:#1e1e1e; padding:15px; border-radius:12px; text-align:center; border: 1px solid #333; transition: 0.3s; }
+        /* CARD: Diseño minimalista */
+        .card { background:#181818; padding:18px; border-radius:12px; text-align:center; border: 1px solid #2a2a2a; transition: 0.2s; }
         
-        .name { font-size:16px; font-weight: bold; margin-bottom: 3px; }
-        .city { font-size:12px; color:#aaa; margin-bottom:12px; }
+        .name { font-size:17px; font-weight: bold; margin-bottom: 4px; color: #eee; }
+        .city { font-size:12px; color:#777; margin-bottom:15px; text-transform: uppercase; letter-spacing: 1px; }
 
-        button.play { width:100%; padding:12px; border:none; border-radius:8px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; }
+        button.play { width:100%; padding:14px; border:none; border-radius:8px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; font-size: 15px; }
         
-        .share-link { display: block; margin-top: 15px; font-size: 12px; color: #00ccff; cursor: pointer; font-weight: bold; }
+        .share-link { display: block; margin-top: 15px; font-size: 12px; color: #555; cursor: pointer; }
+        .share-link:hover { color: #00ccff; }
 
-        .footer { text-align:center; padding:40px 20px; font-size:13px; color:#aaa; line-height: 1.6; }
-        .footer a { color:#00ccff; text-decoration: none; font-weight: bold; }
+        .footer { text-align:center; padding:40px; font-size:13px; color:#555; }
+        .footer a { color:#0077ff; text-decoration: none; }
 
         @media(max-width:480px){ .grid { grid-template-columns:1fr; } }
     </style>
@@ -46,14 +48,15 @@
 
 <header>📻 Radios Patagónicas</header>
 
-<div class="now" id="nowPlaying">🎧 Seleccioná una emisora para comenzar</div>
-
-<div class="player">
-    <audio id="player" controls></audio>
+<div class="player-container">
+    <div class="now" id="nowPlaying">🎧 Elegí una radio del dial</div>
+    <div class="player">
+        <audio id="player" controls autoplay></audio>
+    </div>
 </div>
 
 <div class="ads">
-    <a href="mailto:radiospatagonicas@gmail.com">📢 Publicite aquí - Contacto Comercial</a>
+    <a href="mailto:radiospatagonicas@gmail.com">📢 ESPACIO DISPONIBLE - CONTACTO</a>
 </div>
 
 <div class="filters">
@@ -63,103 +66,94 @@
 </div>
 
 <div class="search">
-    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio, ciudad o frecuencia...">
+    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar por nombre, ciudad o frecuencia...">
 </div>
 
 <div class="grid" id="radioGrid">
-    <div class="card" id="lu5" data-provincia="neuquen" data-name="lu5 am 600 neuquen capital">
-        <div class="name">LU5 AM 600</div>
-        <div class="city">Neuquén Capital</div>
-        <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartirRadio('lu5', 'LU5 AM 600')">🟢 Compartir por WhatsApp</div>
+    
+    <div class="card" id="pueblo-viejo" data-provincia="rionegro" data-name="pueblo viejo 89.9 roca stefenelli">
+        <div class="name">Pueblo Viejo 89.9</div>
+        <div class="city">General Roca</div>
+        <button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream')">▶ Escuchar</button>
+        <div class="share-link" onclick="compartir('pueblo-viejo', 'Pueblo Viejo 89.9')">🟢 Compartir por WhatsApp</div>
     </div>
 
     <div class="card" id="lu18" data-provincia="rionegro" data-name="lu18 am 640 radio el valle roca">
         <div class="name">LU 18 AM 640</div>
         <div class="city">General Roca</div>
-        <button class="play" onclick="playRadio(this, 'https://s3.netradiofm.com/p/6042/stream')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartirRadio('lu18', 'LU 18 AM 640')">🟢 Compartir por WhatsApp</div>
+        <button class="play" onclick="playRadio(this, 'https://streaming.enlaceip.com.ar:8000/lu18am640')">▶ Escuchar</button>
+        <div class="share-link" onclick="compartir('lu18', 'LU 18 AM 640')">🟢 Compartir por WhatsApp</div>
     </div>
+
 </div>
 
 <div class="footer">
-    📩 ¿Querés sumar tu radio o corregir datos?<br><br>
-    <a href="mailto:radiospatagonicas@gmail.com?subject=Contacto Radios Patagónicas">
-        Enviar mensaje a radiospatagonicas@gmail.com
-    </a>
-    <br><br>
-    <small>© 2026 Radios Patagónicas - El mapa de nuestras voces.</small>
+    📩 radiospatagonicas@gmail.com<br><br>
+    <a href="mailto:radiospatagonicas@gmail.com?subject=Contacto">Sumar mi Radio o Sugerencias</a>
 </div>
 
 <script>
- const player = document.getElementById("player");
-const now = document.getElementById("nowPlaying");
+    const player = document.getElementById("player");
+    const now = document.getElementById("nowPlaying");
 
-function playRadio(btn, url) {
-    const card = btn.parentElement;
-    const name = card.querySelector(".name").innerText;
+    function playRadio(btn, url) {
+        // RESET VISUAL INSTANTÁNEO
+        document.querySelectorAll(".card").forEach(c => c.style.borderColor = "#2a2a2a");
+        document.querySelectorAll(".play").forEach(b => {
+            b.style.background = "#0077ff";
+            b.innerText = "▶ Escuchar";
+        });
 
-    // 1. LIMPIEZA TOTAL Y RÁPIDA
-    // Volvemos al borde original gris oscuro de 1px
-    document.querySelectorAll(".card").forEach(c => c.style.border = "1px solid #333");
-    document.querySelectorAll(".play").forEach(b => {
-        b.style.background = "#0077ff";
-        b.innerText = "▶ Escuchar";
-    });
+        if (player.src === url && !player.paused) {
+            player.pause();
+            now.innerText = "⏸️ Pausado";
+            return;
+        }
 
-    // 2. CAMBIO DE SEÑAL INSTANTÁNEO
-    // Si ya está sonando esta misma, la frenamos
-    if (player.src === url && !player.paused) {
-        player.pause();
-        now.innerText = "⏸️ Pausado";
-        return;
+        // CARGA DIRECTA (MÁXIMA VELOCIDAD)
+        player.src = url;
+        player.play();
+
+        // ESTILO ACTIVO (AZUL, NO VERDE)
+        btn.parentElement.style.borderColor = "#0077ff";
+        btn.style.background = "#111"; // Botón se vuelve oscuro al sonar
+        btn.innerText = "🔊 Sonando...";
+        now.innerText = "🎧 " + btn.parentElement.querySelector(".name").innerText;
     }
 
-    // 3. DISPARO DIRECTO (Sin esperas ni validaciones pesadas)
-    player.src = url;
-    player.play(); 
+    function buscarRadio() {
+        let input = document.getElementById("searchInput").value.toLowerCase();
+        document.querySelectorAll(".card").forEach(card => {
+            card.style.display = card.getAttribute("data-name").includes(input) ? "block" : "none";
+        });
+    }
 
-    // Visual moderno: solo el botón cambia y la tarjeta se marca sutilmente
-    btn.style.background = "#1a1a1a"; // Color oscuro elegante al sonar
-    btn.innerText = "🔊 Sonando...";
-    card.style.border = "1px solid #0077ff"; // Borde azul fino, no verde
-    
-    now.innerText = "🎧 " + name;
-}
+    function filtrarProvincia(prov) {
+        document.querySelectorAll(".card").forEach(card => {
+            card.style.display = (prov === "todas" || card.getAttribute("data-provincia") === prov) ? "block" : "none";
+        });
+    }
 
-function buscarRadio() {
-    let input = document.getElementById("searchInput").value.toLowerCase();
-    document.querySelectorAll(".card").forEach(card => {
-        let name = card.getAttribute("data-name");
-        card.style.display = name.includes(input) ? "block" : "none";
-    });
-}
+    function compartir(id, nombre) {
+        const url = window.location.origin + window.location.pathname + '?radio=' + id;
+        const msg = encodeURIComponent("📻 Escuchá " + nombre + " en Radios Patagónicas: " + url);
+        window.open("https://api.whatsapp.com/send?text=" + msg, "_blank");
+    }
 
-function filtrarProvincia(prov) {
-    document.querySelectorAll(".card").forEach(card => {
-        card.style.display = (prov === "todas" || card.getAttribute("data-provincia") === prov) ? "block" : "none";
-    });
-}
-
-function compartirRadio(id, nombre) {
-    const url = window.location.origin + window.location.pathname + '?radio=' + id;
-    const msg = encodeURIComponent("📻 Escuchá " + nombre + " en Radios Patagónicas: " + url);
-    window.open("https://api.whatsapp.com/send?text=" + msg, "_blank");
-}
-
-// Esto solo corre una vez al entrar, no afecta la velocidad de los botones
-window.onload = function() {
-    const params = new URLSearchParams(window.location.search);
-    const rId = params.get('radio');
-    if (rId) {
-        const el = document.getElementById(rId);
-        if (el) {
-            el.scrollIntoView({ behavior: 'smooth' });
-            el.style.border = "1px solid #0077ff";
-            now.innerHTML = "👇 Elegiste " + el.querySelector(".name").innerText + ". ¡Dale Play!";
+    // GPS PARA EL COMPARTIDO
+    window.onload = () => {
+        const params = new URLSearchParams(window.location.search);
+        const radioId = params.get('radio');
+        if (radioId) {
+            const card = document.getElementById(radioId);
+            if (card) {
+                setTimeout(() => {
+                    card.scrollIntoView({ behavior: 'smooth' });
+                    card.style.borderColor = "#0077ff";
+                }, 500);
+            }
         }
     }
-}
 </script>
 
 </body>
