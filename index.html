@@ -5,51 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📻 Radios Patagónicas</title>
     <style>
-       <style>
-    body { margin:0; font-family: 'Inter', sans-serif; background:#0a0a0a; color:#e0e0e0; }
-    header { text-align:center; padding:25px; background:#111; font-weight: 800; letter-spacing: 2px; color: #0077ff; }
-    
-    .now { text-align:center; padding:15px; background:#161616; color:#00ffcc; font-size:13px; font-weight: 500; }
-    
-    .player-container { position: sticky; top: 0; z-index: 100; background: #111; padding: 10px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-    .player { width:90%; margin:0 auto; }
-    audio { width:100%; height: 40px; filter: invert(100%); opacity: 0.8; }
+        /* DISEÑO MODERNO Y LIMPIO */
+        body { margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background:#0a0a0a; color:#eee; }
+        header { text-align:center; padding:20px; background:#111; font-weight: bold; font-size: 1.2em; border-bottom: 1px solid #222; }
+        
+        .now { text-align:center; padding:12px; background:#1a1a1a; color:#00ffcc; font-size:13px; min-height: 20px; border-bottom: 1px solid #222; }
+        
+        .player-container { position: sticky; top: 0; z-index: 100; background: #111; padding: 10px 0; }
+        .player { width:90%; margin:0 auto; }
+        audio { width:100%; height: 40px; border-radius: 8px; }
 
-    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:20px; padding:20px; }
-    
-    /* CARD MODERNA: Sin bordes visibles, solo profundidad */
-    .card { 
-        background: #1a1a1a; 
-        padding: 25px; 
-        border-radius: 16px; 
-        text-align: center; 
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border: none;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-    
-    /* EFECTO CUANDO SUENA: La tarjeta flota y brilla suavemente */
-    .card.active { 
-        transform: translateY(-10px); 
-        background: #222;
-        box-shadow: 0 20px 40px rgba(0, 119, 255, 0.3);
-    }
+        .ads { width:90%; margin:15px auto; text-align:center; }
+        .ads a { display:block; padding:10px; background:#1a1a1a; border-radius:6px; color:#555; text-decoration:none; font-size: 12px; border: 1px solid #222; }
 
-    .name { font-size:18px; font-weight: 700; margin-bottom: 5px; color: #fff; }
-    .city { font-size:11px; color:#666; text-transform: uppercase; margin-bottom:20px; }
+        .filters { display:flex; overflow-x:auto; gap:8px; padding:10px; scrollbar-width: none; }
+        .filters::-webkit-scrollbar { display: none; }
+        .filters button { padding:8px 16px; border:none; border-radius:20px; background:#222; color:white; cursor: pointer; font-size: 13px; transition: 0.2s; }
+        .filters button:active { background: #0077ff; }
 
-    button.play { 
-        width:100%; padding:15px; border:none; border-radius:12px; 
-        background: linear-gradient(135deg, #0077ff, #0055ff); 
-        color:white; cursor: pointer; font-weight: 600; transition: 0.3s;
-    }
-    
-    button.play.playing { background: #fff; color: #000; }
+        .search { width:95%; margin:10px auto; }
+        .search input { width:100%; padding:14px; border:none; border-radius:10px; box-sizing: border-box; background: #1a1a1a; color: white; font-size: 16px; border: 1px solid #333; }
 
-    .share-link { display: inline-block; margin-top: 20px; font-size: 11px; color: #444; cursor: pointer; transition: 0.3s; }
-    .share-link:hover { color: #25d366; }
+        .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:15px; padding:15px; }
+        
+        /* CARD: Sin bordes de colores, efecto de profundidad suave */
+        .card { background:#161616; padding:20px; border-radius:15px; text-align:center; border: 1px solid #222; transition: 0.3s; }
+        .card.active { border-color: #0077ff; background: #1c1c1c; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        
+        .name { font-size:17px; font-weight: bold; margin-bottom: 4px; }
+        .city { font-size:11px; color:#666; margin-bottom:15px; text-transform: uppercase; }
 
-    @media(max-width:480px){ .grid { grid-template-columns:1fr; } }
+        button.play { width:100%; padding:14px; border:none; border-radius:10px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        button.play.on { background: #fff; color: #000; }
+        
+        .share-link { display: inline-block; margin-top: 15px; font-size: 11px; color: #444; cursor: pointer; }
+
+        .footer { text-align:center; padding:40px; font-size:13px; color:#444; }
+        .footer a { color:#0077ff; text-decoration: none; }
+
+        @media(max-width:480px){ .grid { grid-template-columns:1fr; } }
     </style>
 </head>
 <body>
@@ -57,9 +51,9 @@
 <header>📻 Radios Patagónicas</header>
 
 <div class="player-container">
-    <div class="now" id="nowPlaying">🎧 Elegí una radio del dial</div>
+    <div class="now" id="nowPlaying">🎧 Seleccioná una radio</div>
     <div class="player">
-        <audio id="player" controls autoplay></audio>
+        <audio id="player" controls></audio>
     </div>
 </div>
 
@@ -74,7 +68,7 @@
 </div>
 
 <div class="search">
-    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar por nombre, ciudad o frecuencia...">
+    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio o ciudad...">
 </div>
 
 <div class="grid" id="radioGrid">
@@ -97,7 +91,7 @@
 
 <div class="footer">
     📩 radiospatagonicas@gmail.com<br><br>
-    <a href="mailto:radiospatagonicas@gmail.com?subject=Contacto">Sumar mi Radio o Sugerencias</a>
+    <a href="mailto:radiospatagonicas@gmail.com?subject=Sugerencia">Sumar mi Radio o Sugerencias</a>
 </div>
 
 <script>
@@ -105,27 +99,28 @@
     const now = document.getElementById("nowPlaying");
 
     function playRadio(btn, url) {
-        // RESET VISUAL INSTANTÁNEO
-        document.querySelectorAll(".card").forEach(c => c.style.borderColor = "#2a2a2a");
+        // Limpieza visual inmediata
+        document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
         document.querySelectorAll(".play").forEach(b => {
-            b.style.background = "#0077ff";
+            b.classList.remove("on");
             b.innerText = "▶ Escuchar";
         });
 
+        // Si ya está sonando esta misma, pausamos
         if (player.src === url && !player.paused) {
             player.pause();
             now.innerText = "⏸️ Pausado";
             return;
         }
 
-        // CARGA DIRECTA (MÁXIMA VELOCIDAD)
+        // Reproducción rápida
         player.src = url;
         player.play();
 
-        // ESTILO ACTIVO (AZUL, NO VERDE)
-        btn.parentElement.style.borderColor = "#0077ff";
-        btn.style.background = "#111"; // Botón se vuelve oscuro al sonar
-        btn.innerText = "🔊 Sonando...";
+        // Estilo activo
+        btn.parentElement.classList.add("active");
+        btn.classList.add("on");
+        btn.innerText = "⏸️ Sonando";
         now.innerText = "🎧 " + btn.parentElement.querySelector(".name").innerText;
     }
 
@@ -148,7 +143,6 @@
         window.open("https://api.whatsapp.com/send?text=" + msg, "_blank");
     }
 
-    // GPS PARA EL COMPARTIDO
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const radioId = params.get('radio');
@@ -156,8 +150,8 @@
             const card = document.getElementById(radioId);
             if (card) {
                 setTimeout(() => {
-                    card.scrollIntoView({ behavior: 'smooth' });
-                    card.style.borderColor = "#0077ff";
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.classList.add("active");
                 }, 500);
             }
         }
@@ -166,3 +160,4 @@
 
 </body>
 </html>
+     
