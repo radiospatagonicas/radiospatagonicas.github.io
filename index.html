@@ -5,56 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📻 Radios Patagónicas</title>
     <style>
-        /* Mantenemos tu estilo Dark & Neon que te gustó */
-        body { margin:0; font-family: 'Inter', sans-serif; background:#0a0a0a; color:#eee; }
-        header { text-align:center; padding:20px; background:#111; border-bottom: 1px solid #222; }
-        .logo-principal { max-width: 200px; width: 60%; height: auto; border-radius: 50%; }
+        /* ESTILO DARK & CANCHERO */
+        body { margin:0; font-family: 'Inter', -apple-system, sans-serif; background:#0a0a0a; color:#eee; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        header { text-align:center; padding:25px; background:#111; border-bottom: 1px solid #222; }
+        .logo-principal { max-width: 220px; width: 65%; height: auto; border-radius: 50%; box-shadow: 0 0 20px rgba(0, 119, 255, 0.1); }
 
-        .now { text-align:center; padding:12px; background:#1a1a1a; color:#00ffcc; font-size:13px; border-bottom: 1px solid #222; }
+        .now { text-align:center; padding:12px; background:#1a1a1a; color:#00ffcc; font-size:13px; font-weight: 500; border-bottom: 1px solid #222; }
+        
         .player-container { position: sticky; top: 0; z-index: 100; background: #111; padding: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .player { width:90%; margin:0 auto; }
-        audio { width:100%; height: 40px; }
+        audio { width:100%; height: 40px; border-radius: 8px; }
 
+        /* PUBLICIDAD */
         .ads-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 90%; margin: 15px auto; }
-        .ad-box { background: #161616; padding: 15px; border-radius: 8px; border: 1px dashed #333; color: #555; text-decoration: none; text-align: center; font-size: 11px; }
+        .ad-box { background: #161616; padding: 15px; border-radius: 8px; border: 1px dashed #333; color: #555; text-decoration: none; text-align: center; font-size: 11px; transition: 0.3s; }
+        .ad-box:hover { border-color: #0077ff; color: #0077ff; }
 
-        .filters { display:flex; overflow-x:auto; gap:8px; padding:10px; scrollbar-width: none; }
+        /* FILTROS */
+        .filters { display:flex; overflow-x:auto; gap:8px; padding:10px 15px; scrollbar-width: none; }
         .filters::-webkit-scrollbar { display: none; }
-        .filters button { padding:8px 16px; border:none; border-radius:20px; background:#222; color:white; cursor: pointer; font-size: 12px; border: 1px solid #333; }
+        .filters button { padding:8px 18px; border:none; border-radius:20px; background:#222; color:white; cursor: pointer; font-size: 13px; border: 1px solid #333; white-space: nowrap; }
+        .filters button:active { background: #0077ff; border-color: #0077ff; }
 
         .search { width:90%; margin:10px auto; }
-        .search input { width:100%; padding:14px; border-radius:10px; border: 1px solid #333; background: #1a1a1a; color: white; }
+        .search input { width:100%; padding:15px; border:none; border-radius:12px; box-sizing: border-box; background: #1a1a1a; color: white; font-size: 16px; border: 1px solid #333; outline: none; }
+        .search input:focus { border-color: #0077ff; }
 
+        /* GRILLA */
         .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:15px; padding:15px; }
         
-        .card { background:#161616; padding:20px; border-radius:15px; text-align:center; border: 1px solid #222; transition: 0.3s; }
-        .card.active { border-color: #0077ff; box-shadow: 0 0 15px rgba(0,119,255,0.2); }
-        .card.local-priority { border-color: #00ffcc; background: #1a2525; } /* Color especial para radios cercanas */
+        .card { background:#161616; padding:22px; border-radius:18px; text-align:center; border: 1px solid #222; transition: 0.3s; }
+        .card.active { border-color: #0077ff; background: #1a1a1a; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        
+        .name { font-size:18px; font-weight: bold; margin-bottom: 4px; color: #fff; }
+        .city { font-size:11px; color:#666; margin-bottom:18px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .name { font-size:17px; font-weight: bold; margin-bottom: 4px; }
-        .city { font-size:11px; color:#666; margin-bottom:15px; text-transform: uppercase; }
-
-        button.play { width:100%; padding:14px; border:none; border-radius:10px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; }
+        button.play { width:100%; padding:15px; border:none; border-radius:12px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
         button.play.on { background: #fff; color: #000; }
         
-        /* Botón de compartir: se ocultará en TVs */
-        .share-link { display: inline-block; margin-top: 15px; font-size: 11px; color: #444; cursor: pointer; text-decoration: none; }
+        .share-link { display: inline-block; margin-top: 18px; font-size: 11px; color: #444; cursor: pointer; text-decoration: none; }
+        
+        /* OCULTAR COMPARTIR EN TV */
         .tv-mode .share-link { display: none !important; }
 
-        .footer { text-align:center; padding:40px; font-size:12px; color:#444; }
+        .footer { text-align:center; padding:50px 20px; font-size:12px; color:#444; margin-top: auto; border-top: 1px solid #1a1a1a; }
+        .footer a { color: #0077ff; text-decoration: none; }
+
         @media(max-width:480px){ .grid { grid-template-columns:1fr; } .ads-container { grid-template-columns: 1fr; } }
     </style>
 </head>
-<body id="mainBody">
+<body>
 
 <header>
     <img src="tu-logo-amigo.jpg" alt="Radios Patagónicas" class="logo-principal">
 </header>
 
 <div class="player-container">
-    <div class="now" id="nowPlaying">🎧 Seleccioná una emisora</div>
+    <div class="now" id="nowPlaying">🎧 Seleccioná una radio del dial</div>
     <div class="player">
-        <audio id="player" controls></audio>
+        <audio id="player" controls autoplay></audio>
     </div>
 </div>
 
@@ -68,86 +78,58 @@
     <button onclick="filtrarProvincia('rionegro')">Río Negro</button>
     <button onclick="filtrarProvincia('neuquen')">Neuquén</button>
     <button onclick="filtrarProvincia('chubut')">Chubut</button>
+    <button onclick="filtrarProvincia('santacruz')">Santa Cruz</button>
 </div>
 
 <div class="search">
-    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio o ciudad...">
+    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar por radio, ciudad o frecuencia...">
 </div>
 
 <div class="grid" id="radioGrid">
     
-    <div class="card" id="radio-rawson" data-provincia="chubut" data-ciudad="rawson" data-name="radio municipal rawson 87.9">
-        <div class="name">Radio Municipal 87.9</div>
-        <div class="city">Rawson</div>
-        <button class="play" onclick="playRadio(this, 'URL_STREAM')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartir('radio-rawson', 'Radio Municipal Rawson')">🔗 Compartir</div>
-    </div>
-
-    <div class="card" id="lu18" data-provincia="rionegro" data-ciudad="general roca" data-name="lu18 am 640 radio el valle roca">
+    <div class="card" id="lu18" data-provincia="rionegro" data-name="lu18 am 640 radio el valle roca">
         <div class="name">LU 18 AM 640</div>
         <div class="city">General Roca</div>
         <button class="play" onclick="playRadio(this, 'https://streaming.enlaceip.com.ar:8000/lu18am640')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartir('lu18', 'LU 18 AM 640')">🔗 Compartir</div>
+        <div class="share-link" onclick="compartir('lu18', 'LU 18 AM 640')">🔗 Compartir en WhatsApp</div>
     </div>
 
-</div>
+    </div>
 
 <div class="footer">
-    📩 <a href="mailto:radiospatagonicas@gmail.com">radiospatagonicas@gmail.com</a>
+    📩 Contacto: <a href="mailto:radiospatagonicas@gmail.com">radiospatagonicas@gmail.com</a><br><br>
+    <small>© 2026 Radios Patagónicas - Documentando el dial de nuestra región.</small>
 </div>
 
 <script>
     const player = document.getElementById("player");
     const now = document.getElementById("nowPlaying");
-    const grid = document.getElementById("radioGrid");
 
-    // 1. DETECTAR SMART TV PARA EVITAR EL "LOOP" DE WHATSAPP
-    if (navigator.userAgent.match(/Android TV|SmartTV|GoogleTV|HbbTV/i)) {
+    // DETECCIÓN DE TV PARA EVITAR EL CUELGUE
+    if (navigator.userAgent.match(/Android TV|SmartTV|GoogleTV|HbbTV|Box/i)) {
         document.body.classList.add("tv-mode");
     }
 
-    // 2. GEOLOCALIZACIÓN: Priorizar radios locales
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            
-            // Usamos un servicio gratuito para saber la ciudad por coordenadas
-            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-                .then(res => res.json())
-                .then(data => {
-                    const ciudadUsuario = data.address.city || data.address.town || "";
-                    ordenarPorCercania(ciudadUsuario.toLowerCase());
-                });
-        });
-    }
-
-    function ordenarPorCercania(ciudad) {
-        const cards = Array.from(document.querySelectorAll(".card"));
-        cards.sort((a, b) => {
-            const ciudadA = a.getAttribute("data-ciudad").toLowerCase();
-            const ciudadB = b.getAttribute("data-ciudad").toLowerCase();
-            if (ciudadA === ciudad && ciudadB !== ciudad) return -1;
-            if (ciudadA !== ciudad && ciudadB === ciudad) return 1;
-            return 0;
-        });
-        
-        // Marcamos las locales visualmente y las reinsertamos al inicio
-        cards.forEach(card => {
-            if(card.getAttribute("data-ciudad").toLowerCase() === ciudad) {
-                card.classList.add("local-priority");
-            }
-            grid.appendChild(card);
-        });
-    }
-
     function playRadio(btn, url) {
+        // Limpiamos estados previos
         document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-        document.querySelectorAll(".play").forEach(b => { b.classList.remove("on"); b.innerText = "▶ Escuchar"; });
+        document.querySelectorAll(".play").forEach(b => {
+            b.classList.remove("on");
+            b.innerText = "▶ Escuchar";
+        });
 
+        // Si es la misma, pausamos
+        if (player.src === url && !player.paused) {
+            player.pause();
+            now.innerText = "⏸️ Pausado";
+            return;
+        }
+
+        // Carga y reproducción veloz
         player.src = url;
-        player.play().catch(e => console.log("Error"));
+        player.play().catch(e => console.log("Stream no disponible"));
 
+        // Visual
         btn.parentElement.classList.add("active");
         btn.classList.add("on");
         btn.innerText = "⏸️ Sonando";
@@ -157,7 +139,8 @@
     function buscarRadio() {
         let input = document.getElementById("searchInput").value.toLowerCase();
         document.querySelectorAll(".card").forEach(card => {
-            card.style.display = card.getAttribute("data-name").includes(input) ? "block" : "none";
+            let name = card.getAttribute("data-name");
+            card.style.display = name.includes(input) ? "block" : "none";
         });
     }
 
@@ -171,6 +154,21 @@
         const url = window.location.origin + window.location.pathname + '?radio=' + id;
         const msg = encodeURIComponent("📻 Escuchá " + nombre + " en Radios Patagónicas: " + url);
         window.open("https://api.whatsapp.com/send?text=" + msg, "_blank");
+    }
+
+    // GPS para enlaces compartidos
+    window.onload = () => {
+        const params = new URLSearchParams(window.location.search);
+        const radioId = params.get('radio');
+        if (radioId) {
+            const card = document.getElementById(radioId);
+            if (card) {
+                setTimeout(() => {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.classList.add("active");
+                }, 600);
+            }
+        }
     }
 </script>
 
