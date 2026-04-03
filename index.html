@@ -8,10 +8,7 @@
         body { margin:0; font-family: 'Inter', sans-serif; background:#0a0a0a; color:#eee; display: flex; flex-direction: column; min-height: 100vh; }
         header { text-align:center; padding:25px; background:#111; border-bottom: 1px solid #222; }
         .logo-principal { max-width: 220px; width: 65%; height: auto; border-radius: 50%; }
-        
-        /* BARRA DE ESTADO CELESTE */
         .now { text-align:center; padding:12px; background:#1a1a1a; color:#0077ff; font-size:13px; font-weight: bold; border-bottom: 1px solid #222; }
-        
         .player-container { position: sticky; top: 0; z-index: 100; background: #111; padding: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .player { width:90%; margin:0 auto; }
         audio { width:100%; height: 40px; }
@@ -26,19 +23,19 @@
         .search input { width:100%; padding:15px; border-radius:12px; background: #1a1a1a; color: white; border: 1px solid #333; outline: none; }
 
         .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:15px; padding:15px; }
-        
-        /* CARD Y BOTONES */
         .card { background:#161616; padding:22px; border-radius:18px; text-align:center; border: 1px solid #222; transition: 0.3s; }
-        .card.active { border-color: #0077ff; } /* Borde celeste cuando está activa */
+        .card.active { border-color: #0077ff; }
         
         .name { font-size:18px; font-weight: bold; margin-bottom: 4px; }
         .city { font-size:11px; color:#666; margin-bottom:18px; text-transform: uppercase; }
 
-        /* EL BOTÓN "BANDERA": Celeste por defecto, Blanco cuando suena */
         button.play { width:100%; padding:15px; border:none; border-radius:12px; background:#0077ff; color:white; cursor: pointer; font-weight: bold; transition: 0.3s; }
         button.play.on { background: #ffffff !important; color: #000000 !important; } 
 
-        .share-link { display: inline-block; margin-top: 18px; font-size: 11px; color: #444; cursor: pointer; }
+        /* ESTILO DEL BOTÓN COMPARTIR */
+        .share-link { display: inline-block; margin-top: 18px; font-size: 12px; color: #00ffcc; cursor: pointer; text-decoration: none; border: 1px solid #333; padding: 5px 10px; border-radius: 10px; }
+        
+        /* OCULTAR EN SMART TV */
         .tv-mode .share-link { display: none !important; }
 
         .footer { text-align:center; padding:50px 20px; font-size:12px; color:#444; margin-top: auto; }
@@ -51,7 +48,7 @@
 </header>
 
 <div class="player-container">
-    <div class="now" id="nowPlaying">🎧 Seleccioná una emisora</div>
+    <div class="now" id="nowPlaying">🎧 Seleccioná una radio</div>
     <div class="player">
         <audio id="player" controls autoplay></audio>
     </div>
@@ -77,8 +74,21 @@
         <div class="name">LU 18 AM 640</div>
         <div class="city">General Roca</div>
         <button class="play" onclick="playRadio(this, 'https://streamingraddios.online/proxy/valle?mp=/;')">▶ Escuchar</button>
+        <div class="share-link" onclick="compartir('lu18', 'LU 18 AM 640')">🔗 Compartir</div>
     </div>
-    <div class="card" data-provincia="rionegro" data-name="antena libre uncoma roca">
+    
+    <div class="card" data-provincia="rionegro" data-name="lu 19 la voz del comahue cipo">
+        <div class="name">LU 19 AM 690</div>
+        <div class="city">Cipolletti</div>
+        <button class="play" onclick="playRadio(this, 'https://sonic.host-live.com/8064/stream')">▶ Escuchar</button>
+        <div class="share-link" onclick="compartir('lu19', 'LU 19 AM 690')">🔗 Compartir</div>
+    </div>
+    <div class="card" data-provincia="rionegro" data-name="lu 18 radio el valle roca">
+        <div class="name">LU 18 AM 640</div>
+        <div class="city">General Roca</div>
+        <button class="play" onclick="playRadio(this, 'https://streamingraddios.online/proxy/valle?mp=/;')">▶ Escuchar</button>
+    </div>
+ <div class="card" data-provincia="rionegro" data-name="antena libre uncoma roca">
         <div class="name">Antena Libre 89.1</div>
         <div class="city">General Roca</div>
         <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">▶ Escuchar</button>
@@ -398,107 +408,6 @@
         <div class="city">General Roca</div>
         <button class="play" onclick="playRadio(this, 'https://radiostreamingserver.com.ar/stream/tropibox/live')">▶ Escuchar</button>
     </div>
-    
-<div class="card" data-provincia="rionegro" data-name="ondas de bendicion cipo">
-        <div class="name">Ondas de Bendición 88.9</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://server6.hostradios.com/8164/stream')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="galas cipo">
-        <div class="name">Galas 89.7</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://sslstream.online/8450/stream')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="mural biblioteca cipo">
-        <div class="name">Mural 91.1</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://01.solumedia.com.ar:8142/;')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="radio maria cipo">
-        <div class="name">Radio Maria 91.7</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://dreamsiteradiocp2.com/proxy/rmargentina2?mp=/stream')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="renacer cipo">
-        <div class="name">Renacer 91.9</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://stream.zeno.fm/0r0xa792kwzuv')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="confluencia cipo">
-        <div class="name">Confluencia 92.7</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://streaming3.locucionar.com/proxy/radioconfluencia?mp=/stream')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="radio biblica independiente cipo">
-        <div class="name">Radio Bíblica 92.9</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://radio01.ferozo.com/proxy/ra01000814?mp=/stream')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="el progreso metro CIPO">
-        <div class="name">El Progreso 95.1</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://playerservices.streamtheworld.com/api/livestream-redirect/METRO.mp3')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="impa cipo">
-        <div class="name">IMPA 95.9</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://stm2.livecastradio.com:20090/;')">▶ Escuchar</button>
-    </div>
-    <div class="card" data-provincia="rionegro" data-name="premier infobae cipo">
-        <div class="name">Premier 97.1</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://playerservices.streamtheworld.com/api/livestream-redirect/INFOBAE.mp3?dist=home')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="rtl cipo">
-        <div class="name">RTL 98.7</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://streaming6.locucionar.com:24262/stream')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name=cipolletti cipo">
-        <div class="name">Cipolletti 99.1</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://streaming5.locucionar.com/proxy/cipollettifm?mp=/stream')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="logos cipo">
-        <div class="name">Logos 100.3</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://server4.hostradios.com:7015/stream')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="creciendo cipo">
-        <div class="name">Creciendo 102.1</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://s2.radiosnethosting.com:9746/;')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="shofar cipo">
-        <div class="name">Shofar 102.3</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://streaming2.locucionar.com/proxy/radioshofar?mp=/stream')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="comahue lu19 cipo">
-        <div class="name">Comahue 102.9</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://sonic.host-live.com/8064/stream')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="azul cipo">
-        <div class="name">Azul 103.1</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://sonic.host-live.com/8484/;')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="cielos cipo">
-        <div class="name">Cielos Abiertos 104.5</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'http://icecast.hostingbahia.com.ar:8002/live')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="master cipo">
-        <div class="name">Master 105.5</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://argentina.republicahosting.com:2055/live')">▶ Escuchar</button>
-    </div>
-<div class="card" data-provincia="rionegro" data-name="puerto argentino cipo">
-        <div class="name">Puerto Argentino 105.9</div>
-        <div class="city">Cipolletti</div>
-        <button class="play" onclick="playRadio(this, 'https://server4.hostradios.com:7012/stream')">▶ Escuchar</button>
-    </div>
     </div>
 
 <div class="footer">
@@ -509,28 +418,21 @@
     const player = document.getElementById("player");
     const now = document.getElementById("nowPlaying");
 
-    if (navigator.userAgent.match(/Android TV|SmartTV|GoogleTV/i)) {
+    // DETECTA SI ES TV PARA OCULTAR COMPARTIR
+    if (navigator.userAgent.match(/Android TV|SmartTV|GoogleTV|HbbTV|Box/i)) {
         document.body.classList.add("tv-mode");
     }
 
     function playRadio(btn, url) {
-        // 1. Limpiar todos los botones antes de activar el nuevo
         document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-        document.querySelectorAll(".play").forEach(p => {
-            p.classList.remove("on");
-            p.innerText = "▶ Escuchar";
-        });
+        document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
 
-        // 2. Ejecutar el streaming
         player.src = url;
         player.play();
 
-        // 3. Activar el estilo "Blanco" en el botón actual
         btn.parentElement.classList.add("active");
         btn.classList.add("on");
         btn.innerText = "⏸️ Sonando...";
-        
-        // 4. Actualizar barra de estado
         now.innerText = "🎧 " + btn.parentElement.querySelector(".name").innerText;
     }
 
@@ -546,8 +448,31 @@
             c.style.display = (p === 'todas' || c.getAttribute('data-provincia') === p) ? 'block' : 'none';
         });
     }
+
+    // FUNCIÓN PARA COMPARTIR POR WHATSAPP
+    function compartir(id, nombre) {
+        const url = window.location.origin + window.location.pathname + '?radio=' + id;
+        const msg = encodeURIComponent("📻 Escuchá " + nombre + " en Radios Patagónicas: " + url);
+        window.open("https://api.whatsapp.com/send?text=" + msg, "_blank");
+    }
+
+    // GPS para abrir la radio directamente si alguien recibe el link
+    window.onload = () => {
+        const params = new URLSearchParams(window.location.search);
+        const radioId = params.get('radio');
+        if (radioId) {
+            const card = document.getElementById(radioId);
+            if (card) {
+                setTimeout(() => {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.classList.add("active");
+                }, 600);
+            }
+        }
+    }
 </script>
 </body>
 </html>
+        
     
        
