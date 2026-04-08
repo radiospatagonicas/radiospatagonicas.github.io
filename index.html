@@ -893,12 +893,12 @@
     <div class="share-link" onclick="compartir('classic', 'classic 96.5 las grutas')">🔗 Compartir</div>
  </div>
 
-<div class="radio-card">
-    <h3>Desert Tracks 98.7</h3>
-    <p>Las Grutas</p>
-    <button onclick="window.open('http://www.deserttracksradio.com.ar/', '_blank')">▶ Escuchar Externo</button>
-    <button onclick="compartir('Radio Desert Tracks 98.7')">🔗 Compartir</button>
-</div>
+<div class="card" id="dtradio" data-provincia="rionegro" data-name="desert tracks 98.7 las grutas">
+    <div class="name">Desert Tracks 98.7</div>
+    <div class="city">Las Grutas</div>  
+    <button class="play" onclick="playRadio(this, 'http://streaming1.locucionar.com:14747/stream')">▶ Escuchar</button>
+    <div class="share-link" onclick="compartir('dtradio', 'desert tracks 98.7 las grutas')">🔗 Compartir</div>
+ </div>
 
 <div class="card" id="san antonio" data-provincia="rionegro" data-name="san antonio 97.7 las grutas, 99.5 san antonio oeste">
     <div class="name">San Antonio 97.7 y 99.5</div>
@@ -1127,8 +1127,20 @@
     <button class="play" onclick="playRadio(this, 'https://transmision-lu14.santacruz.gob.ar/lu14.mp3')">▶ Escuchar</button>
     <div class="share-link" onclick="compartir('lu14', 'lu 14 provincia santa cruz río gallegos')">🔗 Compartir</div>
 </div>
+    
+<div class="card" id="nacional" data-provincia="tdf" data-name="lra 10 nacional am 780 ushuaia">
+    <div class="name">LRA10 Nacional Ushuaia AM 780</div>
+    <div class="city">Tierra del Fuego</div>  
+    <button class="play" onclick="playRadio(this, 'https://sa.mp3.icecast.magma.edge-access.net/sc_rad10')">▶ Escuchar</button>
+    <div class="share-link" onclick="compartir('nacional', 'lra 10 nacional am 780 ushuaia')">🔗 Compartir</div>
+ </div>
 
-
+ <div class="card" id="publica" data-provincia="tdf" data-name="radio publica fueguina 103.1 ushuaia">
+    <div class="name">Radio Pública Fueguina 103.1</div>
+    <div class="city">Tierra del Fuego</div>  
+    <button class="play" onclick="playRadio(this, 'https://streaming6.locucionar.com:24074/stream')">▶ Escuchar</button>
+    <div class="share-link" onclick="compartir('publica', 'radio publica fueguina 103.1 ushuaia')">🔗 Compartir</div>
+ </div> 
     
 </div>
 
