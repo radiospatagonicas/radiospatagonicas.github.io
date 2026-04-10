@@ -1679,97 +1679,39 @@
 </footer>
 
 <script>
-  const player = document.getElementById("player");
-    const now = document.getElementById("nowPlaying");
-
-    // Modo TV
-    if (navigator.userAgent.match(/Android TV|SmartTV|GoogleTV|HbbTV|Box/i)) {
-        document.body.classList.add("tv-mode");
-    }
-
-    // Función principal del reproductor
-    function playRadio(btn, url) {
-        if (player.src === url && !player.paused) {
-            player.pause();
-            btn.classList.remove("on");
-            btn.innerText = "▶ Escuchar";
-            now.innerText = "⏸️ Pausado";
-            btn.parentElement.classList.remove("active");
-            return;
-        }
-
-        document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-        document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
-
-        player.src = url;
-        player.play();
-
-        btn.parentElement.classList.add("active");
-        btn.classList.add("on");
-        btn.innerText = "⏸️ Sonando...";
-        now.innerText = "🎧 " + btn.parentElement.querySelector(".name").innerText;
-    }
-
-    // Buscador general (Corregido para ser más robusto)
-    function buscarRadio() {
-        let input = document.getElementById("searchInput").value.toLowerCase().trim();
-        let cards = document.querySelectorAll(".card");
-        
-        cards.forEach(card => {
-            let info = card.getAttribute("data-name") || "";
-            if (info.toLowerCase().includes(input)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
-    }
-
-    // Filtro por botones de provincia
-    function filtrarProvincia(p) {
-        document.getElementById("searchInput").value = ""; 
-        document.querySelectorAll(".card").forEach(c => {
-            if (p === 'todas' || c.getAttribute('data-provincia') === p) {
-                c.style.display = 'block';
-            } else {
-                c.style.display = 'none';
-            }
-        });
-    }
-
-    // Función compartir (con ?zona= para grupos)
-    function compartir(id, nombre) {
-        const url = window.location.origin + window.location.pathname + '?radio=' + id;
-        const msg = encodeURIComponent("📻 Escuchá " + nombre + " en Radios Patagónicas: " + url);
-        window.open("https://api.whatsapp.com/send?text=" + msg, "_blank");
-    }
-
-    // LA SOLUCIÓN AL ENLACE EXTERNO
+// LA SOLUCIÓN AL ENLACE EXTERNO (Versión Reforzada)
     window.addEventListener('load', () => {
         const params = new URLSearchParams(window.location.search);
         
         // Prioridad 1: Buscar por ZONA (ej: ?zona=linea sur)
-        const zona = params.get('zona');
+        let zona = params.get('zona');
         if (zona) {
+            // decodeURIComponent limpia los %20 y los convierte en espacios reales
+            zona = decodeURIComponent(zona); 
+            
             const inputBusca = document.getElementById("searchInput");
-            inputBusca.value = zona;
-            // Ejecutamos la búsqueda con un mínimo retraso para que GitHub termine de renderizar
-            setTimeout(() => {
-                buscarRadio();
-                window.scrollTo({ top: inputBusca.offsetTop - 100, behavior: 'smooth' });
-            }, 500);
+            if (inputBusca) {
+                inputBusca.value = zona;
+                
+                // Un pequeño delay para que GitHub/Blogspot cargue todas las cards
+                setTimeout(() => {
+                    buscarRadio(); 
+                    // Scroll suave hasta el buscador para que el usuario vea que filtró
+                    window.scrollTo({ top: inputBusca.offsetTop - 50, behavior: 'smooth' });
+                }, 300);
+            }
         }
 
         // Prioridad 2: Buscar radio individual (ej: ?radio=nativa)
         const radioId = params.get('radio');
         if (radioId) {
-            const card = document.getElementById(radioId);
-            if (card) {
-                setTimeout(() => {
+            setTimeout(() => {
+                const card = document.getElementById(radioId);
+                if (card) {
                     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     card.classList.add("active");
-                }, 800);
-            }
+                }
+            }, 600);
         }
     });
 </script>
