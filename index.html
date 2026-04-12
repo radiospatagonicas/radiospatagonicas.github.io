@@ -177,7 +177,7 @@
         <div class="share-link">Compartir</div>
     </div>
 </div>
-JavaScript para abrir/cerrar
+
     
     <div class="card" id="am550" data-provincia="neuquen" data-name="am 550 la primera nqn">
         <div class="name">LRG 206 AM 550</div>
@@ -2392,6 +2392,15 @@ JavaScript para abrir/cerrar
 </footer>
 
 <script>
+  function toggleInfo(btn) {
+    const info = btn.nextElementSibling;
+
+    info.classList.toggle("open");
+
+    btn.innerText = info.classList.contains("open")
+        ? "Ocultar info"
+        : "Más info";
+}  
 const player = document.getElementById("player");
     const now = document.getElementById("nowPlaying");
 
