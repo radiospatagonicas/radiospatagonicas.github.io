@@ -2568,9 +2568,7 @@ function compartir(id,nombre){
 
 function toggleInfo(btn){
     btn.nextElementSibling.classList.toggle("open");
-}
-</script>
-player.addEventListener("pause", () => {
+    player.addEventListener("pause", () => {
     document.querySelectorAll(".play").forEach(p=>{
         p.classList.remove("on");
         p.innerText = "▶ Escuchar";
@@ -2582,5 +2580,8 @@ player.addEventListener("pause", () => {
 
     now.innerText = "⏸️ Reproducción pausada";
 });
+}
+</script>
+
 </body>
 </html>
