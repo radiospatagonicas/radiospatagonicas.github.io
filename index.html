@@ -8,7 +8,7 @@
 <style>
 body{
     margin:0;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
     background:#0a0a0a;
     color:#eee;
 }
@@ -53,6 +53,25 @@ header{
 
 audio{
     width:100%;
+}
+
+/* PUBLICIDAD */
+.ads-container{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    width:90%;
+    margin:15px auto;
+}
+
+.ad-box{
+    background:#161616;
+    padding:15px;
+    border-radius:8px;
+    border:1px dashed #333;
+    text-align:center;
+    color:#555;
+    font-size:12px;
 }
 
 /* FILTROS */
@@ -131,7 +150,7 @@ audio{
     text-transform:uppercase;
 }
 
-/* BOTON PLAY */
+/* PLAY */
 .play{
     width:100%;
     padding:15px;
@@ -176,13 +195,13 @@ audio{
 
 /* INFO EXTRA */
 .extra-info{
+    display:none;
     margin-top:14px;
     padding-top:14px;
     border-top:1px solid #222;
     font-size:12px;
     color:#666;
     line-height:1.6;
-    display:none;
 }
 
 .extra-info.open{
@@ -208,115 +227,20 @@ audio{
     border-top:1px solid #111;
     margin-top:30px;
 }
-</style>
-</head>
-<body>
 
-<header>
-    <img src="logo.png" class="logo-principal" alt="Radios Patagónicas">
-</header>
-
-<div class="player-container">
-    <div class="now" id="nowPlaying">🎧 Seleccioná una radio para escuchar</div>
-    <div class="player">
-        <audio id="player" controls autoplay></audio>
-    </div>
-</div>
-
-<div class="filters">
-    <button onclick="filtrarProvincia('todas')">Todas</button>
-    <button onclick="filtrarProvincia('rionegro')">Río Negro</button>
-    <button onclick="filtrarProvincia('neuquen')">Neuquén</button>
-    <button onclick="filtrarProvincia('chubut')">Chubut</button>
-</div>
-
-<div class="search">
-    <input type="text" id="searchInput" onkeyup="buscarRadio()" placeholder="Buscar radio, ciudad o frecuencia...">
-</div>
-
-<div class="grid" id="radioGrid">
-
-    <!-- EJEMPLO DE TARJETA -->
-    <div class="card" id="lu5" data-provincia="neuquen" data-name="lu5 radio neuquen am600">
-        <div class="name">LU 5 AM 600</div>
-        <div class="city">Neuquén</div>
-
-        <button class="play" onclick="playRadio(this,'URL_STREAM_ACA')">
-            ▶ Escuchar
-        </button>
-
-        <div class="card-links">
-            <div class="mini-btn" onclick="compartir('lu5','LU 5 AM 600')">🔗 Compartir</div>
-            <a href="https://wa.me/5492990000000" target="_blank" class="mini-btn whatsapp">WhatsApp</a>
-        </div>
-
-        <button class="more-btn" onclick="toggleInfo(this)">Más info</button>
-
-        <div class="extra-info">
-            Histórica emisora neuquina.<br>
-            Formato: Noticias / Actualidad
-        </div>
-    </div>
-
-</div>
-
-<footer class="footer">
-    © 2026 Radios Patagónicas - El portal del dial regional.
-</footer>
-
-<script>
-const player=document.getElementById("player");
-const now=document.getElementById("nowPlaying");
-
-function playRadio(btn,url){
-    document.querySelectorAll(".play").forEach(b=>{
-        b.classList.remove("on");
-        b.innerText="▶ Escuchar";
-    });
-
-    document.querySelectorAll(".card").forEach(c=>{
-        c.classList.remove("active");
-    });
-
-    player.src=url;
-    player.play();
-
-    btn.classList.add("on");
-    btn.innerText="⏸️ Sonando...";
-    btn.parentElement.classList.add("active");
-
-    now.innerText="🎧 "+btn.parentElement.querySelector(".name").innerText;
+.btn-contacto{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 18px;
+    background:#222;
+    color:#eee;
+    text-decoration:none;
+    border-radius:8px;
+    border:1px solid #333;
 }
 
-function buscarRadio(){
-    let input=document.getElementById("searchInput").value.toLowerCase();
-    document.querySelectorAll(".card").forEach(card=>{
-        let texto=card.getAttribute("data-name").toLowerCase();
-        card.style.display=texto.includes(input) ? "block" : "none";
-    });
-}
-
-function filtrarProvincia(prov){
-    document.querySelectorAll(".card").forEach(card=>{
-        card.style.display=(prov==="todas" || card.dataset.provincia===prov)
-            ? "block"
-            : "none";
-    });
-}
-
-function compartir(id,nombre){
-    const url=window.location.origin+window.location.pathname+"?radio="+id;
-    const msg=encodeURIComponent("📻 Escuchá "+nombre+" en Radios Patagónicas: "+url);
-    window.open("https://api.whatsapp.com/send?text="+msg,"_blank");
-}
-
-function toggleInfo(btn){
-    const info=btn.nextElementSibling;
-    info.classList.toggle("open");
-
-    btn.innerText=info.classList.contains("open")
-        ? "Ocultar info"
-        : "Más info";
+.btn-contacto:hover{
+    background:#0077ff;
 }
 </style>
 </head>
@@ -333,6 +257,11 @@ function toggleInfo(btn){
     </div>
 </div>
 
+<div class="ads-container">
+    <div class="ad-box">📢 ESPACIO PUBLICITARIO 1</div>
+    <div class="ad-box">📢 ESPACIO PUBLICITARIO 2</div>
+</div>
+
 <div class="filters">
     <button onclick="filtrarProvincia('todas')">Todas</button>
     <button onclick="filtrarProvincia('rionegro')">Río Negro</button>
@@ -346,28 +275,28 @@ function toggleInfo(btn){
 
 <div class="grid" id="radioGrid">
 
-    <!-- EJEMPLO DE TARJETA -->
-    <div class="card" id="lu5" data-provincia="neuquen" data-name="lu5 radio neuquen am600">
-        <div class="name">LU 5 AM 600</div>
+    <!-- EJEMPLO TARJETA -->
+    <div class="card" id="am550" data-provincia="neuquen" data-name="am 550 la primera neuquen">
+        <div class="name">AM 550 La Primera</div>
         <div class="city">Neuquén</div>
 
-        <button class="play" onclick="playRadio(this,'URL_STREAM_ACA')">
+        <button class="play" onclick="playRadio(this,'https://TU-STREAM-AQUI')">
             ▶ Escuchar
         </button>
 
         <div class="card-links">
-            <div class="mini-btn" onclick="compartir('lu5','LU 5 AM 600')">🔗 Compartir</div>
-            <a href="https://wa.me/5492990000000" target="_blank" class="mini-btn whatsapp">WhatsApp</a>
+            <div class="mini-btn" onclick="compartir('am550','AM 550 La Primera')">🔗 Compartir</div>
+            <a class="mini-btn whatsapp" href="https://wa.me/5492990000000" target="_blank">💬 WhatsApp</a>
         </div>
 
         <button class="more-btn" onclick="toggleInfo(this)">Más info</button>
 
         <div class="extra-info">
-            Histórica emisora neuquina.<br>
-            Formato: Noticias / Actualidad
+            Formato: Noticias / Actualidad<br>
+            Frecuencia real: 550 AM<br>
+            Cobertura: Alto Valle
         </div>
     </div>
-
    <div class="card" id="lu19" data-provincia="rionegro" data-name="lu19 la voz del comahue cipo">  
       <div class="name">LU 19 AM 690</div>  
       <div class="city">Cipolletti</div>   
@@ -2556,33 +2485,39 @@ function toggleInfo(btn){
         <div class="share-link" onclick="compartir('publica', 'radio publica fueguina 103.1 ushuaia')">🔗 Compartir</div>
     </div> 
 
-    </div>
-
-</div>
+   </div>
 
 <footer class="footer">
-    © 2026 Radios Patagónicas - El portal del dial regional.
+    <p>© 2026 Radios Patagónicas - El portal del dial regional.</p>
+
+    <a href="mailto:radiospatagonicas@gmail.com" class="btn-contacto">
+        📧 Agregá tu emisora
+    </a>
+
+    <br>
+
+    <a href="https://www.facebook.com/radiospatagonicas" target="_blank" class="btn-contacto">
+        Facebook
+    </a>
 </footer>
 
 <script>
-const player=document.getElementById("player");
-const now=document.getElementById("nowPlaying");
+const player = document.getElementById("player");
+const now = document.getElementById("nowPlaying");
 
 function playRadio(btn,url){
-    document.querySelectorAll(".play").forEach(b=>{
-        b.classList.remove("on");
-        b.innerText="▶ Escuchar";
+    document.querySelectorAll(".play").forEach(p=>{
+        p.classList.remove("on");
+        p.innerText="▶ Escuchar";
     });
 
-    document.querySelectorAll(".card").forEach(c=>{
-        c.classList.remove("active");
-    });
+    document.querySelectorAll(".card").forEach(c=>c.classList.remove("active"));
 
     player.src=url;
     player.play();
 
     btn.classList.add("on");
-    btn.innerText="⏸️ Sonando...";
+    btn.innerText="⏸ Sonando...";
     btn.parentElement.classList.add("active");
 
     now.innerText="🎧 "+btn.parentElement.querySelector(".name").innerText;
@@ -2591,8 +2526,8 @@ function playRadio(btn,url){
 function buscarRadio(){
     let input=document.getElementById("searchInput").value.toLowerCase();
     document.querySelectorAll(".card").forEach(card=>{
-        let texto=card.getAttribute("data-name").toLowerCase();
-        card.style.display=texto.includes(input) ? "block" : "none";
+        let name=card.dataset.name.toLowerCase();
+        card.style.display=name.includes(input) ? "block" : "none";
     });
 }
 
@@ -2606,17 +2541,15 @@ function filtrarProvincia(prov){
 
 function compartir(id,nombre){
     const url=window.location.origin+window.location.pathname+"?radio="+id;
-    const msg=encodeURIComponent("📻 Escuchá "+nombre+" en Radios Patagónicas: "+url);
-    window.open("https://api.whatsapp.com/send?text="+msg,"_blank");
+    window.open(
+        "https://api.whatsapp.com/send?text="+
+        encodeURIComponent("📻 Escuchá "+nombre+" en Radios Patagónicas: "+url),
+        "_blank"
+    );
 }
 
 function toggleInfo(btn){
-    const info=btn.nextElementSibling;
-    info.classList.toggle("open");
-
-    btn.innerText=info.classList.contains("open")
-        ? "Ocultar info"
-        : "Más info";
+    btn.nextElementSibling.classList.toggle("open");
 }
 </script>
 
