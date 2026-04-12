@@ -86,12 +86,32 @@
         <div class="share-link" onclick="compartir('am550', 'AM 550 La Primera')">🔗 Compartir</div>
     </div>
    
-    <div class="card" id="lu5" data-provincia="neuquen" data-name="lu 5 radio neuquen">
-        <div class="name">LU 5 AM 600</div>  
-        <div class="city">Neuquén</div>  
-        <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5?type=.mp3&_=1')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartir('lu5', 'lu 5 radio neuquen')">🔗 Compartir</div>
+   <div class="card" id="lu5" data-provincia="neuquen" data-name="lu 5 radio neuquen">
+
+    <div class="name">LU 5 AM 600</div>
+    <div class="city">Neuquén</div>
+
+    <div class="meta">
+        <span class="badge aire">📡 Aire</span>
+        <span class="badge stream">🌐 Stream</span>
+        <span class="badge local">🎙 Local</span>
     </div>
+
+    <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5?type=.mp3&_=1')">
+        ▶ Escuchar
+    </button>
+
+    <div class="card-links">
+        <a class="mini-btn whatsapp" href="https://wa.me/5492991234567" target="_blank">WhatsApp</a>
+        <a class="mini-btn share" onclick="compartir('lu5', 'LU 5 AM 600')">Compartir</a>
+    </div>
+
+    <div class="extra-info">
+        Informativa / Noticias / Programación local
+    </div>
+
+</div>
+
     
    <div class="card" id="lu18" data-provincia="rionegro" data-name="lu18 el valle roca">  
        <div class="name">LU 18 AM 640</div>  
@@ -1012,6 +1032,13 @@
     <div class="share-link" onclick="compartir('urbana', 'urbana 87.9 valle medio')">🔗 Compartir</div> 
  </div>   
 
+<div class="card" id="belisle" data-provincia="rionegro" data-name="emisora belisle 87.9 valle medio">
+    <div class="name">Emisora Belisle 87.9</div> 
+    <div class="city">Coronel Belisle</div> 
+    <button class="play" onclick="playRadio(this, '')">▶ Escuchar</button>
+    <div class="share-link" onclick="compartir('urbana', 'urbana 87.9 valle medio')">🔗 Compartir</div> 
+ </div>   
+    
  <div class="card" id="maria-choele" data-provincia="rionegro" data-name="radio maria 89.3 valle medio">
     <div class="name">Radio María 89.3</div> 
     <div class="city">Choele Choel</div> 
