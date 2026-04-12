@@ -40,6 +40,61 @@
         .footer { text-align:center; padding:60px 20px; font-size:13px; color:#666; margin-top: auto; border-top: 1px solid #111; background: #0d0d0d; }
         .btn-contacto { display: inline-block; margin-top: 15px; padding: 10px 20px; background: #222; color: #eee; text-decoration: none; border-radius: 8px; border: 1px solid #333; transition: 0.3s; }
         .btn-contacto:hover { background: #0077ff; border-color: #0077ff; color: #fff; }
+         .meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    justify-content:center;
+    margin-bottom:14px;
+}
+
+.badge{
+    font-size:10px;
+    padding:4px 8px;
+    border-radius:20px;
+    background:#222;
+    border:1px solid #333;
+    color:#aaa;
+}
+
+.badge.stream{ color:#00d084; border-color:#00d08433; }
+.badge.aire{ color:#4dabff; border-color:#4dabff33; }
+.badge.local{ color:#f59f00; border-color:#f59f0033; }
+
+.card-links{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.mini-btn{
+    font-size:11px;
+    padding:6px 10px;
+    border-radius:10px;
+    text-decoration:none;
+    cursor:pointer;
+    border:1px solid #333;
+    background:#1d1d1d;
+    color:#ddd;
+}
+
+.mini-btn.whatsapp{
+    background:#25D36622;
+    border-color:#25D36655;
+    color:#25D366;
+}
+
+.mini-btn.share{
+    color:#00ffcc;
+}
+
+.extra-info{
+    font-size:11px;
+    color:#666;
+    margin-top:10px;
+}
     </style>
 </head>
 <body>
@@ -86,33 +141,6 @@
         <div class="share-link" onclick="compartir('am550', 'AM 550 La Primera')">🔗 Compartir</div>
     </div>
    
-   <div class="card" id="lu5" data-provincia="neuquen" data-name="lu 5 radio neuquen">
-
-    <div class="name">LU 5 AM 600</div>
-    <div class="city">Neuquén</div>
-
-    <div class="meta">
-        <span class="badge aire">📡 Aire</span>
-        <span class="badge stream">🌐 Stream</span>
-        <span class="badge local">🎙 Local</span>
-    </div>
-
-    <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5?type=.mp3&_=1')">
-        ▶ Escuchar
-    </button>
-
-    <div class="card-links">
-        <a class="mini-btn whatsapp" href="https://wa.me/5492991234567" target="_blank">WhatsApp</a>
-        <a class="mini-btn share" onclick="compartir('lu5', 'LU 5 AM 600')">Compartir</a>
-    </div>
-
-    <div class="extra-info">
-        Informativa / Noticias / Programación local
-    </div>
-
-</div>
-
-    
    <div class="card" id="lu18" data-provincia="rionegro" data-name="lu18 el valle roca">  
        <div class="name">LU 18 AM 640</div>  
        <div class="city">General Roca</div>   
