@@ -2570,6 +2570,17 @@ function toggleInfo(btn){
     btn.nextElementSibling.classList.toggle("open");
 }
 </script>
+player.addEventListener("pause", () => {
+    document.querySelectorAll(".play").forEach(p=>{
+        p.classList.remove("on");
+        p.innerText = "▶ Escuchar";
+    });
 
+    document.querySelectorAll(".card").forEach(c=>{
+        c.classList.remove("active");
+    });
+
+    now.innerText = "⏸️ Reproducción pausada";
+});
 </body>
 </html>
