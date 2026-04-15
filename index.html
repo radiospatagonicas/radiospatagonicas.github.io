@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radios Patagónicas</title>
+    <title>Radios Patagónicas | Directorio</title>
     <style>
+        /* CONFIGURACIÓN BASE */
         body { 
             margin: 0; 
             padding: 0;
@@ -13,20 +14,16 @@
             color: white;
         }
 
+        /* HEADER ESTILO LOGO */
         header { 
             text-align: center; 
-            padding: 60px 20px; 
+            padding: 50px 20px; 
             background: #111; 
             border-bottom: 4px solid #0077ff; 
         }
 
-        /* ESTE ES TU NUEVO LOGO DE TEXTO */
-        .logo-contenedor {
-            display: inline-block;
-        }
-
         .logo-texto {
-            font-size: 40px;
+            font-size: 36px;
             font-weight: 900;
             color: #ffffff;
             letter-spacing: 2px;
@@ -38,24 +35,73 @@
             gap: 15px;
         }
 
-        .detalle {
-            color: #0077ff; /* El azul que identifica a la radio */
-            font-size: 50px;
-            line-height: 0;
-        }
+        .detalle { color: #0077ff; font-size: 45px; }
 
         .subtitulo {
             color: #888;
-            font-size: 14px;
+            font-size: 12px;
             letter-spacing: 5px;
             margin-top: 10px;
             display: block;
         }
 
-        /* Para que en el celu no se rompa */
+        /* LA GRILLA (Esto evita que se superpongan) */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; 
+            padding: 30px; 
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ESTILO DE CADA TARJETA */
+        .card { 
+            background: #161616; 
+            padding: 25px; 
+            border-radius: 20px; 
+            text-align: center; 
+            border: 1px solid #222;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #0077ff;
+        }
+
+        .name { font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #fff; }
+        .city { font-size: 13px; color: #888; margin-bottom: 20px; text-transform: uppercase; }
+
+        /* BOTÓN DE PLAY */
+        button.play { 
+            width: 100%; 
+            padding: 12px; 
+            border: none; 
+            border-radius: 12px; 
+            background: #0077ff; 
+            color: white; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        button.play:hover { background: #005fcc; }
+
+        .share-link { 
+            margin-top: 15px; 
+            font-size: 11px; 
+            color: #555; 
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* ADAPTACIÓN A MÓVILES */
         @media (max-width: 600px) {
-            .logo-texto { font-size: 24px; }
-            .detalle { font-size: 30px; }
+            .logo-texto { font-size: 22px; }
+            .detalle { font-size: 28px; }
+            .grid { padding: 15px; }
         }
     </style>
 </head>
@@ -74,22 +120,52 @@
 
 <div class="grid" id="radioGrid">
     
-    <div class="card" data-provincia="rionegro">
+    <div class="card">
         <div class="name">LU 18 AM 640</div>
         <div class="city">General Roca, RN</div>
-        <button class="play" onclick="playRadio(this, 'https://streamingraddios.online/proxy/valle?mp=/;')">▶ ESCUCHAR</button>
-        <div class="share-link">🔗 COMPARTIR</div>
+        <button class="play" onclick="playRadio('https://streamingraddios.online/proxy/valle?mp=/;')">▶ ESCUCHAR</button>
     </div>
 
-    <div class="card" data-provincia="rionegro">
+    <div class="card">
         <div class="name">LU 19 AM 690</div>
         <div class="city">Cipolletti, RN</div>
-        <button class="play" onclick="playRadio(this, 'https://sonic.host-live.com/8064/stream')">▶ ESCUCHAR</button>
-        <div class="share-link">🔗 COMPARTIR</div>
+        <button class="play" onclick="playRadio('https://sonic.host-live.com/8064/stream')">▶ ESCUCHAR</button>
     </div>
 
+    <div class="card">
+        <div class="name">La Carretera AM 740</div>
+        <div class="city">Allen, RN</div>
+        <button class="play" onclick="playRadio('https://streaming3.locucionar.com/proxy/lacarretera740?mp=/stream:17584')">▶ ESCUCHAR</button>
+    </div>
+
+    <div class="card">
+        <div class="name">LU 5 AM 600</div>
+        <div class="city">Neuquén, NQN</div>
+        <button class="play" onclick="playRadio('https://live.lu5am.com:8443/LU5?type=.mp3&_=1')">▶ ESCUCHAR</button>
+    </div>
+
+    <div class="card">
+        <div class="name">Radio Total 89.5</div>
+        <div class="city">General Roca, RN</div>
+        <button class="play" onclick="playRadio('https://sonicpanel.hostradios.com/10060/stream')">▶ ESCUCHAR</button>
+    </div>
 
 </div>
+
+<audio id="audioPlayer"></audio>
+
+<script>
+    const player = document.getElementById('audioPlayer');
+
+    function playRadio(url) {
+        if (player.src === url && !player.paused) {
+            player.pause();
+        } else {
+            player.src = url;
+            player.play();
+        }
+    }
+</script>
 
 </body>
 </html>
