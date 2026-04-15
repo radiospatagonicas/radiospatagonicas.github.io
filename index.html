@@ -5,76 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📻 Radios Patagónicas</title>
     <style>
-        /* FONDO NEGRO Y CONFIGURACIÓN GENERAL */
-        body { 
-            margin:0; 
-            font-family: 'Inter', sans-serif; 
-            background: #0a0a0a !important; /* Forzamos el fondo negro */
-            color: #eee; 
-            display: flex; 
-            flex-direction: column; 
-            min-height: 100vh; 
-        }
-
-        /* HEADER Y LOGO */
-        header { 
-            text-align: center; 
-            padding: 40px 20px; 
-            background: #111; 
-            border-bottom: 2px solid #0077ff; 
-        }
-
-        .logo-principal { 
+       .logo-principal {
             width: 80%; /* Ocupa el 80% del ancho en celulares */
-            max-width: 320px; /* Tamaño máximo en PC */
-            height: auto !important; 
-            display: block; 
+            max-width: 300px; /* Tamaño máximo en PC */
+            height: auto !important;
+            display: block;
             margin: 0 auto;
-            /* Si el logo es negro, esto le dará un resplandor para que se vea en fondo oscuro */
-            filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.3)); 
-        }
 
-        /* DISEÑO DE TARJETAS */
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 15px; 
-            padding: 20px; 
-        }
-
-        .card { 
-            background: #161616; 
-            padding: 22px; 
-            border-radius: 18px; 
-            text-align: center; 
-            border: 1px solid #222; 
-        }
-
-        .name { font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 5px; }
-        .city { font-size: 12px; color: #888; text-transform: uppercase; margin-bottom: 15px; }
-
-        button.play { 
-            width: 100%; 
-            padding: 15px; 
-            border: none; 
-            border-radius: 12px; 
-            background: #0077ff; 
-            color: white; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: 16px;
-        }
-
-        .share-link { 
-            display: inline-block; 
-            margin-top: 15px; 
-            font-size: 12px; 
-            color: #00ffcc; 
-            cursor: pointer; 
-            text-decoration: none; 
-            border: 1px solid #333; 
-            padding: 5px 10px; 
-            border-radius: 10px; 
+            /* --- TRUCO MÁGICO --- */
+            /* 1. Invertimos los colores (Negro -> Blanco) */
+            filter: invert(1) brightness(2); 
+            
+            /* 2. Le agregamos un contorno/resplandor blanco suave */
+            filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.6));
         }
     </style>
 </head>
