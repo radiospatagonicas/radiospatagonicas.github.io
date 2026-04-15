@@ -26,9 +26,34 @@
 </head>
 <body>
 
-<header>
-    <img src="logoblanco.png" alt="Radios Patagónicas" class="logo-principal">
-</header>
+header { 
+            text-align: center; 
+            padding: 50px 20px; 
+            background: #111 !important; /* Forzamos el fondo oscuro */
+            border-bottom: 3px solid #0077ff; 
+        }
+
+        .logo-texto {
+            font-family: 'Arial Black', Gadget, sans-serif; /* Una fuente gruesa y fuerte */
+            font-size: 2.5rem; /* Tamaño grande */
+            letter-spacing: -1px; /* Letras un poco más juntas para que parezca logo */
+            color: #ffffff;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #0077ff; /* Sombra azul para que resalte */
+        }
+
+        .detalle {
+            color: #0077ff; /* El detalle de color al inicio y final */
+            font-weight: bold;
+            font-size: 3rem;
+            vertical-align: middle;
+        }
+
+        /* En el celular se adapta el tamaño */
+        @media (max-width: 600px) {
+            .logo-texto { font-size: 1.5rem; }
+            .detalle { font-size: 1.8rem; }
+        }
 
 <div class="grid" id="radioGrid">
     <div class="card" data-provincia="rionegro">
