@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radios Patagónicas | Directorio Profesional</title>
+    <title>Radios Patagónicas | Directorio</title>
     <style>
         :root { --azul: #0077ff; --negro: #0a0a0a; --gris: #161616; }
         
@@ -23,7 +23,7 @@
         }
         .detalle { color: var(--azul); font-size: 45px; }
 
-        /* BUSCADOR Y FILTROS */
+        /* BUSCADOR Y CONTROLES */
         .controles { 
             padding: 20px; background: #1a1a1a; position: sticky; top: 0; z-index: 100;
             display: flex; flex-direction: column; align-items: center; gap: 15px;
@@ -32,44 +32,39 @@
             width: 90%; max-width: 500px; padding: 12px; border-radius: 25px;
             border: 2px solid var(--azul); background: #222; color: white; outline: none;
         }
-        .filtros { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .btn-filtro {
-            padding: 8px 15px; border-radius: 15px; border: 1px solid #444;
-            background: #222; color: #ccc; cursor: pointer; font-size: 13px;
-        }
-        .btn-filtro.active { background: var(--azul); color: white; border-color: var(--azul); }
 
-        /* GRILLA Y TARJETAS */
-        .main-container { display: flex; flex-direction: column; align-items: center; }
-        .publicidad { 
-            width: 90%; max-width: 970px; height: 90px; background: #222; 
-            margin: 20px 0; display: flex; align-items: center; justify-content: center;
-            color: #444; border: 1px dashed #444;
-        }
+        /* GRILLA */
         .grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 20px; padding: 20px; width: 100%; max-width: 1200px;
+            gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto;
         }
+
+        /* TARJETAS */
         .card { 
             background: var(--gris); padding: 25px; border-radius: 20px; 
             text-align: center; border: 1px solid #222; transition: 0.3s;
         }
         .card:hover { transform: translateY(-5px); border-color: var(--azul); }
-        .card.hidden { display: none; }
-        
         .name { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
-        .format { font-size: 11px; color: var(--azul); font-weight: bold; margin-bottom: 10px; }
-        .city { font-size: 12px; color: #888; margin-bottom: 15px; }
+        .city { font-size: 12px; color: #888; margin-bottom: 20px; }
 
         button.play { 
             width: 100%; padding: 12px; border: none; border-radius: 12px; 
             background: var(--azul); color: white; font-weight: bold; cursor: pointer;
         }
 
-        /* FOOTER REDES */
-        footer { padding: 40px; text-align: center; background: #111; margin-top: 40px; }
-        .redes { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
-        .redes a { color: #888; text-decoration: none; font-size: 14px; }
+        /* BOTÓN COMPARTIR */
+        .share-link { 
+            margin-top: 15px; font-size: 12px; color: #25d366; /* Color WhatsApp */
+            cursor: pointer; display: block; font-weight: bold;
+        }
+
+        /* OCULTAR EN SMART TV */
+        body.is-smart-tv .share-link {
+            display: none !important;
+        }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -81,81 +76,63 @@
 </header>
 
 <div class="controles">
-    <input type="text" id="buscador" placeholder="Buscar por radio, ciudad o estilo (ej: Rock)...">
-    <div class="filtros">
-        <button class="btn-filtro active" onclick="filtrarProvincia('todas', this)">Todas</button>
-        <button class="btn-filtro" onclick="filtrarProvincia('rionegro', this)">Río Negro</button>
-        <button class="btn-filtro" onclick="filtrarProvincia('neuquen', this)">Neuquén</button>
-        <button class="btn-filtro" onclick="filtrarProvincia('chubut', this)">Chubut</button>
-    </div>
+    <input type="text" id="buscador" placeholder="Buscar radio o ciudad...">
 </div>
 
-<div class="main-container">
-    <div class="publicidad">ESPACIO PUBLICITARIO</div>
-
-    <div class="grid" id="radioGrid">
-        <div class="card" data-provincia="rionegro" data-tags="rock 90 latino">
-            <div class="name">LU 18 AM 640</div>
-            <div class="format">ROCK 90S | NOTICIAS</div>
-            <div class="city">General Roca, RN</div>
-            <button class="play" onclick="playRadio('URL_STREAMING')">▶ ESCUCHAR</button>
-        </div>
-        
-        </div>
-
-    <div class="publicidad">ESPACIO PUBLICITARIO</div>
-</div>
-
-<footer>
-    <div class="redes">
-        <a href="#">FACEBOOK</a>
-        <a href="mailto:info@tusitio.com">CORREO</a>
-        <a href="#">WHATSAPP</a>
+<div class="grid" id="radioGrid">
+    
+    <div class="card" id="antena-libre" data-provincia="rionegro" data-name="antena libre 89.1 roca">
+        <div class="name">Antena Libre 89.1</div>
+        <div class="city">General Roca</div>  
+        <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">▶ Escuchar</button>
+        <div class="share-link" onclick="compartir('antena-libre', 'Antena Libre 89.1')">🔗 Compartir por WhatsApp</div>
     </div>
-    <p style="font-size: 10px; color: #444;">© 2026 Directorio de Radios Patagónicas</p>
-</footer>
+
+    </div>
 
 <audio id="audioPlayer"></audio>
 
 <script>
-    const player = document.getElementById('audioPlayer');
-    const cards = document.getElementsByClassName('card');
-
-    // BUSCADOR EN TIEMPO REAL
-    document.getElementById('buscador').addEventListener('input', function(e) {
-        const busqueda = e.target.value.toLowerCase();
-        Array.from(cards).forEach(card => {
-            const contenido = card.textContent.toLowerCase() + card.getAttribute('data-tags');
-            if(contenido.includes(busqueda)) {
-                card.classList.remove('hidden');
-            } else {
-                card.classList.add('hidden');
-            }
-        });
-    });
-
-    // FILTRO POR PROVINCIA
-    function filtrarProvincia(prov, btn) {
-        document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        Array.from(cards).forEach(card => {
-            if(prov === 'todas' || card.getAttribute('data-provincia') === prov) {
-                card.classList.remove('hidden');
-            } else {
-                card.classList.add('hidden');
-            }
-        });
+    // 1. DETECCIÓN DE SMART TV (Oculta compartir si detecta TV)
+    const ua = navigator.userAgent.toLowerCase();
+    const isTV = ua.includes("smart-tv") || ua.includes("smarttv") || ua.includes("googletv") || ua.includes("appletv") || ua.includes("hbbtv");
+    
+    if (isTV) {
+        document.body.classList.add('is-smart-tv');
     }
 
-    function playRadio(url) {
+    // 2. FUNCIÓN COMPARTIR (WhatsApp)
+    function compartir(id, nombre) {
+        const urlWeb = window.location.href.split('#')[0]; // URL de tu sitio
+        const texto = `¡Hola! Te comparto la radio ${nombre}. Escuchala acá en el Directorio de Radios Patagónicas: ${urlWeb}#${id}`;
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+
+    // 3. REPRODUCTOR
+    const player = document.getElementById('audioPlayer');
+    function playRadio(btn, url) {
         if (player.src === url && !player.paused) {
             player.pause();
+            btn.innerHTML = "▶ Escuchar";
         } else {
+            // Detener todos los botones si había alguno sonando
+            document.querySelectorAll('.play').forEach(b => b.innerHTML = "▶ Escuchar");
             player.src = url;
             player.play();
+            btn.innerHTML = "⏸ Pausar";
         }
     }
+
+    // 4. BUSCADOR
+    document.getElementById('buscador').addEventListener('input', function(e) {
+        const busqueda = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            const texto = card.innerText.toLowerCase();
+            card.classList.toggle('hidden', !texto.includes(busqueda));
+        });
+    });
 </script>
 
 </body>
