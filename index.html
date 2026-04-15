@@ -40,27 +40,62 @@
         .footer { text-align:center; padding:60px 20px; font-size:13px; color:#666; margin-top: auto; border-top: 1px solid #111; background: #0d0d0d; }
         .btn-contacto { display: inline-block; margin-top: 15px; padding: 10px 20px; background: #222; color: #eee; text-decoration: none; border-radius: 8px; border: 1px solid #333; transition: 0.3s; }
         .btn-contacto:hover { background: #0077ff; border-color: #0077ff; color: #fff; }
-         /* Estilos para la Ficha Profesional (Premium) */
+         /* --- Ficha Profesional (Premium) --- */
 .card.premium {
-    border: 2px solid #0077ff; /* Borde más grueso y azul */
+    border: 2px solid #0077ff; 
     background: linear-gradient(145deg, #1a1a1a, #111);
     position: relative;
     overflow: hidden;
+    padding-top: 20px;
 }
 
-/* Distintivo de Verificado */
-.card.premium::before {
-    content: "✓ VERIFICADA";
-    position: absolute;
-    top: 10px;
-    right: -25px;
-    background: #0077ff;
-    color: white;
-    font-size: 9px;
+/* Contenedor del Logo Circular */
+.radio-logo-container {
+    width: 85px; 
+    height: 85px;
+    margin: 0 auto 15px auto;
+    border-radius: 50%;
+    border: 2px solid #333;
+    background: #222;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.radio-logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+/* Botonera Premium (WhatsApp y Web) */
+.premium-tools {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.btn-extra {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 12px;
     font-weight: bold;
-    padding: 3px 30px;
-    transform: rotate(45deg);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: 0.3s;
+}
+
+.btn-whatsapp { background: #25d366; }
+.btn-web { background: #444; border: 1px solid #555; }
+
+.btn-extra:hover { transform: translateY(-2px); filter: brightness(1.1); }
 }
 
 /* Contenedor de botones extra */
