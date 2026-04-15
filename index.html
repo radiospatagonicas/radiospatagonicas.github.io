@@ -3,43 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radios Patagónicas</title>
+    <title>📻 Radios Patagónicas</title>
     <style>
-       .logo-principal {
-            /* Forzamos un ancho mínimo y máximo para que se luzca */
-            width: 70%; /* Se adapta al ancho de la pantalla del celular */
-            max-width: 280px; /* Pero no se hace gigante en una PC */
-            
-            /* Aseguramos que la altura sea automática para no deformar */
+        /* FONDO NEGRO Y CONFIGURACIÓN GENERAL */
+        body { 
+            margin:0; 
+            font-family: 'Inter', sans-serif; 
+            background: #0a0a0a !important; /* Forzamos el fondo negro */
+            color: #eee; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+        }
+
+        /* HEADER Y LOGO */
+        header { 
+            text-align: center; 
+            padding: 40px 20px; 
+            background: #111; 
+            border-bottom: 2px solid #0077ff; 
+        }
+
+        .logo-principal { 
+            width: 80%; /* Ocupa el 80% del ancho en celulares */
+            max-width: 320px; /* Tamaño máximo en PC */
             height: auto !important; 
-            
-            /* Centrado perfecto */
-            display: block;
+            display: block; 
             margin: 0 auto;
-            
-            /* Un poco de sombra para darle profundidad sobre el fondo negro */
-            filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.7));
-            
-            /* Evitamos cualquier borde o padding extra que la achique */
-            padding: 0;
-            border: none;
+            /* Si el logo es negro, esto le dará un resplandor para que se vea en fondo oscuro */
+            filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.3)); 
+        }
+
+        /* DISEÑO DE TARJETAS */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 15px; 
+            padding: 20px; 
+        }
+
+        .card { 
+            background: #161616; 
+            padding: 22px; 
+            border-radius: 18px; 
+            text-align: center; 
+            border: 1px solid #222; 
+        }
+
+        .name { font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 5px; }
+        .city { font-size: 12px; color: #888; text-transform: uppercase; margin-bottom: 15px; }
+
+        button.play { 
+            width: 100%; 
+            padding: 15px; 
+            border: none; 
+            border-radius: 12px; 
+            background: #0077ff; 
+            color: white; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 16px;
+        }
+
+        .share-link { 
+            display: inline-block; 
+            margin-top: 15px; 
+            font-size: 12px; 
+            color: #00ffcc; 
+            cursor: pointer; 
+            text-decoration: none; 
+            border: 1px solid #333; 
+            padding: 5px 10px; 
+            border-radius: 10px; 
         }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="https://raw.githubusercontent.com/patagonico888/radiospatagonicas/main/logoprin.png" alt="Radios Patagónicas" class="logo-principal">
+    <img src="logoprin.png" alt="Radios Patagónicas" class="logo-principal">
 </header>
 
-<div class="grid">
-    <div class="card">
-        <div class="radio-logo-container">
-            <img src="https://radioarg.net/storage/radios/7752/9874/conversions/lu18-radio-el-valle-am-640-lg.webp" class="radio-logo">
-        </div>
+<div class="grid" id="radioGrid">
+    <div class="card" data-provincia="rionegro">
         <div class="name">LU 18 AM 640</div>
         <div class="city">General Roca</div>
         <button class="play">▶ Escuchar</button>
+        <div class="share-link">🔗 Compartir</div>
     </div>
 </div>
 
