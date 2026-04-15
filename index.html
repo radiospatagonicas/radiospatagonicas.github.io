@@ -3,65 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📻 Radios Patagónicas</title>
+    <title>Radios Patagónicas</title>
     <style>
-       .logo-principal {
-            width: 80%;
-            max-width: 300px;
-            height: auto !important;
-            display: block;
-            margin: 0 auto;
-            /* Solo un resplandor sutil */
-            filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.2)); 
+        body { 
+            margin: 0; 
+            padding: 0;
+            background-color: #0a0a0a !important; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
         }
 
-            /* --- TRUCO MÁGICO --- */
-            /* 1. Invertimos los colores (Negro -> Blanco) */
-            filter: invert(1) brightness(2); 
-            
-            /* 2. Le agregamos un contorno/resplandor blanco suave */
-            filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.6));
+        header { 
+            text-align: center; 
+            padding: 60px 20px; 
+            background: #111; 
+            border-bottom: 4px solid #0077ff; 
+        }
+
+        /* ESTE ES TU NUEVO LOGO DE TEXTO */
+        .logo-contenedor {
+            display: inline-block;
+        }
+
+        .logo-texto {
+            font-size: 40px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .detalle {
+            color: #0077ff; /* El azul que identifica a la radio */
+            font-size: 50px;
+            line-height: 0;
+        }
+
+        .subtitulo {
+            color: #888;
+            font-size: 14px;
+            letter-spacing: 5px;
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* Para que en el celu no se rompa */
+        @media (max-width: 600px) {
+            .logo-texto { font-size: 24px; }
+            .detalle { font-size: 30px; }
         }
     </style>
 </head>
 <body>
 
-header { 
-            text-align: center; 
-            padding: 50px 20px; 
-            background: #111 !important; /* Forzamos el fondo oscuro */
-            border-bottom: 3px solid #0077ff; 
-        }
-
-        .logo-texto {
-            font-family: 'Arial Black', Gadget, sans-serif; /* Una fuente gruesa y fuerte */
-            font-size: 2.5rem; /* Tamaño grande */
-            letter-spacing: -1px; /* Letras un poco más juntas para que parezca logo */
-            color: #ffffff;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 0px #0077ff; /* Sombra azul para que resalte */
-        }
-
-        .detalle {
-            color: #0077ff; /* El detalle de color al inicio y final */
-            font-weight: bold;
-            font-size: 3rem;
-            vertical-align: middle;
-        }
-
-        /* En el celular se adapta el tamaño */
-        @media (max-width: 600px) {
-            .logo-texto { font-size: 1.5rem; }
-            .detalle { font-size: 1.8rem; }
-        }
-
-<div class="grid" id="radioGrid">
-    <div class="card" data-provincia="rionegro">
-        <div class="name">LU 18 AM 640</div>
-        <div class="city">General Roca</div>
-        <button class="play">▶ Escuchar</button>
-        <div class="share-link">🔗 Compartir</div>
+<header>
+    <div class="logo-contenedor">
+        <h1 class="logo-texto">
+            <span class="detalle">[</span> 
+            RADIOS PATAGÓNICAS 
+            <span class="detalle">]</span>
+        </h1>
+        <span class="subtitulo">DIRECTORIO DIGITAL</span>
     </div>
+</header>
+
+<div style="padding: 20px; text-align: center;">
+    <p>Cargando emisoras...</p>
 </div>
 
 </body>
