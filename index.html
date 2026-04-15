@@ -3,34 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radios Patagónicas | Directorio</title>
+    <title>Radios Patagónicas | Directorio Oficial</title>
     <style>
-        :root { --azul: #0077ff; --negro: #0a0a0a; --gris: #161616; }
+        :root { --azul: #0077ff; --negro: #0a0a0a; --gris: #161616; --texto-gris: #888; }
         
         body { 
-            margin: 0; background: var(--negro); color: white; 
-            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; background: var(--negro) !important; color: white; 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
         }
 
-        /* HEADER & LOGO */
-        header { 
-            text-align: center; padding: 40px 20px; background: #111; 
-            border-bottom: 4px solid var(--azul); 
-        }
-        .logo-texto {
-            font-size: 36px; font-weight: 900; display: flex;
-            align-items: center; justify-content: center; gap: 15px;
-        }
+        /* LOGO TIPO TEXTO */
+        header { text-align: center; padding: 50px 20px; background: #111; border-bottom: 4px solid var(--azul); }
+        .logo-texto { font-size: 36px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 15px; }
         .detalle { color: var(--azul); font-size: 45px; }
+        .subtitulo { color: var(--texto-gris); font-size: 12px; letter-spacing: 5px; margin-top: 10px; display: block; }
 
-        /* BUSCADOR Y CONTROLES */
+        /* BUSCADOR Y FILTROS (STICKY) */
         .controles { 
             padding: 20px; background: #1a1a1a; position: sticky; top: 0; z-index: 100;
             display: flex; flex-direction: column; align-items: center; gap: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
         #buscador {
-            width: 90%; max-width: 500px; padding: 12px; border-radius: 25px;
+            width: 90%; max-width: 500px; padding: 12px 20px; border-radius: 25px;
             border: 2px solid var(--azul); background: #222; color: white; outline: none;
+        }
+        .filtros { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .btn-filtro {
+            padding: 8px 16px; border-radius: 20px; border: 1px solid #333;
+            background: #222; color: #ccc; cursor: pointer; font-size: 12px; transition: 0.3s;
+        }
+        .btn-filtro.active { background: var(--azul); color: white; border-color: var(--azul); }
+
+        /* PUBLICIDAD */
+        .ads { 
+            width: 90%; max-width: 970px; height: 90px; background: #111; 
+            margin: 20px auto; display: flex; align-items: center; justify-content: center;
+            color: #333; border: 1px dashed #333; font-weight: bold;
         }
 
         /* GRILLA */
@@ -39,32 +48,31 @@
             gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto;
         }
 
-        /* TARJETAS */
+        /* TARJETA DE RADIO */
         .card { 
             background: var(--gris); padding: 25px; border-radius: 20px; 
             text-align: center; border: 1px solid #222; transition: 0.3s;
         }
         .card:hover { transform: translateY(-5px); border-color: var(--azul); }
+        .card.hidden { display: none; }
+        
         .name { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
-        .city { font-size: 12px; color: #888; margin-bottom: 20px; }
+        .tag-estilo { font-size: 11px; color: var(--azul); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; }
+        .city { font-size: 12px; color: var(--texto-gris); margin-bottom: 15px; }
 
         button.play { 
             width: 100%; padding: 12px; border: none; border-radius: 12px; 
             background: var(--azul); color: white; font-weight: bold; cursor: pointer;
         }
+        .share-link { margin-top: 15px; font-size: 12px; color: #25d366; cursor: pointer; display: block; font-weight: bold; }
 
-        /* BOTÓN COMPARTIR */
-        .share-link { 
-            margin-top: 15px; font-size: 12px; color: #25d366; /* Color WhatsApp */
-            cursor: pointer; display: block; font-weight: bold;
-        }
+        /* FOOTER */
+        footer { padding: 50px 20px; text-align: center; background: #111; border-top: 1px solid #222; }
+        .footer-info { margin-bottom: 20px; color: #ccc; font-size: 14px; }
+        .redes { display: flex; justify-content: center; gap: 25px; }
+        .redes a { color: var(--azul); text-decoration: none; font-weight: bold; font-size: 13px; }
 
-        /* OCULTAR EN SMART TV */
-        body.is-smart-tv .share-link {
-            display: none !important;
-        }
-
-        .hidden { display: none; }
+        body.is-smart-tv .share-link { display: none !important; }
     </style>
 </head>
 <body>
@@ -73,66 +81,99 @@
     <div class="logo-texto">
         <span class="detalle">[</span> RADIOS PATAGÓNICAS <span class="detalle">]</span>
     </div>
+    <span class="subtitulo">DIRECTORIO DIGITAL</span>
 </header>
 
 <div class="controles">
-    <input type="text" id="buscador" placeholder="Buscar radio o ciudad...">
+    <input type="text" id="buscador" placeholder="Busca por radio, ciudad o estilo (Ej: Rock)...">
+    <div class="filtros">
+        <button class="btn-filtro active" onclick="filtrarProvincia('todas', this)">TODAS</button>
+        <button class="btn-filtro" onclick="filtrarProvincia('rionegro', this)">RÍO NEGRO</button>
+        <button class="btn-filtro" onclick="filtrarProvincia('neuquen', this)">NEUQUÉN</button>
+        <button class="btn-filtro" onclick="filtrarProvincia('chubut', this)">CHUBUT</button>
+        <button class="btn-filtro" onclick="filtrarProvincia('santacruz', this)">SANTA CRUZ</button>
+        <button class="btn-filtro" onclick="filtrarProvincia('tierradelfuego', this)">T. DEL FUEGO</button>
+    </div>
 </div>
+
+<div class="ads">ESPACIO PUBLICITARIO</div>
 
 <div class="grid" id="radioGrid">
     
-    <div class="card" id="antena-libre" data-provincia="rionegro" data-name="antena libre 89.1 roca">
+    <div class="card" id="antena-libre" data-provincia="rionegro" data-tags="rock universitario noticias cultura">
         <div class="name">Antena Libre 89.1</div>
-        <div class="city">General Roca</div>  
-        <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartir('antena-libre', 'Antena Libre 89.1')">🔗 Compartir por WhatsApp</div>
+        <div class="tag-estilo">Rock | Cultura</div>
+        <div class="city">General Roca, RN</div>  
+        <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">▶ ESCUCHAR</button>
+        <div class="share-link" onclick="compartir('antena-libre', 'Antena Libre 89.1')">🔗 Compartir WhatsApp</div>
     </div>
 
+</div>
+
+<div class="ads">ESPACIO PUBLICITARIO</div>
+
+<footer>
+    <div class="footer-info">
+        <p>Contacto: <strong>radiospatagonicas@gmail.com</strong></p>
     </div>
+    <div class="redes">
+        <a href="https://facebook.com/radiospatagonicas" target="_blank">FACEBOOK</a>
+        <a href="https://wa.me/tu_numero" target="_blank">WHATSAPP</a>
+    </div>
+    <p style="font-size: 10px; color: #444; margin-top: 30px;">© 2026 Radios Patagónicas. Todos los derechos reservados.</p>
+</footer>
 
 <audio id="audioPlayer"></audio>
 
 <script>
-    // 1. DETECCIÓN DE SMART TV (Oculta compartir si detecta TV)
+    // DETECCIÓN SMART TV
     const ua = navigator.userAgent.toLowerCase();
-    const isTV = ua.includes("smart-tv") || ua.includes("smarttv") || ua.includes("googletv") || ua.includes("appletv") || ua.includes("hbbtv");
-    
-    if (isTV) {
+    if (ua.includes("smart-tv") || ua.includes("smarttv") || ua.includes("googletv")) {
         document.body.classList.add('is-smart-tv');
     }
 
-    // 2. FUNCIÓN COMPARTIR (WhatsApp)
-    function compartir(id, nombre) {
-        const urlWeb = window.location.href.split('#')[0]; // URL de tu sitio
-        const texto = `¡Hola! Te comparto la radio ${nombre}. Escuchala acá en el Directorio de Radios Patagónicas: ${urlWeb}#${id}`;
-        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
-        window.open(whatsappUrl, '_blank');
+    // BUSCADOR INTELIGENTE (Busca en nombre, ciudad y tags)
+    document.getElementById('buscador').addEventListener('input', function(e) {
+        const busqueda = e.target.value.toLowerCase();
+        document.querySelectorAll('.card').forEach(card => {
+            const info = card.innerText.toLowerCase() + card.getAttribute('data-tags');
+            card.classList.toggle('hidden', !info.includes(busqueda));
+        });
+    });
+
+    // FILTRO PROVINCIAS
+    function filtrarProvincia(prov, btn) {
+        document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.card').forEach(card => {
+            if(prov === 'todas' || card.getAttribute('data-provincia') === prov) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
     }
 
-    // 3. REPRODUCTOR
+    // COMPARTIR
+    function compartir(id, nombre) {
+        const url = window.location.href.split('#')[0];
+        const msg = `Escucha ${nombre} en el Directorio de Radios Patagónicas: ${url}#${id}`;
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // REPRODUCTOR
     const player = document.getElementById('audioPlayer');
     function playRadio(btn, url) {
         if (player.src === url && !player.paused) {
             player.pause();
-            btn.innerHTML = "▶ Escuchar";
+            btn.innerText = "▶ ESCUCHAR";
         } else {
-            // Detener todos los botones si había alguno sonando
-            document.querySelectorAll('.play').forEach(b => b.innerHTML = "▶ Escuchar");
+            document.querySelectorAll('.play').forEach(b => b.innerText = "▶ ESCUCHAR");
             player.src = url;
             player.play();
-            btn.innerHTML = "⏸ Pausar";
+            btn.innerText = "⏸ PAUSAR";
         }
     }
-
-    // 4. BUSCADOR
-    document.getElementById('buscador').addEventListener('input', function(e) {
-        const busqueda = e.target.value.toLowerCase();
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            const texto = card.innerText.toLowerCase();
-            card.classList.toggle('hidden', !texto.includes(busqueda));
-        });
-    });
 </script>
 
 </body>
