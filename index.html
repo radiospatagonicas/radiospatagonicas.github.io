@@ -9,60 +9,57 @@
         
         body { margin: 0; background: var(--negro); color: white; font-family: 'Segoe UI', sans-serif; }
 
+        /* HEADER Y LOGO */
         header { text-align: center; padding: 40px 20px; background: #111; border-bottom: 4px solid var(--azul); }
         .logo-texto { font-size: 32px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .detalle { color: var(--azul); font-size: 40px; }
 
         /* BUSCADOR Y FILTROS */
-        .controles { padding: 20px; background: #1a1a1a; position: sticky; top: 0; z-index: 100; text-align: center; }
-        #buscador { width: 85%; max-width: 400px; padding: 12px; border-radius: 25px; border: 2px solid var(--azul); background: #222; color: white; outline: none; margin-bottom: 10px; }
-        
-        /* GRILLA */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
-        
-        /* TARJETA MEJORADA */
-        .card { background: var(--gris); padding: 25px; border-radius: 20px; text-align: center; border: 1px solid #222; transition: 0.3s; }
-        .card:hover { border-color: var(--azul); }
-        .card.hidden { display: none; }
-
-        .name { font-size: 19px; font-weight: bold; margin-bottom: 8px; display: block; }
-        
-        /* TAGS CATEGORÍA VISUALES */
-        .tag-estilo { 
-            display: inline-block;
-            background: rgba(0, 119, 255, 0.15); 
-            color: var(--azul); 
-            font-size: 10px; 
-            font-weight: bold; 
-            padding: 4px 10px; 
-            border-radius: 10px; 
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
+        .controles { 
+            padding: 20px; background: #1a1a1a; position: sticky; top: 0; z-index: 100; text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-
-        .city { font-size: 12px; color: var(--texto-gris); margin-bottom: 20px; display: block; }
-
-        /* BOTÓN DE PLAY DINÁMICO */
-        button.play { 
-            width: 100%; padding: 14px; border: none; border-radius: 12px; 
-            background: var(--azul); color: white; font-weight: bold; 
-            cursor: pointer; transition: 0.3s; font-size: 13px;
-        }
-
-        /* ESTADO ACTIVO: Cuando la radio suena */
-        button.play.activo { 
-            background: white !important; 
-            color: black !important; 
-            box-shadow: 0 0 15px rgba(255,255,255,0.4);
-        }
-
-        .share-link { margin-top: 15px; font-size: 12px; color: #25d366; cursor: pointer; display: block; font-weight: bold; }
+        #buscador { width: 85%; max-width: 400px; padding: 12px; border-radius: 25px; border: 2px solid var(--azul); background: #222; color: white; outline: none; margin-bottom: 15px; }
+        
+        .filtros { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .btn-filtro { padding: 8px 15px; border-radius: 20px; border: 1px solid #333; background: #222; color: #ccc; cursor: pointer; font-size: 11px; transition: 0.3s; }
+        .btn-filtro.active { background: var(--azul); color: white; border-color: var(--azul); }
 
         /* SLIDERS PUBLICIDAD */
         .slider-container { width: 90%; max-width: 970px; height: 90px; margin: 20px auto; overflow: hidden; border: 1px dashed #333; border-radius: 10px; }
         .slider-track { display: flex; width: 300%; height: 100%; transition: transform 0.8s ease-in-out; }
         .slide { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #111; color: #444; text-decoration: none; font-weight: bold; flex-shrink: 0; }
+
+        /* GRILLA Y TARJETAS */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--gris); padding: 25px; border-radius: 20px; text-align: center; border: 1px solid #222; transition: 0.3s; }
+        .card:hover { border-color: var(--azul); }
+        .card.hidden { display: none; }
+
+        .name { font-size: 19px; font-weight: bold; margin-bottom: 8px; display: block; }
+        .tag-estilo { 
+            display: inline-block; background: rgba(0, 119, 255, 0.15); color: var(--azul); 
+            font-size: 10px; font-weight: bold; padding: 4px 10px; border-radius: 10px; 
+            text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px;
+        }
+        .city { font-size: 12px; color: var(--texto-gris); margin-bottom: 20px; display: block; }
+
+        /* BOTONES */
+        button.play { 
+            width: 100%; padding: 14px; border: none; border-radius: 12px; 
+            background: var(--azul); color: white; font-weight: bold; 
+            cursor: pointer; transition: 0.3s; font-size: 13px;
+        }
+        button.play.activo { background: white !important; color: black !important; box-shadow: 0 0 15px rgba(255,255,255,0.4); }
+        .share-link { margin-top: 15px; font-size: 12px; color: #25d366; cursor: pointer; display: block; font-weight: bold; }
+
+        /* FOOTER */
+        footer { padding: 50px 20px; text-align: center; background: #111; border-top: 1px solid #222; margin-top: 40px; }
+        .footer-info { margin-bottom: 20px; color: #ccc; font-size: 14px; }
+        .redes { display: flex; justify-content: center; gap: 25px; }
+        .redes a { color: var(--azul); text-decoration: none; font-weight: bold; font-size: 13px; }
+
+        body.is-smart-tv .share-link { display: none !important; }
     </style>
 </head>
 <body>
@@ -73,31 +70,60 @@
 
 <div class="slider-container">
     <div class="slider-track" id="sliderTop">
-        <a href="#" class="slide">ESPACIO DISPONIBLE</a>
-        <a href="#" class="slide">TU PUBLICIDAD AQUÍ</a>
-        <a href="#" class="slide">CONTACTANOS</a>
+        <a href="mailto:radiospatagonicas@gmail.com" class="slide">TU PUBLICIDAD AQUÍ</a>
+        <a href="mailto:radiospatagonicas@gmail.com" class="slide">ESPACIO DISPONIBLE</a>
+        <a href="mailto:radiospatagonicas@gmail.com" class="slide">ANUNCIÁ CON NOSOTROS</a>
     </div>
 </div>
 
 <div class="controles">
-    <input type="text" id="buscador" placeholder="Busca radio, ciudad o estilo...">
+    <input type="text" id="buscador" placeholder="Radio, ciudad o estilo (Ej: Rock)...">
+    <div class="filtros">
+        <button class="btn-filtro active" onclick="filtrarProvincia('todas', this)">TODAS</button>
+        <button class="btn-filtro" onclick="filtrarProvincia('rionegro', this)">RÍO NEGRO</button>
+        <button class="btn-filtro" onclick="filtrarProvincia('neuquen', this)">NEUQUÉN</button>
+        <button class="btn-filtro" onclick="filtrarProvincia('chubut', this)">CHUBUT</button>
+        <button class="btn-filtro" onclick="filtrarProvincia('santacruz', this)">SANTA CRUZ</button>
+        <button class="btn-filtro" onclick="filtrarProvincia('tierradelfuego', this)">T. DEL FUEGO</button>
+    </div>
 </div>
 
 <div class="grid" id="radioGrid">
-    <div class="card" id="antena-libre" data-provincia="rionegro" data-tags="rock cultura noticias">
-        <span class="name">Antena Libre 89.1</span>
-        <span class="tag-estilo">Rock & Cultura</span>
-        <span class="city">General Roca, RN</span>
-        <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">▶ ESCUCHAR</button>
-        <div class="share-link" onclick="compartir('antena-libre', 'Antena Libre')">🔗 Compartir WhatsApp</div>
+    
+    <div class="card" id="lu18" data-provincia="rionegro" data-tags="local noticias deportes mitre">
+        <div class="name">LU 18 AM 640</div>
+        <div class="tag-estilo">Noticias | Variada</div>
+        <div class="city">General Roca, RN</div>  
+        <button class="play" onclick="playRadio(this, 'https://streamingraddios.online/proxy/valle?mp=/;')">▶ ESCUCHAR</button>
+        <div class="share-link" onclick="compartir('lu18', 'LU 18 AM 640')">🔗 Compartir WhatsApp</div>
     </div>
+
+    <div class="card" id="antena-libre" data-provincia="rionegro" data-tags="rock universitario noticias cultura">
+        <div class="name">Antena Libre 89.1</div>
+        <div class="tag-estilo">Alternativa | Uncoma</div>
+        <div class="city">General Roca, RN</div>  
+        <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9140/stream')">▶ ESCUCHAR</button>
+        <div class="share-link" onclick="compartir('antena-libre', 'Antena Libre 89.1')">🔗 Compartir WhatsApp</div>
+    </div>
+
 </div>
+
+<footer>
+    <div class="footer-info">
+        <p>Contacto: <strong>radiospatagonicas@gmail.com</strong></p>
+    </div>
+    <div class="redes">
+        <a href="https://facebook.com/radiospatagonicas" target="_blank">FACEBOOK</a>
+        <a href="https://wa.me/5492984XXXXXX" target="_blank">WHATSAPP</a>
+    </div>
+</footer>
 
 <audio id="audioPlayer"></audio>
 
 <script>
     const player = document.getElementById('audioPlayer');
 
+    // REPRODUCTOR CON CAMBIO DE COLOR
     function playRadio(btn, url) {
         if (player.src === url && !player.paused) {
             player.pause();
@@ -106,8 +132,8 @@
             resetButtons();
             player.src = url;
             player.play();
-            btn.innerText = "⏸ PAUSANDO...";
-            btn.classList.add('activo'); // Aquí se vuelve blanco
+            btn.innerText = "⏸ PAUSAR";
+            btn.classList.add('activo');
         }
     }
 
@@ -118,7 +144,7 @@
         });
     }
 
-    // Buscador y Slider (se mantienen igual)
+    // BUSCADOR
     document.getElementById('buscador').addEventListener('input', function(e) {
         const busqueda = e.target.value.toLowerCase();
         document.querySelectorAll('.card').forEach(card => {
@@ -127,12 +153,38 @@
         });
     });
 
+    // FILTRO PROVINCIAS
+    function filtrarProvincia(prov, btn) {
+        document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.card').forEach(card => {
+            if(prov === 'todas' || card.getAttribute('data-provincia') === prov) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    }
+
+    // COMPARTIR
+    function compartir(id, nombre) {
+        const url = window.location.href.split('#')[0];
+        const msg = `Escucha ${nombre} en el Directorio de Radios Patagónicas: ${url}#${id}`;
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // SLIDER AUTOMÁTICO
+    let currentSlide = 0;
     setInterval(() => {
         const track = document.getElementById('sliderTop');
-        const index = (parseInt(track.dataset.index) || 0) + 1;
-        track.dataset.index = index % 3;
-        track.style.transform = `translateX(-${(track.dataset.index * 100) / 3}%)`;
+        currentSlide = (currentSlide + 1) % 3;
+        track.style.transform = `translateX(-${currentSlide * 33.33}%)`;
     }, 5000);
+
+    // SMART TV DETECTION
+    if (navigator.userAgent.toLowerCase().includes("smart-tv")) {
+        document.body.classList.add('is-smart-tv');
+    }
 </script>
 
 </body>
