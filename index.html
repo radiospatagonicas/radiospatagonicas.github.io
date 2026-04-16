@@ -113,12 +113,7 @@
     </a>
 </div>
 
-            <div class="name">LRG 206 AM 550</div>
-        <div class="city">Neuquén</div>
-        <button class="play" onclick="playRadio(this, 'https://sonic.host-live.com:10851/stream')">▶ Escuchar</button>
-        <div class="share-link" onclick="compartir('am550', 'AM 550 La Primera')">🔗 Compartir</div>
-    </div>
-          
+  
    <div class="card" id="lu5" data-provincia="neuquen" data-name="am 600 LU 5 Neuquen nqn">
         <div class="name">LU 5 AM 600</div>
         <div class="city">Neuquén</div>
@@ -278,6 +273,44 @@ document.querySelectorAll('.card').forEach(card => {
     if (navigator.userAgent.toLowerCase().includes("smart-tv")) {
         document.body.classList.add('is-smart-tv');
     }
+    const player = document.getElementById('audioPlayer');
+
+    function playRadio(btn, url) {
+        if (player.src === url && !player.paused) {
+            player.pause();
+            resetButtons();
+        } else {
+            resetButtons();
+            player.src = url;
+            player.play();
+            btn.innerText = "⏸ PAUSAR";
+            btn.classList.add('activo');
+        }
+    }
+
+    function resetButtons() {
+        document.querySelectorAll('.play').forEach(b => {
+            b.innerText = "▶ ESCUCHAR";
+            b.classList.remove('activo');
+        });
+    }
+
+    // AQUÍ VA EL SCRIPT DE WHATSAPP
+    document.querySelectorAll('.card').forEach(card => {
+        const wa = card.getAttribute('data-whatsapp');
+
+        if (wa) {
+            const boton = document.createElement('a');
+            boton.href = `https://wa.me/${wa}`;
+            boton.target = '_blank';
+            boton.className = 'wa-btn';
+            boton.innerText = '💬 WhatsApp';
+
+            const share = card.querySelector('.share-link');
+            card.insertBefore(boton, share);
+        }
+    });
+</script>
 </script>
 document.querySelectorAll('.card').forEach(card => {
     const wa = card.getAttribute('data-whatsapp');
