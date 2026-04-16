@@ -197,84 +197,7 @@
 <script>
     const player = document.getElementById('audioPlayer');
 
-    // REPRODUCTOR CON CAMBIO DE COLOR
-    function playRadio(btn, url) {
-        if (player.src === url && !player.paused) {
-            player.pause();
-            resetButtons();
-        } else {
-            resetButtons();
-            player.src = url;
-            player.play();
-            btn.innerText = "⏸ PAUSAR";
-            btn.classList.add('activo');
-        }
-    }
-
-    function resetButtons() {
-        document.querySelectorAll('.play').forEach(b => {
-            b.innerText = "▶ ESCUCHAR";
-            b.classList.remove('activo');
-        });
-    }
-document.querySelectorAll('.card').forEach(card => {
-    const wa = card.getAttribute('data-whatsapp');
-
-    if (wa) {
-        const boton = document.createElement('a');
-        boton.href = `https://wa.me/${wa}`;
-        boton.target = '_blank';
-        boton.className = 'wa-btn';
-        boton.innerText = '💬 WhatsApp';
-
-        const share = card.querySelector('.share-link');
-        card.insertBefore(boton, share);
-    }
-});
-
-    // BUSCADOR
-    document.getElementById('buscador').addEventListener('input', function(e) {
-        const busqueda = e.target.value.toLowerCase();
-        document.querySelectorAll('.card').forEach(card => {
-            const info = card.innerText.toLowerCase() + card.getAttribute('data-tags');
-            card.classList.toggle('hidden', !info.includes(busqueda));
-        });
-    });
-
-    // FILTRO PROVINCIAS
-    function filtrarProvincia(prov, btn) {
-        document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.querySelectorAll('.card').forEach(card => {
-            if(prov === 'todas' || card.getAttribute('data-provincia') === prov) {
-                card.classList.remove('hidden');
-            } else {
-                card.classList.add('hidden');
-            }
-        });
-    }
-
-    // COMPARTIR
-    function compartir(id, nombre) {
-        const url = window.location.href.split('#')[0];
-        const msg = `Escucha ${nombre} en el Directorio de Radios Patagónicas: ${url}#${id}`;
-        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
-    // SLIDER AUTOMÁTICO
-    let currentSlide = 0;
-    setInterval(() => {
-        const track = document.getElementById('sliderTop');
-        currentSlide = (currentSlide + 1) % 3;
-        track.style.transform = `translateX(-${currentSlide * 33.33}%)`;
-    }, 5000);
-
-    // SMART TV DETECTION
-    if (navigator.userAgent.toLowerCase().includes("smart-tv")) {
-        document.body.classList.add('is-smart-tv');
-    }
-    const player = document.getElementById('audioPlayer');
-
+    // REPRODUCTOR
     function playRadio(btn, url) {
         if (player.src === url && !player.paused) {
             player.pause();
@@ -295,7 +218,7 @@ document.querySelectorAll('.card').forEach(card => {
         });
     }
 
-    // AQUÍ VA EL SCRIPT DE WHATSAPP
+    // GENERADOR DE BOTÓN WHATSAPP
     document.querySelectorAll('.card').forEach(card => {
         const wa = card.getAttribute('data-whatsapp');
 
@@ -310,6 +233,61 @@ document.querySelectorAll('.card').forEach(card => {
             card.insertBefore(boton, share);
         }
     });
+
+    // BUSCADOR
+    document.getElementById('buscador').addEventListener('input', function(e) {
+        const busqueda = e.target.value.toLowerCase();
+
+        document.querySelectorAll('.card').forEach(card => {
+            const info =
+                card.innerText.toLowerCase() +
+                (card.getAttribute('data-tags') || '');
+
+            card.classList.toggle('hidden', !info.includes(busqueda));
+        });
+    });
+
+    // FILTRO PROVINCIAS
+    function filtrarProvincia(prov, btn) {
+        document.querySelectorAll('.btn-filtro').forEach(b =>
+            b.classList.remove('active')
+        );
+
+        btn.classList.add('active');
+
+        document.querySelectorAll('.card').forEach(card => {
+            if (prov === 'todas' || card.getAttribute('data-provincia') === prov) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    }
+
+    // COMPARTIR
+    function compartir(id, nombre) {
+        const url = window.location.href.split('#')[0];
+        const msg = `Escucha ${nombre} en el Directorio de Radios Patagónicas: ${url}#${id}`;
+
+        window.open(
+            `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`,
+            '_blank'
+        );
+    }
+
+    // SLIDER AUTOMÁTICO
+    let currentSlide = 0;
+
+    setInterval(() => {
+        const track = document.getElementById('sliderTop');
+        currentSlide = (currentSlide + 1) % 3;
+        track.style.transform = `translateX(-${currentSlide * 33.33}%)`;
+    }, 5000);
+
+    // SMART TV
+    if (navigator.userAgent.toLowerCase().includes("smart-tv")) {
+        document.body.classList.add('is-smart-tv');
+    }
 </script>
 
 
