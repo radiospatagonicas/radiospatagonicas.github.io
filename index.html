@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radios Patagónicas | Directorio Oficial</title>
     <style>
+        .wa-btn{
+    display:block;
+    margin-top:10px;
+    margin-bottom:8px;
+    font-size:12px;
+    color:#25D366;
+    text-decoration:none;
+    font-weight:bold;
+}
         :root { --azul: #0077ff; --negro: #0a0a0a; --gris: #161616; --texto-gris: #888; }
         
         body { margin: 0; background: var(--negro); color: white; font-family: 'Segoe UI', sans-serif; }
@@ -89,6 +98,21 @@
 </div>
 
 <div class="grid" id="radioGrid">
+
+     <div class="card" data-whatsapp="5492984561288">
+    <div class="name">Radio Total 89.5</div>
+    <div class="tag-estilo">Retro | Nacional</div>
+    <div class="city">General Roca, RN</div>
+
+    <button class="play">▶ ESCUCHAR</button>
+
+    <a class="wa-btn"
+       href="https://wa.me/5492984561288"
+       target="_blank">
+       💬 WhatsApp
+    </a>
+</div>
+
     
     <div class="card" id="lu18" data-provincia="rionegro" data-tags="local noticias deportes mitre">
         <div class="name">LU 18 AM 640</div>
@@ -448,6 +472,20 @@
             b.classList.remove('activo');
         });
     }
+document.querySelectorAll('.card').forEach(card => {
+    const wa = card.getAttribute('data-whatsapp');
+
+    if (wa) {
+        const boton = document.createElement('a');
+        boton.href = `https://wa.me/${wa}`;
+        boton.target = '_blank';
+        boton.className = 'wa-btn';
+        boton.innerText = '💬 WhatsApp';
+
+        const share = card.querySelector('.share-link');
+        card.insertBefore(boton, share);
+    }
+});
 
     // BUSCADOR
     document.getElementById('buscador').addEventListener('input', function(e) {
@@ -491,6 +529,18 @@
         document.body.classList.add('is-smart-tv');
     }
 </script>
+document.querySelectorAll('.card').forEach(card => {
+    const wa = card.getAttribute('data-whatsapp');
 
+    if (wa) {
+        const boton = document.createElement('a');
+        boton.href = `https://wa.me/${wa}`;
+        boton.target = '_blank';
+        boton.className = 'wa-btn';
+        boton.innerText = '💬 WhatsApp';
+
+        card.appendChild(boton);
+    }
+});
 </body>
 </html>
