@@ -312,18 +312,7 @@ document.querySelectorAll('.card').forEach(card => {
     });
 </script>
 </script>
-document.querySelectorAll('.card').forEach(card => {
-    const wa = card.getAttribute('data-whatsapp');
 
-    if (wa) {
-        const boton = document.createElement('a');
-        boton.href = `https://wa.me/${wa}`;
-        boton.target = '_blank';
-        boton.className = 'wa-btn';
-        boton.innerText = '💬 WhatsApp';
-
-        card.appendChild(boton);
-    }
 });
 </body>
 </html>
