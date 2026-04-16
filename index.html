@@ -307,7 +307,21 @@
         document.body.classList.add('is-smart-tv');
     }
 </script>
+document.querySelectorAll('.card').forEach(card => {
+    const radioId = card.id;
+    const wa = whatsappRadios[radioId];
 
+    if (wa) {
+        const boton = document.createElement('a');
+        boton.href = `https://wa.me/${wa}`;
+        boton.target = '_blank';
+        boton.className = 'wa-btn';
+        boton.innerText = '💬 WhatsApp';
+
+        const share = card.querySelector('.share-link');
+        card.insertBefore(boton, share);
+    }
+});
 
 });
 </body>
