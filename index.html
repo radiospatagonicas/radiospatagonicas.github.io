@@ -3,12 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Radios Patagónicas | Directorio Oficial</title>
+<title>Radios Patagónicas</title>
 
 <style>
-:root { --azul:#0077ff; --negro:#0a0a0a; --gris:#161616; --texto-gris:#888; }
+:root {
+    --azul:#0077ff;
+    --negro:#0a0a0a;
+    --gris:#161616;
+    --texto-gris:#888;
+}
 
-body {
+body{
     margin:0;
     background:var(--negro);
     color:white;
@@ -16,58 +21,77 @@ body {
 }
 
 /* HEADER */
-header {
+header{
     text-align:center;
-    padding:40px 20px;
+    padding:30px 20px;
     background:#111;
     border-bottom:4px solid var(--azul);
 }
 
-.logo-texto {
-    font-size:32px;
+.logo-texto{
+    font-size:28px;
     font-weight:900;
 }
 
-/* ===== BANNER CORRECTO Y ESTABLE ===== */
-.banner-top {
-    line-height: 0;
+/* ===== BANNER CORRECTO ===== */
+.banner-top{
+    width:100%;
+    max-width:1000px;
+    margin:15px auto;
+}
+
+.banner-top img{
+    width:100%;
+    height:auto;
+    display:block;
 }
 
 /* CONTROLES */
-.controles {
-    padding:20px;
+.controles{
+    padding:15px;
     background:#1a1a1a;
     text-align:center;
 }
 
-#buscador {
+#buscador{
     width:85%;
     max-width:400px;
-    padding:12px;
-    border-radius:25px;
+    padding:10px;
+    border-radius:20px;
     border:2px solid var(--azul);
     background:#222;
     color:white;
 }
 
 /* GRID */
-.grid {
+.grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
     gap:20px;
     padding:20px;
     max-width:1200px;
-    margin:0 auto;
+    margin:auto;
 }
 
-.card {
+.card{
     background:var(--gris);
     padding:20px;
     border-radius:15px;
     text-align:center;
 }
 
-button {
+.name{
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.city{
+    font-size:12px;
+    color:var(--texto-gris);
+    margin-bottom:10px;
+}
+
+button.play{
     width:100%;
     padding:10px;
     border:none;
@@ -76,39 +100,80 @@ button {
     color:white;
     cursor:pointer;
 }
+
+button.play.activo{
+    background:white;
+    color:black;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<div class="logo-texto">RADIOS PATAGÓNICAS</div>
+<div class="logo-texto">[ RADIOS PATAGÓNICAS ]</div>
 </header>
 
 <!-- BANNER -->
 <div class="banner-top">
 <a href="https://wa.me/5493755596267" target="_blank">
-<img src="banner1.png" alt="Publicidad">
+<img src="banner-drevanz.png" alt="Publicidad">
 </a>
 </div>
 
 <div class="controles">
-<input type="text" placeholder="Buscar radios...">
+<input type="text" id="buscador" placeholder="Buscar radios...">
 </div>
 
-<div class="grid">
-
-<div class="card">
-<div>LU 18 AM 640</div>
-<button>Escuchar</button>
-</div>
+<div class="grid" id="radioGrid">
 
 <div class="card">
-<div>AM 550 Neuquén</div>
-<button>Escuchar</button>
+<div class="name">LU 18 AM 640</div>
+<div class="city">General Roca</div>
+<button class="play" onclick="playRadio(this,'https://streamingraddios.online/proxy/valle?mp=/;')">▶ Escuchar</button>
+</div>
+
+<div class="card">
+<div class="name">AM 550</div>
+<div class="city">Neuquén</div>
+<button class="play" onclick="playRadio(this,'https://sonic.host-live.com:10851/stream')">▶ Escuchar</button>
 </div>
 
 </div>
+
+<audio id="audioPlayer"></audio>
+
+<script>
+const player = document.getElementById('audioPlayer');
+
+function playRadio(btn,url){
+if(player.src===url && !player.paused){
+player.pause();
+resetButtons();
+}else{
+resetButtons();
+player.src=url;
+player.play();
+btn.innerText="⏸ Pausar";
+btn.classList.add('activo');
+}
+}
+
+function resetButtons(){
+document.querySelectorAll('.play').forEach(b=>{
+b.innerText="▶ Escuchar";
+b.classList.remove('activo');
+});
+}
+
+// buscador
+document.getElementById('buscador').addEventListener('input',e=>{
+const val=e.target.value.toLowerCase();
+document.querySelectorAll('.card').forEach(c=>{
+c.style.display=c.innerText.toLowerCase().includes(val)?'block':'none';
+});
+});
+</script>
 
 </body>
 </html>
