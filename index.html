@@ -16,27 +16,34 @@
         audio { width:100%; height: 40px; }
 
         /* --- ESTILOS CARRUSEL --- */
-        .slider-container {
+    .slider-container {
             width: 100%;
-            max-width: 1100px;
-            margin: 20px auto;
+            max-width: 1000px; /* Un poco más angosto para ganar altura visual */
+            margin: 25px auto; /* Más margen arriba y abajo para que no esté pegado */
             position: relative;
             overflow: hidden;
-            border-radius: 12px;
-            border: 1px solid #222;
+            border-radius: 15px;
+            border: 1px solid #333;
             background: #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .slider {
             display: flex;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Movimiento más suave */
         }
         .slide {
             min-width: 100%;
             box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
         }
         .slide img {
             width: 100%;
             height: auto;
+            max-height: 300px; /* Le damos un poco más de presencia en PC */
+            object-fit: cover; /* Evita que se vea rara si la imagen no es perfecta */
             display: block;
         }
         .dots {
