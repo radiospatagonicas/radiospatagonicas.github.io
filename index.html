@@ -8,130 +8,124 @@
 <style>
 :root { --azul:#0077ff; --negro:#0a0a0a; --gris:#161616; --texto-gris:#888; }
 
-body { margin:0; background:var(--negro); color:white; font-family:'Segoe UI',sans-serif; }
+body {
+    margin:0;
+    background:var(--negro);
+    color:white;
+    font-family:'Segoe UI',sans-serif;
+}
 
 /* HEADER */
-header { text-align:center; padding:40px 20px; background:#111; border-bottom:4px solid var(--azul); }
-.logo-texto { font-size:32px; font-weight:900; display:flex; justify-content:center; gap:10px; }
-.detalle { color:var(--azul); font-size:40px; }
+header {
+    text-align:center;
+    padding:40px 20px;
+    background:#111;
+    border-bottom:4px solid var(--azul);
+}
 
-/* BANNER (equilibrado) */
+.logo-texto {
+    font-size:32px;
+    font-weight:900;
+}
+
+/* ===== BANNER CORRECTO Y ESTABLE ===== */
+.banner-top {
+    width:100%;
+    max-width:1100px;
+    height:140px;
+    margin:20px auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#111;
+    border-radius:10px;
+    overflow:hidden;
+}
+
 .banner-top img {
-    height: 100%;
-    width: auto;
-    max-width: 100%;
-    object-fit: contain;
+    max-width:100%;
+    max-height:100%;
+    width:auto;
+    height:auto;
+    display:block;
 }
 
 /* CONTROLES */
-.controles { padding:20px; background:#1a1a1a; position:sticky; top:0; z-index:100; text-align:center; }
-#buscador { width:85%; max-width:400px; padding:12px; border-radius:25px; border:2px solid var(--azul); background:#222; color:white; margin-bottom:15px; }
+.controles {
+    padding:20px;
+    background:#1a1a1a;
+    text-align:center;
+}
 
-.filtros { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
-.btn-filtro { padding:8px 15px; border-radius:20px; border:1px solid #333; background:#222; color:#ccc; cursor:pointer; font-size:11px; }
-.btn-filtro.active { background:var(--azul); color:white; }
+#buscador {
+    width:85%;
+    max-width:400px;
+    padding:12px;
+    border-radius:25px;
+    border:2px solid var(--azul);
+    background:#222;
+    color:white;
+}
 
 /* GRID */
-.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; padding:20px; max-width:1200px; margin:0 auto; }
-.card { background:var(--gris); padding:25px; border-radius:20px; text-align:center; }
-.name { font-size:18px; font-weight:bold; }
-.city { font-size:12px; color:var(--texto-gris); margin-bottom:15px; }
+.grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:20px;
+    padding:20px;
+    max-width:1200px;
+    margin:0 auto;
+}
 
-/* BOTONES */
-button.play { width:100%; padding:14px; border:none; border-radius:12px; background:var(--azul); color:white; cursor:pointer; }
-button.play.activo { background:white; color:black; }
+.card {
+    background:var(--gris);
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+}
 
-.share-link { margin-top:10px; font-size:12px; color:#25d366; cursor:pointer; }
+button {
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:var(--azul);
+    color:white;
+    cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<div class="logo-texto"><span class="detalle">[</span> RADIOS PATAGÓNICAS <span class="detalle">]</span></div>
+<div class="logo-texto">RADIOS PATAGÓNICAS</div>
 </header>
 
 <!-- BANNER -->
 <div class="banner-top">
-<a href="https://wa.me/5493755596267?text=Hola,%20quiero%20publicar%20en%20Radios%20Patagónicas" target="_blank">
+<a href="https://wa.me/5493755596267" target="_blank">
 <img src="banner2.png" alt="Publicidad">
 </a>
 </div>
 
 <div class="controles">
-<input type="text" id="buscador" placeholder="Radio, ciudad o estilo...">
-
-<div class="filtros">
-<button class="btn-filtro active" onclick="filtrarProvincia('todas',this)">TODAS</button>
-<button class="btn-filtro" onclick="filtrarProvincia('rionegro',this)">RÍO NEGRO</button>
-<button class="btn-filtro" onclick="filtrarProvincia('neuquen',this)">NEUQUÉN</button>
-</div>
+<input type="text" placeholder="Buscar radios...">
 </div>
 
 <div class="grid">
 
-<div class="card" data-provincia="rionegro">
-<div class="name">LU 18 AM 640</div>
-<div class="city">General Roca</div>
-<button class="play" onclick="playRadio(this,'https://streamingraddios.online/proxy/valle?mp=/;')">▶ Escuchar</button>
-<div class="share-link" onclick="compartir('LU18')">Compartir</div>
+<div class="card">
+<div>LU 18 AM 640</div>
+<button>Escuchar</button>
 </div>
 
-<div class="card" data-provincia="neuquen">
-<div class="name">AM 550</div>
-<div class="city">Neuquén</div>
-<button class="play" onclick="playRadio(this,'https://sonic.host-live.com:10851/stream')">▶ Escuchar</button>
-<div class="share-link" onclick="compartir('AM550')">Compartir</div>
+<div class="card">
+<div>AM 550 Neuquén</div>
+<button>Escuchar</button>
 </div>
 
 </div>
-
-<audio id="audioPlayer"></audio>
-
-<script>
-const player = document.getElementById('audioPlayer');
-
-function playRadio(btn,url){
-if(player.src===url && !player.paused){
-player.pause();
-resetButtons();
-}else{
-resetButtons();
-player.src=url;
-player.play();
-btn.innerText="⏸ PAUSAR";
-btn.classList.add('activo');
-}
-}
-
-function resetButtons(){
-document.querySelectorAll('.play').forEach(b=>{
-b.innerText="▶ ESCUCHAR";
-b.classList.remove('activo');
-});
-}
-
-document.getElementById('buscador').addEventListener('input',e=>{
-const val=e.target.value.toLowerCase();
-document.querySelectorAll('.card').forEach(c=>{
-c.style.display=c.innerText.toLowerCase().includes(val)?'block':'none';
-});
-});
-
-function filtrarProvincia(prov,btn){
-document.querySelectorAll('.btn-filtro').forEach(b=>b.classList.remove('active'));
-btn.classList.add('active');
-
-document.querySelectorAll('.card').forEach(c=>{
-c.style.display=(prov==='todas'||c.dataset.provincia===prov)?'block':'none';
-});
-}
-
-function compartir(nombre){
-const url=window.location.href;
-window.open(`https://wa.me/?text=Escucha ${nombre} ${url}`,'_blank');
-}
-</script>
 
 </body>
 </html>
