@@ -57,11 +57,13 @@
             box-sizing: border-box;
             background: #000;
         }
-        .slide img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+       .slide img {
+    width: 100%;
+    height: 240px; /* Forzamos la altura del carrusel */
+    object-fit: contain; /* La imagen se achica hasta entrar entera sin cortarse */
+    background: #000; /* Lo que sobre de los costados será negro */
+    display: block;
+}
         /* Contenedor especial para placas de texto */
         .slide-text {
             height: 150px;
