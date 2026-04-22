@@ -6,112 +6,84 @@
 <title>Radios Patagónicas</title>
 
 <style>
-:root {
-    --azul:#0077ff;
-    --negro:#0a0a0a;
-    --gris:#161616;
-    --texto-gris:#888;
-}
-
 body{
     margin:0;
-    background:var(--negro);
-    color:white;
-    font-family:'Segoe UI',sans-serif;
+    font-family:Arial, sans-serif;
+    background:#0a0a0a;
+    color:#eee;
 }
 
 /* HEADER */
 header{
     text-align:center;
-    padding:30px 20px;
-    background:#111;
-    border-bottom:4px solid var(--azul);
-}
-
-.logo-texto{
-    font-size:28px;
-    font-weight:900;
-}
-
-/* ===== BANNER CORRECTO ===== */
-.banner-top {
-    width: 100%;
-    max-width: 1000px;
-    margin: 10px auto;
-}
-
-.banner-top img {
-    width: 100%;
-    height: auto;
-    max-height: 140px;
-    display: block;
-}
-
-/* 📱 CELULAR */
-@media (max-width: 600px) {
-    .banner-top img {
-        max-height: none;
-        width: 100%;
-    }
-}
-/* CONTROLES */
-.controles{
     padding:15px;
-    background:#1a1a1a;
-    text-align:center;
 }
 
-#buscador{
-    width:85%;
-    max-width:400px;
-    padding:10px;
-    border-radius:20px;
-    border:2px solid var(--azul);
-    background:#222;
-    color:white;
+/* BANNER PUBLICIDAD */
+.banner-publicidad{
+    width:100%;
+    max-width:2000px;
+    margin:10px auto;
 }
 
-/* GRID */
+.banner-publicidad img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+/* GRID RADIOS */
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-    gap:20px;
-    padding:20px;
-    max-width:1200px;
-    margin:auto;
+    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+    gap:15px;
+    padding:15px;
 }
 
+/* TARJETAS */
 .card{
-    background:var(--gris);
-    padding:20px;
-    border-radius:15px;
-    text-align:center;
-}
-
-.name{
-    font-weight:bold;
-    margin-bottom:5px;
-}
-
-.city{
-    font-size:12px;
-    color:var(--texto-gris);
-    margin-bottom:10px;
-}
-
-button.play{
-    width:100%;
-    padding:10px;
-    border:none;
+    background:#111;
     border-radius:10px;
-    background:var(--azul);
-    color:white;
-    cursor:pointer;
+    padding:15px;
+    text-align:center;
+    box-shadow:0 0 10px rgba(0,0,0,0.5);
 }
 
-button.play.activo{
-    background:white;
-    color:black;
+.card h3{
+    margin:10px 0;
+}
+
+/* AUDIO */
+audio{
+    width:100%;
+    margin-top:10px;
+}
+
+/* OCULTAR COMPARTIR EN SMART TV */
+body.is-smart-tv .share-link{
+    display:none !important;
+}
+
+/* FOOTER */
+footer{
+    background:#000;
+    padding:20px;
+    text-align:center;
+    font-size:14px;
+    border-top:1px solid #222;
+}
+
+.footer-item{
+    margin:8px 0;
+}
+
+.footer-item a{
+    color:#00bfff;
+    text-decoration:none;
+}
+
+.footer-item a:hover{
+    text-decoration:underline;
 }
 </style>
 </head>
@@ -119,81 +91,65 @@ button.play.activo{
 <body>
 
 <header>
-<div class="logo-texto">[ RADIOS PATAGÓNICAS ]</div>
+    <h1>📻 Radios Patagónicas</h1>
 </header>
 
 <!-- BANNER -->
 <div class="banner-publicidad">
     <img src="banner-drevanz-2000x240.png" alt="Publicidad Drevanz Producciones">
-</div>    
-<div class="banner-top">
-<a href="https://wa.me/5493755596267" target="_blank">
-</a>
-</div>
-.banner-publicidad {
-    width: 100%;
-    max-width: 2000px;
-    margin: 0 auto;
-}
-
-.banner-publicidad img {
-    width: 100%;
-    height: auto; /* evita deformaciones */
-    display: block;
-}
-    
-<div class="controles">
-<input type="text" id="buscador" placeholder="Buscar radios...">
 </div>
 
-<div class="grid" id="radioGrid">
+<!-- RADIOS -->
+<div class="grid">
 
-<div class="card">
-<div class="name">LU 18 AM 640</div>
-<div class="city">General Roca</div>
-<button class="play" onclick="playRadio(this,'https://streamingraddios.online/proxy/valle?mp=/;')">▶ Escuchar</button>
-</div>
+    <div class="card">
+        <h3>Radio Ejemplo 1</h3>
+        <audio controls preload="none">
+            <source src="URL_STREAM_1" type="audio/mpeg">
+        </audio>
+        <div class="share-link">
+            <a href="#">Compartir</a>
+        </div>
+    </div>
 
-<div class="card">
-<div class="name">AM 550</div>
-<div class="city">Neuquén</div>
-<button class="play" onclick="playRadio(this,'https://sonic.host-live.com:10851/stream')">▶ Escuchar</button>
-</div>
+    <div class="card">
+        <h3>Radio Ejemplo 2</h3>
+        <audio controls preload="none">
+            <source src="URL_STREAM_2" type="audio/mpeg">
+        </audio>
+        <div class="share-link">
+            <a href="#">Compartir</a>
+        </div>
+    </div>
 
 </div>
 
-<audio id="audioPlayer"></audio>
+<!-- FOOTER -->
+<footer>
 
+    <div class="footer-item">
+        📧 <a href="mailto:radiospatagonicas@gmail.com">radiospatagonicas@gmail.com</a>
+    </div>
+
+    <div class="footer-item">
+        📘 <a href="#">Facebook: radiospatagonicas</a>
+    </div>
+
+    <div class="footer-item">
+        📱 WhatsApp: (espacio para agregar número)
+    </div>
+
+</footer>
+
+<!-- SCRIPT DETECTAR SMART TV -->
 <script>
-const player = document.getElementById('audioPlayer');
-
-function playRadio(btn,url){
-if(player.src===url && !player.paused){
-player.pause();
-resetButtons();
-}else{
-resetButtons();
-player.src=url;
-player.play();
-btn.innerText="⏸ Pausar";
-btn.classList.add('activo');
-}
+function esSmartTV(){
+    return /smart-tv|smarttv|googletv|appletv|hbbtv|netcast|viera|tizen|webos/i.test(navigator.userAgent);
 }
 
-function resetButtons(){
-document.querySelectorAll('.play').forEach(b=>{
-b.innerText="▶ Escuchar";
-b.classList.remove('activo');
-});
+if(esSmartTV()){
+    document.body.classList.add("is-smart-tv");
 }
-
-// buscador
-document.getElementById('buscador').addEventListener('input',e=>{
-const val=e.target.value.toLowerCase();
-document.querySelectorAll('.card').forEach(c=>{
-c.style.display=c.innerText.toLowerCase().includes(val)?'block':'none';
-});
-});
 </script>
 
 </body>
