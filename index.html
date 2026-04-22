@@ -16,9 +16,14 @@ header { text-align:center; padding:40px 20px; background:#111; border-bottom:4p
 .detalle { color:var(--azul); font-size:40px; }
 
 /* BANNER */
-.banner-top { width:90%; max-width:970px; margin:20px auto; text-align:center; }
-.banner-top img { width:100%; border-radius:10px; border:1px solid #333; }
-
+.banner-top img {
+    width: 100%;
+    max-height: 120px;
+    object-fit: contain;
+    background: #111;
+    border-radius: 10px;
+    border: 1px solid #333;
+}  
 /* CONTROLES */
 .controles { padding:20px; background:#1a1a1a; position:sticky; top:0; z-index:100; text-align:center; }
 #buscador { width:85%; max-width:400px; padding:12px; border-radius:25px; border:2px solid var(--azul); background:#222; color:white; margin-bottom:15px; }
