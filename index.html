@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Radios Patagónicas</title>
     <style>
+        <style>
         body { margin:0; font-family: 'Inter', sans-serif; background:#0a0a0a; color:#eee; display: flex; flex-direction: column; min-height: 100vh; }
         header { text-align:center; padding:25px; background:#111; border-bottom: 1px solid #222; }
         .logo-principal { max-width: 220px; width: 65%; height: auto; border-radius: 50%; }
@@ -14,6 +15,41 @@
         .player-container { position: sticky; top: 0; z-index: 100; background: #111; padding: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .player { width:90%; margin:0 auto; }
         audio { width:100%; height: 40px; }
+
+        /* --- CORRECCIÓN DEL BANNER --- */
+        .main-banner-container {
+            width: 100%; /* Ocupa todo el ancho en celulares */
+            margin: 15px 0;
+            text-align: center;
+            overflow: hidden; /* Corta lo que sobre si la imagen es muy grande */
+        }
+
+        .main-banner-link {
+            display: inline-block;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .main-banner-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* AJUSTES ESPECÍFICOS PARA PC (PANTALLAS GRANDES) */
+        @media (min-width: 1024px) {
+            .main-banner-container {
+                width: 90%; /* En PC, no ocupa todo el ancho */
+                max-width: 1200px; /* Ancho máximo para que no se estire infinito */
+                margin: 20px auto; /* Centrado horizontalmente */
+            }
+            .main-banner-img {
+                border-radius: 12px; /* Bordes redondeados solo en PC */
+            }
+        }
+        /* --- FIN CORRECCIÓN BANNER --- */
 
         .ads-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 90%; margin: 15px auto; }
         .ad-box { background: #161616; padding: 15px; border-radius: 8px; border: 1px dashed #333; color: #555; text-decoration: none; text-align: center; font-size: 11px; }
@@ -40,6 +76,26 @@
         .footer { text-align:center; padding:60px 20px; font-size:13px; color:#666; margin-top: auto; border-top: 1px solid #111; background: #0d0d0d; }
         .btn-contacto { display: inline-block; margin-top: 15px; padding: 10px 20px; background: #222; color: #eee; text-decoration: none; border-radius: 8px; border: 1px solid #333; transition: 0.3s; }
         .btn-contacto:hover { background: #0077ff; border-color: #0077ff; color: #fff; }
+    </style>
+
+
+<div class="main-banner-container">
+    <a href="https://wa.me/5493755596267?text=Hola,%20vi%20tu%20publicidad%20en%20Radios%20Patagónicas" target="_blank" class="main-banner-link">
+        <img src="banner-drevanz-2000x240.png" 
+             alt="Drevanz Producciones" 
+             class="main-banner-img">
+    </a>
+</div>
+
+<div class="ads-container">
+    <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
+    <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
+</div>
+
+<div class="ads-container">
+    <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
+    <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
+</div>
     </style>
 </head>
 <body>
