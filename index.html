@@ -6,13 +6,7 @@
     <title>Radios Patagónicas</title>
     <style>
         body { margin:0; font-family: 'Inter', sans-serif; background:#0a0a0a; color:#eee; display: flex; flex-direction: column; min-height: 100vh; }
-      .slide img {
-    width: 100%;
-    height: 240px; 
-    object-fit: contain; 
-    background: #000;
-    display: block;
-}
+        
         /* --- DISEÑO DE LOGO RADIOS PATAGÓNICAS --- */
         header { 
             text-align:center; 
@@ -43,7 +37,7 @@
         .player { width:90%; margin:0 auto; }
         audio { width:100%; height: 40px; }
 
-        /* --- CARRUSEL CORREGIDO --- */
+        /* --- CARRUSEL --- */
         .slider-container {
             width: 100%;
             max-width: 1000px;
@@ -63,22 +57,12 @@
             box-sizing: border-box;
             background: #000;
         }
-       .slide img {
-    width: 100%;
-    height: 240px; /* Forzamos la altura del carrusel */
-    object-fit: contain; /* La imagen se achica hasta entrar entera sin cortarse */
-    background: #000; /* Lo que sobre de los costados será negro */
-    display: block;
-}
-        /* Contenedor especial para placas de texto */
-        .slide-text {
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            text-align: center;
-            padding: 20px;
+        .slide img {
+            width: 100%;
+            height: 240px; 
+            object-fit: contain; 
+            background: #000;
+            display: block;
         }
 
         .dots { text-align: center; padding: 10px; background: #0a0a0a; }
@@ -118,48 +102,33 @@
     <span class="logo-sub">EL PORTAL DEL DIAL REGIONAL</span>
 </header>
 
+<div class="player-container">
+    <div class="now" id="nowPlaying">🎧 Seleccioná una radio para escuchar</div>
+    <div class="player">
+        <audio id="player" controls autoplay></audio>
+    </div>
+</div>
+
 <div class="slider-container">
     <div class="slider" id="slider">
         <div class="slide">
             <a href="https://wa.me/5493755596267" target="_blank">
-                <img src="banner-drevanz-2000x240.png" alt="Drevanz Producciones">
+                <img src="banner-drevanz-2000x240.png" alt="Drevanz">
             </a>
         </div>
         <div class="slide">
-            <img src="fm-carolina.jpg" alt="FM Carolina 92.9">
+            <img src="fm-carolina.jpg" alt="FM Carolina">
         </div>
         <div class="slide">
-            <img src="pueblo-viejo.jpg" alt="FM Pueblo Viejo 89.9">
+            <img src="pueblo-viejo.jpg" alt="Pueblo Viejo">
         </div>
         <div class="slide">
-            <img src="cristal.jpg" alt="Cristal FM 92.5">
+            <img src="cristal.jpg" alt="Cristal FM">
         </div>
     </div>
     <div class="dots" id="dots">
         <span class="dot active"></span>
         <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-    </div>
-</div>
-    <div class="dots" id="dots">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-    </div>
-</div>
-    <div class="dots" id="dots">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-    </div>
-</div>
-
-       
-    <div class="dots" id="dots">
-        <span class="dot active"></span>
         <span class="dot"></span>
         <span class="dot"></span>
     </div>
@@ -247,7 +216,6 @@
 </footer>
 
 <script>
-// --- LÓGICA DEL CARRUSEL ---
 let currentSlide = 0;
 function showSlide(index) {
     const slider = document.getElementById("slider");
@@ -266,7 +234,6 @@ function showSlide(index) {
 
 setInterval(() => { showSlide(currentSlide + 1); }, 5000);
 
-// --- LÓGICA DEL REPRODUCTOR ---
 const player = document.getElementById("player");
 const now = document.getElementById("nowPlaying");
 
@@ -341,6 +308,5 @@ window.addEventListener("load", () => {
     }
 });
 </script>
-
 </body>
 </html>
