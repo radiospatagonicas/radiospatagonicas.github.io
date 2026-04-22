@@ -13,7 +13,19 @@
     color:#25D366;
     text-decoration:none;
     font-weight:bold;
+    .banner-top {
+    width: 90%;
+    max-width: 970px;
+    margin: 20px auto;
+    text-align: center;
 }
+
+.banner-top img {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #333;
+}        
+
         :root { --azul: #0077ff; --negro: #0a0a0a; --gris: #161616; --texto-gris: #888; }
         
         body { margin: 0; background: var(--negro); color: white; font-family: 'Segoe UI', sans-serif; }
@@ -87,8 +99,8 @@
 </header>
 
 <div class="banner-top">
-    <a href="https://wa.me/5493755596267" target="_blank">
-        <img src="banner.jpg" alt="Publicidad Radios Patagónicas">
+    <a id="bannerLink" href="#" target="_blank">
+        <img id="bannerImg" src="banner.jpg" alt="Publicidad">
     </a>
 </div>
 
@@ -2911,6 +2923,25 @@
     // SMART TV
     if (navigator.userAgent.toLowerCase().includes("smart-tv")) {
         document.body.classList.add('is-smart-tv');
+   // ===== BANNER ROTATIVO =====
+const banners = [
+    {
+        img: "banner.jpg",
+        link: "https://wa.me/5493755596267?text=Hola,%20quiero%20publicar%20en%20Radios%20Patagónicas"
+    }
+];
+
+let currentBanner = 0;
+
+function rotarBanner() {
+    currentBanner = (currentBanner + 1) % banners.length;
+
+    document.getElementById("bannerImg").src = banners[currentBanner].img;
+    document.getElementById("bannerLink").href = banners[currentBanner].link;
+}
+
+setInterval(rotarBanner, 5000);
+    
     }
 </script>
 
