@@ -15,68 +15,45 @@
         .player { width:90%; margin:0 auto; }
         audio { width:100%; height: 40px; }
 
-        /* --- CORRECCIÓN DEL BANNER --- */
-.slider-container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 20px auto;
-    position: relative;
-    overflow: hidden;
-    border-radius: 12px;
-    border: 1px solid #222;
-    background: #000;
-}
-.slider {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-.slide {
-    min-width: 100%;
-    box-sizing: border-box;
-}
-.slide img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-.dots {
-    text-align: center;
-    padding: 10px;
-    background: #111;
-}
-.dot {
-    height: 8px;
-    width: 8px;
-    margin: 0 4px;
-    background-color: #333;
-    border-radius: 50%;
-    display: inline-block;
-    transition: 0.3s;
-}
-.dot.active { background-color: #0077ff; width: 20px; border-radius: 10px; }
+        /* --- ESTILOS CARRUSEL --- */
+        .slider-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid #222;
+            background: #000;
         }
-    @media (min-width: 1024px) {
-            .main-banner-container {
-                width: 90%;
-                max-width: 1100px; /* Limitamos el ancho para que no se estire al infinito */
-                margin: 30px auto;
-                border: 1px solid #222;
-                border-radius: 12px;
-                overflow: hidden;
-                box-shadow: 0 0 20px rgba(0, 119, 255, 0.2); /* Un brillo azul sutil como tu logo */
-            }
-  .main-banner-img {
-                width: 100%; /* Obligamos a la imagen a llenar el contenedor */
-                height: auto;
-            }
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
         }
-            .main-banner-img {
-                border-radius: 12px;
-                border: 1px solid #333;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            }
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
         }
-        /* --- FIN CORRECCIÓN BANNER --- */
+        .slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .dots {
+            text-align: center;
+            padding: 10px;
+            background: #111;
+        }
+        .dot {
+            height: 8px;
+            width: 8px;
+            margin: 0 4px;
+            background-color: #333;
+            border-radius: 50%;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .dot.active { background-color: #0077ff; width: 20px; border-radius: 10px; }
 
         .ads-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 90%; margin: 15px auto; }
         .ad-box { background: #161616; padding: 15px; border-radius: 8px; border: 1px dashed #333; color: #555; text-decoration: none; text-align: center; font-size: 11px; }
@@ -224,6 +201,8 @@
     <a href="https://www.facebook.com/radiospatagonicas" target="_blank" class="btn-contacto">Facebook</a>
 </footer>
 
+<script>
+// --- LÓGICA DEL CARRUSEL ---
 let currentSlide = 0;
 function showSlide(index) {
     const slider = document.getElementById("slider");
@@ -234,17 +213,21 @@ function showSlide(index) {
     else if (index < 0) currentSlide = slides.length - 1;
     else currentSlide = index;
 
-    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    if(slider) {
+        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
     
     dots.forEach(dot => dot.classList.remove("active"));
-    dots[currentSlide].classList.add("active");
+    if(dots[currentSlide]) {
+        dots[currentSlide].classList.add("active");
+    }
 }
 
 setInterval(() => {
     showSlide(currentSlide + 1);
-}, 5000); // Cambia cada 5 segundos
-    
-<script>
+}, 5000);
+
+// --- LÓGICA DEL REPRODUCTOR Y WEB ---
 const player = document.getElementById("player");
 const now = document.getElementById("nowPlaying");
 
@@ -321,4 +304,3 @@ window.addEventListener("load", () => {
 </script>
 </body>
 </html>
- 
