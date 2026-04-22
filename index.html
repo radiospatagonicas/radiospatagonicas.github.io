@@ -16,12 +16,12 @@
         audio { width:100%; height: 40px; }
 
         /* --- CORRECCIÓN DEL BANNER --- */
-        .main-banner-container {
-            width: 100%;
-            margin: 15px 0;
-            text-align: center;
-            overflow: hidden;
-        }
+       .main-banner-container {
+    width: 100%;
+    margin: 15px 0;
+    text-align: center;
+    background: #000; /* Fondo negro para que se fusione con la imagen */
+}
         .main-banner-link {
             display: inline-block;
             text-decoration: none;
@@ -37,12 +37,20 @@
             border-top: 1px solid #222;
             border-bottom: 1px solid #222;
         }
-        @media (min-width: 1024px) {
-            .main-banner-container {
-                width: 90%;
-                max-width: 1200px;
-                margin: 20px auto;
-            }
+     @media (min-width: 1024px) {
+    .main-banner-container {
+        width: fit-content; /* El rectángulo se achica al tamaño de la imagen */
+        max-width: 90%; 
+        margin: 25px auto; /* Lo centra en la pantalla */
+        border-radius: 8px;
+        border: 1px solid #222;
+        overflow: hidden;
+    }
+    .main-banner-img {
+        max-height: 180px; /* Reducimos un poco la altura en PC para que no ocupe toda la pantalla */
+        width: auto; /* Permite que el ancho se ajuste a la altura */
+    }
+}
             .main-banner-img {
                 border-radius: 12px;
                 border: 1px solid #333;
