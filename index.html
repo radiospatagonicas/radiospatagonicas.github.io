@@ -50,12 +50,10 @@ button.play.activo { background:white; color:black; }
 </header>
 
 <!-- BANNER -->
-const banners=[
-{
-img:"banner.png",
-link:"https://wa.me/5493755596267?text=Hola,%20quiero%20publicar%20en%20Radios%20Patagónicas"
-}
-];
+<div class="banner-top">
+<a id="bannerLink" href="https://wa.me/5493755596267?text=Hola,%20quiero%20publicar%20en%20Radios%20Patagónicas" target="_blank">
+<img id="bannerImg" src="banner.png" alt="Publicidad">
+</a>
 </div>
 
 <div class="controles">
@@ -136,24 +134,6 @@ function compartir(nombre){
 const url=window.location.href;
 window.open(`https://wa.me/?text=Escucha ${nombre} ${url}`,'_blank');
 }
-
-// ===== BANNER ROTATIVO =====
-const banners=[
-{
-img:"banner.jpg",
-link:"https://wa.me/5493755596267?text=Hola,%20quiero%20publicar%20en%20Radios%20Patagónicas"
-}
-];
-
-let currentBanner=0;
-
-function rotarBanner(){
-currentBanner=(currentBanner+1)%banners.length;
-document.getElementById("bannerImg").src=banners[currentBanner].img;
-document.getElementById("bannerLink").href=banners[currentBanner].link;
-}
-
-setInterval(rotarBanner,5000);
 </script>
 
 </body>
