@@ -4694,9 +4694,8 @@ window.addEventListener("load", () => {
         }
     }
 });   
-</script>
-
-// Lista de población (Censo 2022 aprox)
+<script>
+// 1. Base de datos de población
 const poblacionData = {
     "General Roca": 109000,
     "Neuquén": 290000,
@@ -4707,49 +4706,60 @@ const poblacionData = {
 };
 
 function generarEstadisticas() {
+    // Busca todas las tarjetas de radios que ya tenés en el HTML
     const cards = document.querySelectorAll('.card');
     const stats = {};
 
-    // 1. Contamos radios por ciudad
     cards.forEach(card => {
-        const ciudad = card.querySelector('.city').innerText.trim();
-        if (!stats[ciudad]) {
-            stats[ciudad] = { count: 0, provincia: card.getAttribute('data-provincia') };
+        const ciudadElement = card.querySelector('.city');
+        if (ciudadElement) {
+            const ciudad = ciudadElement.innerText.trim();
+            if (!stats[ciudad]) {
+                stats[ciudad] = { 
+                    count: 0, 
+                    provincia: card.getAttribute('data-provincia') || "S/D" 
+                };
+            }
+            stats[ciudad].count++;
         }
-        stats[ciudad].count++;
     });
 
-    // 2. Llenamos la tabla
     const tbody = document.getElementById('tbody-stats');
-    if(!tbody) return;
+    if (!tbody) return;
     tbody.innerHTML = '';
 
+    // Creamos las filas de la tabla
     for (const ciudad in stats) {
-        const fila = document.createElement('tr');
         const pop = poblacionData[ciudad] || 0;
-        const indice = pop > 0 ? Math.round(pop / stats[ciudad].count) : "S/D";
-        
-        // Solo mostramos si tenemos el dato de población para "sincerar"
         if (pop > 0) {
+            const indice = Math.round(pop / stats[ciudad].count);
+            const fila = document.createElement('tr');
+            fila.style.borderBottom = "1px solid #222";
+            
+            // Color rojo si hay saturación (menos de 2500 hab por radio)
+            const colorIndice = indice < 2500 ? '#ff4444' : '#00ffcc';
+
             fila.innerHTML = `
-                <td>${ciudad}</td>
-                <td style="text-transform:uppercase">${stats[ciudad].provincia}</td>
-                <td><strong>${stats[ciudad].count}</strong></td>
-                <td style="color:${indice < 2000 ? '#ff4444' : '#00ffcc'}">${indice}</td>
+                <td style="padding:10px">${ciudad}</td>
+                <td style="padding:10px; text-transform:uppercase">${stats[ciudad].provincia}</td>
+                <td style="padding:10px"><strong>${stats[ciudad].count}</strong></td>
+                <td style="padding:10px; color:${colorIndice}; font-weight:bold">${indice}</td>
             `;
             tbody.appendChild(fila);
         }
     }
-    
-    // Actualizamos el contador total
-    document.getElementById('total-radios').innerText = cards.length;
+
+    // Actualiza el número total de radios en el monitor
+    const totalElement = document.getElementById('total-radios');
+    if (totalElement) totalElement.innerText = cards.length;
 }
 
-// Ejecutar al cargar la página
-window.onload = () => {
+// Esto hace que corra apenas carga la página
+if (document.readyState === 'complete') {
     generarEstadisticas();
-    // Aquí puedes llamar a otras funciones que ya tengas como la del slider
-};
+} else {
+    window.addEventListener('load', generarEstadisticas);
+}
 </script>
     
 </body>
