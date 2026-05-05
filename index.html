@@ -4694,69 +4694,7 @@ window.addEventListener("load", () => {
         }
     }
 });   
-<script>
-// 1. Datos de población
-const poblacionData = {
-    "General Roca": 109000,
-    "Neuquén": 290000,
-    "Cipolletti": 105000,
-    "Viedma": 60000,
-    "Allen": 33000,
-    "Villa Regina": 35000,
-    "Bariloche": 146000,
-    "El Bolsón": 25000
-};
 
-function actualizarMonitor() {
-    // Usamos una técnica que no bloquea el navegador
-    const cards = Array.from(document.getElementsByClassName('card'));
-    const totalCount = cards.length;
-    
-    if (totalCount === 0) return; // Si aún no cargaron, no hace nada
-
-    const stats = {};
-    cards.forEach(card => {
-        const cityEl = card.getElementsByClassName('city')[0];
-        if (cityEl) {
-            const ciudad = cityEl.innerText.trim();
-            if (!stats[ciudad]) {
-                stats[ciudad] = { count: 0, prov: card.getAttribute('data-provincia') || "" };
-            }
-            stats[ciudad].count++;
-        }
-    });
-
-    const tbody = document.getElementById('tbody-stats');
-    if (!tbody) return;
-    
-    let htmlFinal = "";
-    for (const ciudad in stats) {
-        const pop = poblacionData[ciudad];
-        if (pop) {
-            const count = stats[ciudad].count;
-            const indice = Math.round(pop / count);
-            const color = indice < 2500 ? '#ff4444' : '#00ffcc';
-            
-            htmlFinal += `<tr style="border-bottom:1px solid #222">
-                <td style="padding:10px">${ciudad}</td>
-                <td style="padding:10px;text-align:center"><strong>${count}</strong></td>
-                <td style="padding:10px;text-align:right;color:${color};font-weight:bold">${indice.toLocaleString()}</td>
-            </tr>`;
-        }
-    }
-    tbody.innerHTML = htmlFinal;
-    document.getElementById('total-radios').innerText = totalCount;
-}
-
-// ESTA PARTE ES CLAVE: Ejecuta el monitor sin romper los botones de Play
-setTimeout(() => {
-    try {
-        actualizarMonitor();
-    } catch (e) {
-        console.log("Error en monitor, pero el sitio sigue funcionando");
-    }
-}, 3000); // Espera 3 segundos completos para no molestar al inicio
-</script>
     
 </body>
 </html>
