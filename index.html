@@ -4540,7 +4540,31 @@
 
     
 </div>
+<section id="stats-dial" style="width:90%;max-width:1000px;margin:40px auto;padding:20px;background:#111;border-radius:15px;border:1px solid #222">
+  <h2 style="color:#fff;font-size:1.6rem;margin-bottom:8px;font-weight:900">📊 Monitor del Dial Patagónico</h2>
+  <p style="color:#666;margin-bottom:20px;font-size:14px">
+    Radios relevadas: <strong id="total-radios" style="color:#0077ff">0</strong>
+  </p>
 
+  <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;text-align:left">
+      <thead>
+        <tr style="border-bottom:2px solid #222;color:#0077ff;font-size:12px">
+          <th style="padding:10px">LOCALIDAD</th>
+          <th style="padding:10px">PROVINCIA</th>
+          <th style="padding:10px">RADIOS</th>
+          <th style="padding:10px">HAB X RADIO*</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-stats" style="color:#ccc;font-size:14px">
+        <!-- Se llena solo con el script -->
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:11px;color:#444;margin-top:15px">
+    * Cifra en rojo indica saturación crítica del espectro según densidad poblacional (Censo 2022).
+  </p>
+</section>
 <footer class="footer">
     <p>© 2026 Radios Patagónicas - El portal del dial regional.</p>
     <a href="mailto:radiospatagonicas@gmail.com" class="btn-contacto">📧 Agregá tu emisora</a>
@@ -4671,5 +4695,62 @@ window.addEventListener("load", () => {
     }
 });   
 </script>
+
+// Lista de población (Censo 2022 aprox)
+const poblacionData = {
+    "General Roca": 109000,
+    "Neuquén": 290000,
+    "Cipolletti": 105000,
+    "Viedma": 60000,
+    "Allen": 33000,
+    "Villa Regina": 35000
+};
+
+function generarEstadisticas() {
+    const cards = document.querySelectorAll('.card');
+    const stats = {};
+
+    // 1. Contamos radios por ciudad
+    cards.forEach(card => {
+        const ciudad = card.querySelector('.city').innerText.trim();
+        if (!stats[ciudad]) {
+            stats[ciudad] = { count: 0, provincia: card.getAttribute('data-provincia') };
+        }
+        stats[ciudad].count++;
+    });
+
+    // 2. Llenamos la tabla
+    const tbody = document.getElementById('tbody-stats');
+    if(!tbody) return;
+    tbody.innerHTML = '';
+
+    for (const ciudad in stats) {
+        const fila = document.createElement('tr');
+        const pop = poblacionData[ciudad] || 0;
+        const indice = pop > 0 ? Math.round(pop / stats[ciudad].count) : "S/D";
+        
+        // Solo mostramos si tenemos el dato de población para "sincerar"
+        if (pop > 0) {
+            fila.innerHTML = `
+                <td>${ciudad}</td>
+                <td style="text-transform:uppercase">${stats[ciudad].provincia}</td>
+                <td><strong>${stats[ciudad].count}</strong></td>
+                <td style="color:${indice < 2000 ? '#ff4444' : '#00ffcc'}">${indice}</td>
+            `;
+            tbody.appendChild(fila);
+        }
+    }
+    
+    // Actualizamos el contador total
+    document.getElementById('total-radios').innerText = cards.length;
+}
+
+// Ejecutar al cargar la página
+window.onload = () => {
+    generarEstadisticas();
+    // Aquí puedes llamar a otras funciones que ya tengas como la del slider
+};
+</script>
+    
 </body>
 </html>
