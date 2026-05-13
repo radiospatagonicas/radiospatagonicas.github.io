@@ -4949,75 +4949,17 @@ const player = document.getElementById("player");
 const now = document.getElementById("nowPlaying");
 
 function playRadio(btn, url) {
-   let hls;
-
-function playRadio(btn, url) {
-
+    // Verificamos si es la misma radio comparando la URL
     const mismaRadio = player.src === url || player.src.includes(url);
 
     if (mismaRadio && !player.paused) {
+        // Si está sonando y clickeamos de nuevo: Pausar
         player.pause();
-
-        if (hls) {
-            hls.destroy();
-        }
-
-        player.src = "";
+        // Opcional: limpiar el src para detener el buffer
+        player.src = ""; 
         resetUI();
-
         now.innerText = "🎧 Seleccioná una radio para escuchar";
         return;
-    }
-
-    resetUI();
-
-    if (hls) {
-        hls.destroy();
-    }
-
-    // Detectar si es HLS (.m3u8)
-    if (url.includes(".m3u8")) {
-
-        if (Hls.isSupported()) {
-
-            hls = new Hls();
-
-            hls.loadSource(url);
-
-            hls.attachMedia(player);
-
-            hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                player.play();
-            });
-
-        } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
-
-            player.src = url;
-
-            player.play();
-        }
-
-    } else {
-
-        // Radios normales MP3/AAC
-        player.src = url;
-
-        player.play().catch(error =>
-            console.error("Error al reproducir:", error)
-        );
-    }
-
-    btn.classList.add("on");
-
-    btn.innerText = "⏸ Sonando...";
-
-    btn.parentElement.classList.add("active");
-
-    const radioName =
-        btn.parentElement.querySelector(".name").innerText;
-
-    now.innerText = "📻 Sonando: " + radioName;
-}
     }
 
     // Resetear visualmente todos los botones y cards
@@ -5094,5 +5036,3 @@ window.addEventListener("load", () => {
 </script>
 </body>
 </html>
-
-
