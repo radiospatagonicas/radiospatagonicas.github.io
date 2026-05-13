@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radios Patagónicas</title>
-    <style>
+    <style>       
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
         body { margin:0; font-family: 'Inter', sans-serif; background:#0a0a0a; color:#eee; display: flex; flex-direction: column; min-height: 100vh; }
         
         /* --- DISEÑO DE LOGO RADIOS PATAGÓNICAS --- */
@@ -153,6 +154,19 @@
 </div>
 
 <div class="grid" id="radioGrid">
+  <div class="card" id="rtn" data-provincia="neuquen" data-name="rtn radio neuquen">
+      <div class="name">RTN Radio</div>
+      <div class="city">Neuquén</div>
+      <button class="play"
+      onclick="playRadio(this, 'https://media.neuquen.gov.ar/rtn/radio/playlist.m3u8')">
+      ▶ Escuchar
+      </button>
+      <div class="share-link"
+      onclick="compartir('rtn', 'RTN Radio Neuquén')">
+      🔗 Compartir
+      </div>
+      </div>
+    
     <div class="card" id="am550" data-provincia="neuquen" data-name="am 550 la primera nqn">
         <div class="name">LRG 206 AM 550</div>
         <div class="city">Neuquén</div>
@@ -4674,7 +4688,7 @@
 </div>   
 
 <div class="card" id="nacional-esquel" data-provincia="chubut" data-name="nacional am 560 esquel">   
-        <div class="name">Nacional Esquel AM 560</div>   
+    <div class="name">Nacional Esquel AM 560</div>   
     <div class="city">Esquel</div>   
     <button class="play" onclick="playRadio(this, 'https://sa.mp3.icecast.magma.edge-access.net/sc_rad9')">▶ Escuchar</button>
     <div class="share-link" onclick="compartir('nacional-esquel', 'Nacional Esquel AM 560')">🔗 Compartir</div>
@@ -4935,17 +4949,75 @@ const player = document.getElementById("player");
 const now = document.getElementById("nowPlaying");
 
 function playRadio(btn, url) {
-    // Verificamos si es la misma radio comparando la URL
+   let hls;
+
+function playRadio(btn, url) {
+
     const mismaRadio = player.src === url || player.src.includes(url);
 
     if (mismaRadio && !player.paused) {
-        // Si está sonando y clickeamos de nuevo: Pausar
         player.pause();
-        // Opcional: limpiar el src para detener el buffer
-        player.src = ""; 
+
+        if (hls) {
+            hls.destroy();
+        }
+
+        player.src = "";
         resetUI();
+
         now.innerText = "🎧 Seleccioná una radio para escuchar";
         return;
+    }
+
+    resetUI();
+
+    if (hls) {
+        hls.destroy();
+    }
+
+    // Detectar si es HLS (.m3u8)
+    if (url.includes(".m3u8")) {
+
+        if (Hls.isSupported()) {
+
+            hls = new Hls();
+
+            hls.loadSource(url);
+
+            hls.attachMedia(player);
+
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                player.play();
+            });
+
+        } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
+
+            player.src = url;
+
+            player.play();
+        }
+
+    } else {
+
+        // Radios normales MP3/AAC
+        player.src = url;
+
+        player.play().catch(error =>
+            console.error("Error al reproducir:", error)
+        );
+    }
+
+    btn.classList.add("on");
+
+    btn.innerText = "⏸ Sonando...";
+
+    btn.parentElement.classList.add("active");
+
+    const radioName =
+        btn.parentElement.querySelector(".name").innerText;
+
+    now.innerText = "📻 Sonando: " + radioName;
+}
     }
 
     // Resetear visualmente todos los botones y cards
