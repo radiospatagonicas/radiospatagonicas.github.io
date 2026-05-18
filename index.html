@@ -5695,48 +5695,63 @@ function compartir(id, nombre) {
 }
 
 // --- Eventos Globales ---
-player.addEventListener("pause", () => {
-// --- Manejo de rutas y filtros al cargar la página ---
+// --- Manejo de rutas y filtros al cargar la página (Versión Corregida) ---
 window.addEventListener("load", () => {
-    const params = new URLSearchParams(window.location.search);
-    
-    // 1. Si el link viene de compartir una radio específica (?radio=id)
-    const radioId = params.get("radio");
-    if (radioId) {
-        const card = document.getElementById(radioId);
-        if (card) {
-            card.scrollIntoView({ behavior: "smooth", block: "center" });
-            card.classList.add("active");
-            return; 
-        }
-    }
-
-    // 2. Si el link viene redireccionado desde una carpeta de ciudad (?localidad=viedma)
-    const localidad = params.get("localidad");
-    if (localidad) {
-        // Enmascaramos la URL para que el usuario siga viendo /viedma en su navegador
-        const urlLimpia = window.location.origin + "/" + localidad;
-        window.history.replaceState({}, "", urlLimpia);
-
-        // Filtramos las tarjetas por la localidad recibida
-        document.querySelectorAll(".card").forEach(card => {
-            const textoRadio = card.getAttribute("data-name").toLowerCase();
-            const ciudadRadio = card.querySelector(".city").innerText.toLowerCase();
-            
-            if (textoRadio.includes(localidad) || ciudadRadio.includes(localidad)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
+    try {
+        const params = new URLSearchParams(window.location.search);
+        
+        // 1. Si el link viene de compartir una radio específica (?radio=id)
+        const radioId = params.get("radio");
+        if (radioId) {
+            const card = document.getElementById(radioId);
+            if (card) {
+                card.scrollIntoView({ behavior: "smooth", block: "center" });
+                card.classList.add("active");
+                return; // Frena acá si es una radio individual
             }
-        });
+        }
 
-        // Ponemos el nombre en el buscador por si quiere borrarlo
-        const searchInput = document.getElementById("searchInput");
-        if (searchInput) searchInput.value = localidad;
+        // 2. Si el link viene redireccionado desde una carpeta de ciudad (?localidad=viedma)
+        const localidad = params.get("localidad");
+        if (localidad) {
+            // CORRECCIÓN: Enmascaramos la URL respetando la ruta actual del navegador sin romper el origen
+            const nombreCarpeta = window.location.pathname.split('/')[1] || "";
+            let nuevaRuta = window.location.origin + "/";
+            
+            // Si estás en GitHub Pages (ej: /radiospatagonicas/), mantenemos esa subcarpeta en la URL
+            if (window.location.hostname.includes("github.io")) {
+                nuevaRuta += nombreCarpeta + "/" + localidad;
+            } else {
+                // Si ya estás en tu dominio propio (radiospatagonicas.com.ar)
+                nuevaRuta += localidad;
+            }
+            
+            // Cambiamos lo que ve el usuario en la barra sin recargar la página
+            window.history.replaceState({}, "", nuevaRuta);
 
-        // Scroll suave a la grilla de radios
-        const grid = document.getElementById("radioGrid");
-        if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
+            // Filtramos las tarjetas por la localidad recibida
+            document.querySelectorAll(".card").forEach(card => {
+                const textoRadio = card.getAttribute("data-name").toLowerCase();
+                const ciudadRadio = card.querySelector(".city").innerText.toLowerCase();
+                
+                if (textoRadio.includes(localidad) || ciudadRadio.includes(localidad)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            // Ponemos el nombre en el buscador
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) searchInput.value = localidad;
+
+            // Scroll suave a la grilla de radios
+            const grid = document.getElementById("radioGrid");
+            if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    } catch (error) {
+        // Si algo falla en el enrutamiento, lo muestra en consola pero NO bloquea los botones de Play
+        console.error("Error en el enrutador de ciudades:", error);
     }
 });
 </script>
