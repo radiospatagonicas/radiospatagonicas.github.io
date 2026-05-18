@@ -5693,77 +5693,45 @@ function compartir(id, nombre) {
 }
 
 // --- Eventos Globales ---
-// --- MANEJO DE RUTAS Y FILTROS AL CARGAR LA PÁGINA (VERSIÓN FINAL ANTI-PARPADEO) ---
-window.addEventListener("load", () => {
-    try {
-        const params = new URLSearchParams(window.location.search);
-        
-        // 1. Si el link viene de compartir una radio específica (?radio=id)
-        const radioId = params.get("radio");
-        if (radioId) {
-            const card = document.getElementById(radioId);
-            if (card) {
-                setTimeout(() => {
-                    card.scrollIntoView({ behavior: "smooth", block: "center" });
-                    card.classList.add("active");
-                }, 100);
-                return; 
-            }
-        }
+// --- FILTRADO AUTOMÁTICO POR URL PARA LAS 100 CIUDADES ---
+window.addEventListener("DOMContentLoaded", () => {
+    // 1. Leemos si hay alguna localidad en la barra de direcciones
+    const parametros = new URLSearchParams(window.location.search);
+    const localidadUrl = parametros.get("localidad");
 
-        // 2. Si el link viene redireccionado desde una carpeta de ciudad (?localidad=viedma)
-        const localidad = params.get("localidad");
-        if (localidad) {
-            const localidadLimpia = localidad.toLowerCase().trim();
+    if (localidadUrl) {
+        const ciudadBuscada = localidadUrl.toLowerCase().trim();
 
-            // Guardamos la configuración en la sesión del navegador para que no se repita el bucle
-            if (sessionStorage.getItem('filtrado_' + localidadLimpia)) {
-                // Si ya se filtró en esta sesión, frenamos el script acá para evitar el titileo infinito
-                return;
-            }
-
-            // Marcamos como filtrado en esta carga
-            sessionStorage.setItem('filtrado_' + localidadLimpia, 'true');
-
-            // Filtramos las tarjetas de radios inmediatamente
-            document.querySelectorAll(".card").forEach(card => {
-                const dataName = card.getAttribute("data-name") ? card.getAttribute("data-name").toLowerCase() : "";
-                const cityElement = card.querySelector(".city");
-                const textoCiudad = cityElement ? cityElement.innerText.toLowerCase() : "";
-                
-                if (dataName.includes(localidadLimpia) || textoCiudad.includes(localidadLimpia)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-
-            // Colocamos el texto en tu buscador por si el usuario quiere borrarlo
-            const searchInput = document.getElementById("searchInput");
-            if (searchInput) searchInput.value = localidadLimpia;
-
-            // Enmascaramos la URL de forma pasiva (Sin alterar el historial del navegador)
-            let nuevaRutaUrl = window.location.origin + "/";
-            if (window.location.hostname.includes("github.io")) {
-                const nombreRepo = window.location.pathname.split('/')[1] || "";
-                nuevaRutaUrl += nombreRepo + "/" + localidadLimpia + "/";
-            } else {
-                nuevaRutaUrl += localidadLimpia + "/";
-            }
+        // 2. Recorremos las 600 tarjetas automáticamente
+        document.querySelectorAll(".card").forEach(tarjeta => {
+            // Buscamos el texto dentro de la clase .city de cada tarjeta
+            const elementoCiudad = tarjeta.querySelector(".city");
+            const textoCiudad = elementoCiudad ? elementoCiudad.innerText.toLowerCase() : "";
             
-            // Reemplazamos la URL de forma estática pura
-            window.history.pushState(null, null, nuevaRutaUrl);
+            // Buscamos también en el data-name por seguridad
+            const dataName = tarjeta.getAttribute("data-name") ? tarjeta.getAttribute("data-name").toLowerCase() : "";
 
-            // Enfoque visual suave a la grilla de radios
-            const radioGrid = document.getElementById("radioGrid");
-            if (radioGrid) {
-                setTimeout(() => {
-                    radioGrid.scrollIntoView({ behavior: "smooth", block: "start" });
-                }, 200);
+            // 3. Si la tarjeta coincide con la ciudad de la URL, se muestra; si no, se oculta
+            if (textoCiudad.includes(ciudadBuscada) || dataName.includes(ciudadBuscada)) {
+                tarjeta.style.display = "block";
+            } else {
+                tarjeta.style.display = "none";
             }
+        });
+
+        // 4. Opcional: Ponemos el nombre de la ciudad en tu buscador visual
+        const cajaBusqueda = document.getElementById("searchInput");
+        if (cajaBusqueda) {
+            cajaBusqueda.value = ciudadBuscada;
         }
-    } catch (error) {
-        console.error("Error controlado en el enrutador:", error);
+        
+        // 5. Hacemos un scroll suave automático hasta la grilla de radios filtrada
+        const grilla = document.getElementById("radioGrid");
+        if (grilla) {
+            setTimeout(() => {
+                grilla.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 300);
+        }
     }
 });
 </script>
