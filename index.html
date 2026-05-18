@@ -5696,22 +5696,49 @@ function compartir(id, nombre) {
 
 // --- Eventos Globales ---
 player.addEventListener("pause", () => {
-    resetUI();
-    now.innerText = "⏸️ Reproducción pausada";
-});
-
-// Manejo de compartir mediante URL al cargar la página
+// --- Manejo de rutas y filtros al cargar la página ---
 window.addEventListener("load", () => {
     const params = new URLSearchParams(window.location.search);
+    
+    // 1. Si el link viene de compartir una radio específica (?radio=id)
     const radioId = params.get("radio");
     if (radioId) {
         const card = document.getElementById(radioId);
         if (card) {
             card.scrollIntoView({ behavior: "smooth", block: "center" });
             card.classList.add("active");
+            return; 
         }
     }
-});   
+
+    // 2. Si el link viene redireccionado desde una carpeta de ciudad (?localidad=viedma)
+    const localidad = params.get("localidad");
+    if (localidad) {
+        // Enmascaramos la URL para que el usuario siga viendo /viedma en su navegador
+        const urlLimpia = window.location.origin + "/" + localidad;
+        window.history.replaceState({}, "", urlLimpia);
+
+        // Filtramos las tarjetas por la localidad recibida
+        document.querySelectorAll(".card").forEach(card => {
+            const textoRadio = card.getAttribute("data-name").toLowerCase();
+            const ciudadRadio = card.querySelector(".city").innerText.toLowerCase();
+            
+            if (textoRadio.includes(localidad) || ciudadRadio.includes(localidad)) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        // Ponemos el nombre en el buscador por si quiere borrarlo
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) searchInput.value = localidad;
+
+        // Scroll suave a la grilla de radios
+        const grid = document.getElementById("radioGrid");
+        if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+});
 </script>
 </body>
 </html>
