@@ -5586,35 +5586,43 @@
     <a href="mailto:radiospatagonicas@gmail.com" class="btn-contacto">📧 Agregá tu emisora</a>
 </footer>
 <script>
-// --- FILTRADO POR URL SEGURO Y AUTOMÁTICO ---
-window.addEventListener("DOMContentLoaded", () => {
-    const parametros = new URLSearchParams(window.location.search);
-    const localidadUrl = parametros.get("localidad");
+// --- FUNCIÓN DE FILTRADO SEGURA Y ENCAPSULADA ---
+function aplicarFiltroPorUrl() {
+    try {
+        const parametros = new URLSearchParams(window.location.search);
+        const localidadUrl = parametros.get("localidad");
 
-    if (localidadUrl) {
-        // Limpiamos el texto quitando acentos y espacios para que coincida siempre
-        const ciudadBuscada = localidadUrl.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+        if (localidadUrl) {
+            const ciudadBuscada = localidadUrl.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
-        document.querySelectorAll(".card").forEach(tarjeta => {
-            const elementoCiudad = tarjeta.querySelector(".city");
-            // Limpiamos también el texto de la tarjeta para comparar de forma justa
-            const textoCiudad = elementoCiudad ? elementoCiudad.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") : "";
-            const dataName = tarjeta.getAttribute("data-name") ? tarjeta.getAttribute("data-name").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") : "";
+            document.querySelectorAll(".card").forEach(tarjeta => {
+                const elementoCiudad = tarjeta.querySelector(".city");
+                const textoCiudad = elementoCiudad ? elementoCiudad.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") : "";
+                const dataName = tarjeta.getAttribute("data-name") ? tarjeta.getAttribute("data-name").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") : "";
 
-            if (textoCiudad.includes(ciudadBuscada) || dataName.includes(ciudadBuscada)) {
-                tarjeta.style.display = "block";
-            } else {
-                tarjeta.style.display = "none";
+                if (textoCiudad.includes(ciudadBuscada) || dataName.includes(ciudadBuscada)) {
+                    tarjeta.style.display = "block";
+                } else {
+                    tarjeta.style.display = "none";
+                }
+            });
+
+            const cajaBusqueda = document.getElementById("searchInput");
+            if (cajaBusqueda) {
+                cajaBusqueda.value = localidadUrl;
             }
-        });
-
-        // Colocamos el término en el buscador visual por prolijidad
-        const cajaBusqueda = document.getElementById("searchInput");
-        if (cajaBusqueda) {
-            cajaBusqueda.value = localidadUrl;
         }
+    } catch (e) {
+        console.error("Error en filtro:", e);
     }
-});
+}
+
+// Ejecutamos el filtro de forma pasiva sin congelar los reproductores
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", aplicarFiltroPorUrl);
+} else {
+    aplicarFiltroPorUrl();
+}
 </script>
 </body>
 </html>
