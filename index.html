@@ -5579,14 +5579,66 @@
 
 
     
+
 </div>
 
 <footer class="footer">
-    <p>© 2026 Radios Patagónicas - El portal del dial regional.</p>
-    <a href="mailto:radiospatagonicas@gmail.com" class="btn-contacto">📧 Agregá tu emisora</a>
+    <p>Radios Patagónicas - Archivo de Medios Regionales</p>
+    <a href="https://wa.me/5492984XXXXXX" target="_blank" class="btn-contacto">📧 Sugerir Emisora / Contacto</a>
 </footer>
+
 <script>
-// --- FUNCIÓN DE FILTRADO SEGURA Y ENCAPSULADA ---
+// 1. TU FUNCIÓN ORIGINAL DE REPRODUCCIÓN (Optimizada para no trabarse)
+function playRadio(button, streamUrl) {
+    try {
+        const player = document.getElementById('player');
+        const nowPlaying = document.getElementById('nowPlaying');
+        const card = button.closest('.card'); // Busca la tarjeta de forma segura
+        const radioName = card ? card.querySelector('.name').innerText : "Radio";
+
+        // Desactivar botones anteriores
+        document.querySelectorAll('.play').forEach(btn => {
+            btn.innerText = "▶ Escuchar";
+            btn.style.background = "#0077ff";
+            btn.style.color = "white";
+        });
+
+        // Activar el actual
+        player.src = streamUrl;
+        player.play().catch(error => {
+            console.log("Error al reproducir automáticamente: ", error);
+            // Si el navegador bloquea el autoplay, el usuario igual puede darle play al reproductor nativo
+        });
+
+        nowPlaying.innerText = "📻 Al aire: " + radioName;
+        button.innerText = "⏸ Sonando";
+        button.style.background = "white";
+        button.style.color = "black";
+    } catch (err) {
+        console.error("Error en playRadio:", err);
+    }
+}
+
+// 2. FUNCIÓN DE COMPARTIR (Evita que la página se congele si falta en tu código)
+function compartir(id, nombre) {
+    try {
+        const urlCompartir = window.location.origin + window.location.pathname + "?radio=" + id;
+        if (navigator.share) {
+            navigator.share({
+                title: 'Escuchar ' + nombre + ' en Radios Patagónicas',
+                url: urlCompartir
+            });
+        } else {
+            // Alternativa si el navegador no soporta compartir nativo
+            navigator.clipboard.writeText(urlCompartir);
+            alert("¡Enlace de la radio copiado al portapapeles!");
+        }
+    } catch (err) {
+        console.error("Error al compartir:", err);
+    }
+}
+
+// 3. FILTRADO PASIVO POR URL (No bloquea a los demás scripts)
 function aplicarFiltroPorUrl() {
     try {
         const parametros = new URLSearchParams(window.location.search);
@@ -5596,7 +5648,7 @@ function aplicarFiltroPorUrl() {
             const ciudadBuscada = localidadUrl.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
             document.querySelectorAll(".card").forEach(tarjeta => {
-                const elementoCiudad = tarjeta.querySelector(".city");
+                const elementoCiudad = tarjeta.querySelector('.city');
                 const textoCiudad = elementoCiudad ? elementoCiudad.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") : "";
                 const dataName = tarjeta.getAttribute("data-name") ? tarjeta.getAttribute("data-name").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") : "";
 
@@ -5617,12 +5669,9 @@ function aplicarFiltroPorUrl() {
     }
 }
 
-// Ejecutamos el filtro de forma pasiva sin congelar los reproductores
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", aplicarFiltroPorUrl);
-} else {
-    aplicarFiltroPorUrl();
-}
+// Ejecución segura del filtro al terminar de cargar el HTML
+window.addEventListener("load", aplicarFiltroPorUrl);
 </script>
+
 </body>
 </html>
