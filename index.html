@@ -5695,63 +5695,93 @@ function compartir(id, nombre) {
 }
 
 // --- Eventos Globales ---
-// --- Manejo de rutas y filtros al cargar la página (Versión Corregida) ---
+// --- MANEJO DE RUTAS, FILTROS Y ERROR HANDLING AL CARGAR LA PÁGINA ---
 window.addEventListener("load", () => {
+    // Aislamos el enrutador en bloques independientes. 
+    // Si uno falla, el otro sigue ejecutándose y la interfaz de reproducción nunca se congela.
+    
+    const params = new URLSearchParams(window.location.search);
+
+    // MODULE 1: Enrutamiento para compartir radios individuales (?radio=id)
     try {
-        const params = new URLSearchParams(window.location.search);
-        
-        // 1. Si el link viene de compartir una radio específica (?radio=id)
         const radioId = params.get("radio");
         if (radioId) {
             const card = document.getElementById(radioId);
             if (card) {
-                card.scrollIntoView({ behavior: "smooth", block: "center" });
-                card.classList.add("active");
-                return; // Frena acá si es una radio individual
+                // Forzamos un pequeño delay para asegurar que el DOM y estilos estén 100% renderizados
+                setTimeout(() => {
+                    card.scrollIntoView({ behavior: "smooth", block: "center" });
+                    card.classList.add("active");
+                }, 100);
+                
+                // Si la URL venía con una radio para reproducir automáticamente de forma opcional,
+                // podrías disparar el click aquí de forma segura. En este caso solo la marca y enfoca.
             }
         }
+    } catch (errorRadio) {
+        console.error("Error controlado en el lector de parámetro 'radio':", errorRadio);
+    }
 
-        // 2. Si el link viene redireccionado desde una carpeta de ciudad (?localidad=viedma)
+
+    // MODULE 2: Enrutamiento dinámico para slugs de ciudades (?localidad=viedma)
+    try {
         const localidad = params.get("localidad");
         if (localidad) {
-            // CORRECCIÓN: Enmascaramos la URL respetando la ruta actual del navegador sin romper el origen
-            const nombreCarpeta = window.location.pathname.split('/')[1] || "";
-            let nuevaRuta = window.location.origin + "/";
-            
-            // Si estás en GitHub Pages (ej: /radiospatagonicas/), mantenemos esa subcarpeta en la URL
-            if (window.location.hostname.includes("github.io")) {
-                nuevaRuta += nombreCarpeta + "/" + localidad;
-            } else {
-                // Si ya estás en tu dominio propio (radiospatagonicas.com.ar)
-                nuevaRuta += localidad;
-            }
-            
-            // Cambiamos lo que ve el usuario en la barra sin recargar la página
-            window.history.replaceState({}, "", nuevaRuta);
+            const localidadLimpia = localidad.toLowerCase().trim();
 
-            // Filtramos las tarjetas por la localidad recibida
-            document.querySelectorAll(".card").forEach(card => {
-                const textoRadio = card.getAttribute("data-name").toLowerCase();
-                const ciudadRadio = card.querySelector(".city").innerText.toLowerCase();
-                
-                if (textoRadio.includes(localidad) || ciudadRadio.includes(localidad)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-
-            // Ponemos el nombre en el buscador
+            // Guardamos referencia de los elementos del DOM de forma segura antes de operar
             const searchInput = document.getElementById("searchInput");
-            if (searchInput) searchInput.value = localidad;
+            const radioGrid = document.getElementById("radioGrid");
+            const todasLasCards = document.querySelectorAll(".card");
 
-            // Scroll suave a la grilla de radios
-            const grid = document.getElementById("radioGrid");
-            if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
+            if (todasLasCards.length > 0) {
+                let seEncontroCoincidencia = false;
+
+                // Filtrado seguro recorriendo las tarjetas disponibles
+                todasLasCards.forEach(card => {
+                    const dataName = card.getAttribute("data-name") ? card.getAttribute("data-name").toLowerCase() : "";
+                    const cityElement = card.querySelector(".city");
+                    const textoCiudad = cityElement ? cityElement.innerText.toLowerCase() : "";
+                    
+                    if (dataName.includes(localidadLimpia) || textoCiudad.includes(localidadLimpia)) {
+                        card.style.display = "block";
+                        seEncontroCoincidencia = true;
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+
+                // Si la localidad es válida y filtró elementos, actualizamos la barra de direcciones de forma estética
+                if (seEncontroCoincidencia) {
+                    if (searchInput) searchInput.value = localidadLimpia;
+
+                    // Reescritura robusta de la URL (Soporta localhost, github.io y dominio personalizado)
+                    const pathNameParts = window.location.pathname.split('/');
+                    let nuevaRutaUrl = window.location.origin + "/";
+
+                    if (window.location.hostname.includes("github.io")) {
+                        // En GitHub Pages la primera parte del path suele ser el repositorio (ej: /radiospatagonicas/)
+                        const nombreRepo = pathNameParts[1] || "";
+                        nuevaRutaUrl += nombreRepo + "/" + localidadLimpia;
+                    } else {
+                        // En dominio propio (.com.ar) va directo a la raíz
+                        nuevaRutaUrl += localidadLimpia;
+                    }
+
+                    // Reemplazamos visualmente la barra del navegador sin recargar el sitio
+                    window.history.replaceState({ zona: localidadLimpia }, "", nuevaRutaUrl);
+
+                    // Scroll suave controlado hacia el contenedor de radios
+                    if (radioGrid) {
+                        setTimeout(() => {
+                            radioGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }, 200);
+                    }
+                }
+            }
         }
-    } catch (error) {
-        // Si algo falla en el enrutamiento, lo muestra en consola pero NO bloquea los botones de Play
-        console.error("Error en el enrutador de ciudades:", error);
+    } catch (errorLocalidad) {
+        console.error("Error controlado en el enrutador de 'localidad':", errorLocalidad);
     }
 });
 </script>
