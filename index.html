@@ -5703,7 +5703,7 @@ function compartir(id, nombre) {
 }
 
 // --- Eventos Globales ---
-// --- MANEJO DE RUTAS Y FILTROS AL CARGAR LA PÁGINA (ANTI-BUCLE) ---
+// --- MANEJO DE RUTAS Y FILTROS AL CARGAR LA PÁGINA (VERSIÓN FINAL ANTI-PARPADEO) ---
 window.addEventListener("load", () => {
     try {
         const params = new URLSearchParams(window.location.search);
@@ -5726,7 +5726,16 @@ window.addEventListener("load", () => {
         if (localidad) {
             const localidadLimpia = localidad.toLowerCase().trim();
 
-            // Filtrar las tarjetas de radios inmediatamente
+            // Guardamos la configuración en la sesión del navegador para que no se repita el bucle
+            if (sessionStorage.getItem('filtrado_' + localidadLimpia)) {
+                // Si ya se filtró en esta sesión, frenamos el script acá para evitar el titileo infinito
+                return;
+            }
+
+            // Marcamos como filtrado en esta carga
+            sessionStorage.setItem('filtrado_' + localidadLimpia, 'true');
+
+            // Filtramos las tarjetas de radios inmediatamente
             document.querySelectorAll(".card").forEach(card => {
                 const dataName = card.getAttribute("data-name") ? card.getAttribute("data-name").toLowerCase() : "";
                 const cityElement = card.querySelector(".city");
@@ -5739,13 +5748,11 @@ window.addEventListener("load", () => {
                 }
             });
 
-            // Colocar el texto en el buscador
+            // Colocamos el texto en tu buscador por si el usuario quiere borrarlo
             const searchInput = document.getElementById("searchInput");
             if (searchInput) searchInput.value = localidadLimpia;
 
-            // CORRECCIÓN CRÍTICA ANTI-BUCLE:
-            // Cambiamos lo que ve el usuario en la barra sumando un "/" extra al final
-            // para que GitHub Pages entienda que es un texto estético y no intente recargar la carpeta física.
+            // Enmascaramos la URL de forma pasiva (Sin alterar el historial del navegador)
             let nuevaRutaUrl = window.location.origin + "/";
             if (window.location.hostname.includes("github.io")) {
                 const nombreRepo = window.location.pathname.split('/')[1] || "";
@@ -5754,10 +5761,10 @@ window.addEventListener("load", () => {
                 nuevaRutaUrl += localidadLimpia + "/";
             }
             
-            // Reemplazamos la URL de forma segura sin disparar el evento de recarga
-            window.history.replaceState({ filtrado: true }, "", nuevaRutaUrl);
+            // Reemplazamos la URL de forma estática pura
+            window.history.pushState(null, null, nuevaRutaUrl);
 
-            // Enfoque visual de la grilla
+            // Enfoque visual suave a la grilla de radios
             const radioGrid = document.getElementById("radioGrid");
             if (radioGrid) {
                 setTimeout(() => {
@@ -5766,7 +5773,7 @@ window.addEventListener("load", () => {
             }
         }
     } catch (error) {
-        console.error("Error en el enrutador:", error);
+        console.error("Error controlado en el enrutador:", error);
     }
 });
 </script>
