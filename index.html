@@ -5588,32 +5588,55 @@
 </footer>
 
 <script>
-// 1. TU FUNCIÓN ORIGINAL DE REPRODUCCIÓN (Optimizada para no trabarse)
+// 1. TU FUNCIÓN DE REPRODUCCIÓN (CON CORTE DE SEGURIDAD ANTI-PEGADO)
 function playRadio(button, streamUrl) {
     try {
         const player = document.getElementById('player');
         const nowPlaying = document.getElementById('nowPlaying');
-        const card = button.closest('.card'); // Busca la tarjeta de forma segura
+        const card = button.closest('.card');
         const radioName = card ? card.querySelector('.name').innerText : "Radio";
 
-        // Desactivar botones anteriores
+        // SI YA ESTÁ SONANDO ESTA MISMA RADIO: La pausamos (Función de Play/Pausa)
+        if (player.src === streamUrl && !player.paused) {
+            player.pause();
+            button.innerText = "▶ Escuchar";
+            button.style.background = "#0077ff";
+            button.style.color = "white";
+            nowPlaying.innerText = "⏸ Transmisión pausada";
+            return;
+        }
+
+        // CORRECCIÓN CRÍTICA ANTI-PEGADO: 
+        // Antes de cargar la nueva radio, matamos el streaming anterior por completo
+        player.pause();
+        player.src = ""; 
+        player.load(); // Fuerza al navegador a liberar la memoria del streaming viejo
+
+        // Apagamos visualmente todos los botones de la grilla
         document.querySelectorAll('.play').forEach(btn => {
             btn.innerText = "▶ Escuchar";
             btn.style.background = "#0077ff";
             btn.style.color = "white";
         });
 
-        // Activar el actual
+        // Cargamos y encendemos la nueva emisora
         player.src = streamUrl;
-        player.play().catch(error => {
-            console.log("Error al reproducir automáticamente: ", error);
-            // Si el navegador bloquea el autoplay, el usuario igual puede darle play al reproductor nativo
-        });
+        player.load(); // Prepara el nuevo canal
+        
+        // Arrancamos la reproducción de forma segura
+        const playPromise = player.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                nowPlaying.innerText = "📻 Al aire: " + radioName;
+                button.innerText = "⏸ Sonando";
+                button.style.background = "white";
+                button.style.color = "black";
+            }).catch(error => {
+                console.log("El navegador bloqueó el inicio automático, requiere clic nativo.");
+                nowPlaying.innerText = "⚠️ Clic en el reproductor negro para iniciar: " + radioName;
+            });
+        }
 
-        nowPlaying.innerText = "📻 Al aire: " + radioName;
-        button.innerText = "⏸ Sonando";
-        button.style.background = "white";
-        button.style.color = "black";
     } catch (err) {
         console.error("Error en playRadio:", err);
     }
