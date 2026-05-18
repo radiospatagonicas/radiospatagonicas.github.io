@@ -2,10 +2,31 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radios Patagónicas</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XE9VNXQ09H"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XE9VNXQ09H');
+    </script>
+    <!-- FIN DEL CÓDIGO DE GOOGLE -->
+
+    <style>
+        body { margin:0; font-family: 'Inter', sans-serif; background:#0a0a0a; color:#eee; display: flex; flex-direction: column; min-height: 100vh; }
+        /* ... El resto de tus estilos CSS y la grilla de radios hacia abajo ... */
+    <meta charset="UTF-8">
     <title>Radios de Viedma | Radios Patagónicas</title>
     <script>
-        // Redirecciona al index principal enviando el parámetro de la ciudad
-        window.location.href = "../index.html?localidad=viedma";
+        // Buscamos la ruta actual y nos aseguramos de mantener el nombre del repositorio
+        const rutaActual = window.location.pathname; // Esto da /radiospatagonicas/viedma/
+        const nombreRepo = rutaActual.split('/')[1]; // Esto aísla "radiospatagonicas"
+
+        // Redirección absoluta y segura sin perder el subdominio de GitHub
+        window.location.href = window.location.origin + '/' + nombreRepo + '/index.html?localidad=viedma';
     </script>
 </head>
 <body>
