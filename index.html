@@ -7082,7 +7082,7 @@
     <a href="mailto:radiospatagonicas@gmail.com" class="btn-contacto">📧 Agregá tu emisora</a>
 </footer>
 <script>
- // --- Lógica del Slider ---
+// --- Lógica del Slider ---
 let currentSlide = 0;
 
 function showSlide(index) {
@@ -7092,7 +7092,6 @@ function showSlide(index) {
 
     if (!slider || slides.length === 0) return;
 
-    // Ajuste de índice circular
     if (index >= slides.length) {
         currentSlide = 0;
     } else if (index < 0) {
@@ -7101,48 +7100,39 @@ function showSlide(index) {
         currentSlide = index;
     }
 
-    // CORRECCIÓN: Uso de backticks (`) para el template literal
     slider.style.transform = `translateX(-${currentSlide * 100}%)`;
 
-    // Actualizar puntos (dots)
     dots.forEach(dot => dot.classList.remove("active"));
     if (dots[currentSlide]) {
         dots[currentSlide].classList.add("active");
     }
 }
 
-// Auto-play del slider cada 5 segundos
 setInterval(() => {
     showSlide(currentSlide + 1);
 }, 5000);
 
 
-// --- Lógica de la Radio ---
+// --- Lógica de la Radio (Tu versión original y estable) ---
 const player = document.getElementById("player");
 const now = document.getElementById("nowPlaying");
 
 function playRadio(btn, url) {
-    // Verificamos si es la misma radio comparando la URL
     const mismaRadio = player.src === url || player.src.includes(url);
 
     if (mismaRadio && !player.paused) {
-        // Si está sonando y clickeamos de nuevo: Pausar
         player.pause();
-        // Opcional: limpiar el src para detener el buffer
         player.src = ""; 
         resetUI();
         now.innerText = "🎧 Seleccioná una radio para escuchar";
         return;
     }
 
-    // Resetear visualmente todos los botones y cards
     resetUI();
 
-    // Configurar y reproducir nueva radio
     player.src = url;
     player.play().catch(error => console.error("Error al reproducir:", error));
 
-    // Actualizar UI de la radio actual
     btn.classList.add("on");
     btn.innerText = "⏸ Sonando...";
     btn.parentElement.classList.add("active");
@@ -7151,7 +7141,6 @@ function playRadio(btn, url) {
     now.innerText = "📻 Sonando: " + radioName;
 }
 
-// Función auxiliar para limpiar la interfaz
 function resetUI() {
     document.querySelectorAll(".play").forEach(p => {
         p.classList.remove("on");
@@ -7181,12 +7170,29 @@ function filtrarProvincia(prov) {
     });
 }
 
-// --- Compartir ---
+
+// --- NUEVA FUNCIÓN COMPARTIR (Liviana y sin tocar el player) ---
 function compartir(id, nombre) {
     const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
-    const texto = encodeURIComponent(`📻 Escuchá ${nombre} en Radios Patagónicas: ${url}`);
-    window.open(`https://api.whatsapp.com/send?text=${texto}`, "_blank");
+    const textoBase = `📻 Escuchá ${nombre} en Radios Patagónicas: ${url}`;
+    
+    // Si están en celular, usa el menú nativo (rápido y permite elegir Facebook/WhatsApp)
+    if (navigator.share) {
+        navigator.share({
+            title: `Radios Patagónicas - ${nombre}`,
+            text: textoBase
+        }).catch(err => console.log(err));
+    } else {
+        // Si están en PC, copia el texto directo al portapapeles para pegar en Facebook
+        navigator.clipboard.writeText(textoBase).then(() => {
+            alert(`¡Enlace de ${nombre} copiado! Ya podés pegarlo en los comentarios de Facebook o WhatsApp.`);
+        }).catch(() => {
+            // Plan B por si falla el portapapeles: abre WhatsApp como antes
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textoBase)}`, "_blank");
+        });
+    }
 }
+
 
 // --- Eventos Globales ---
 player.addEventListener("pause", () => {
@@ -7194,7 +7200,6 @@ player.addEventListener("pause", () => {
     now.innerText = "⏸️ Reproducción pausada";
 });
 
-// Manejo de compartir mediante URL al cargar la página
 window.addEventListener("load", () => {
     const params = new URLSearchParams(window.location.search);
     const radioId = params.get("radio");
@@ -7208,4 +7213,4 @@ window.addEventListener("load", () => {
 });   
 </script>
 </body>
-</html> 
+</html>
