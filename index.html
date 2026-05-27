@@ -7011,8 +7011,9 @@
     <p>© 2026 Radios Patagónicas - El portal del dial regional.</p>
     <a href="mailto:radiospatagonicas@gmail.com" class="btn-contacto">📧 Agregá tu emisora</a>
 </footer>
+
 <script>
- // --- Lógica del Slider ---
+// --- Lógica del Slider ---
 let currentSlide = 0;
 
 function showSlide(index) {
@@ -7022,7 +7023,6 @@ function showSlide(index) {
 
     if (!slider || slides.length === 0) return;
 
-    // Ajuste de índice circular
     if (index >= slides.length) {
         currentSlide = 0;
     } else if (index < 0) {
@@ -7031,20 +7031,20 @@ function showSlide(index) {
         currentSlide = index;
     }
 
-    // CORRECCIÓN: Uso de backticks (`) para el template literal
     slider.style.transform = `translateX(-${currentSlide * 100}%)`;
 
-    // Actualizar puntos (dots)
     dots.forEach(dot => dot.classList.remove("active"));
     if (dots[currentSlide]) {
         dots[currentSlide].classList.add("active");
     }
 }
 
-// Auto-play del slider cada 5 segundos
-setInterval(() => {
-    showSlide(currentSlide + 1);
-}, 5000);
+// Auto-play seguro (solo si existe el slider)
+if (document.getElementById("slider")) {
+    setInterval(() => {
+        showSlide(currentSlide + 1);
+    }, 5000);
+}
 
 
 // --- Lógica de la Radio ---
@@ -7052,36 +7052,37 @@ const player = document.getElementById("player");
 const now = document.getElementById("nowPlaying");
 
 function playRadio(btn, url) {
-    // Verificamos si es la misma radio comparando la URL
+    if (!player || !now) return;
+
     const mismaRadio = player.src === url || player.src.includes(url);
 
     if (mismaRadio && !player.paused) {
-        // Si está sonando y clickeamos de nuevo: Pausar
         player.pause();
-        // Opcional: limpiar el src para detener el buffer
-        player.src = ""; 
+        player.src = ""; // Detiene el buffer por completo
         resetUI();
         now.innerText = "🎧 Seleccioná una radio para escuchar";
         return;
     }
 
-    // Resetear visualmente todos los botones y cards
     resetUI();
 
-    // Configurar y reproducir nueva radio
     player.src = url;
-    player.play().catch(error => console.error("Error al reproducir:", error));
-
-    // Actualizar UI de la radio actual
-    btn.classList.add("on");
-    btn.innerText = "⏸ Sonando...";
-    btn.parentElement.classList.add("active");
-    
-    const radioName = btn.parentElement.querySelector(".name").innerText;
-    now.innerText = "📻 Sonando: " + radioName;
+    player.play()
+        .then(() => {
+            btn.classList.add("on");
+            btn.innerText = "⏸ Sonando...";
+            btn.parentElement.classList.add("active");
+            
+            const radioName = btn.parentElement.querySelector(".name")?.innerText || "Emisora";
+            now.innerText = "📻 Sonando: " + radioName;
+        })
+        .catch(error => {
+            console.error("Error al reproducir:", error);
+            now.innerText = "⚠️ Error de conexión con el streaming";
+            resetUI();
+        });
 }
 
-// Función auxiliar para limpiar la interfaz
 function resetUI() {
     document.querySelectorAll(".play").forEach(p => {
         p.classList.remove("on");
@@ -7092,11 +7093,12 @@ function resetUI() {
     });
 }
 
+
 // --- Filtros y Búsqueda ---
 function buscarRadio() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
+    const input = document.getElementById("searchInput")?.value.toLowerCase() || "";
     document.querySelectorAll(".card").forEach(card => {
-        const texto = card.getAttribute("data-name").toLowerCase();
+        const texto = card.getAttribute("data-name")?.toLowerCase() || "";
         card.style.display = texto.includes(input) ? "block" : "none";
     });
 }
@@ -7111,29 +7113,70 @@ function filtrarProvincia(prov) {
     });
 }
 
-// --- Compartir ---
+
+// --- NUEVA LÓGICA DE COMPARTIR MULTIPLATAFORMA (WhatsApp, Facebook, etc.) ---
 function compartir(id, nombre) {
-    const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
-    const texto = encodeURIComponent(`📻 Escuchá ${nombre} en Radios Patagónicas: ${url}`);
-    window.open(`https://api.whatsapp.com/send?text=${texto}`, "_blank");
+    // Genera el enlace directo (Deep Linking) usando anclas para que scrollee sola
+    const urlDirecta = `${window.location.origin}${window.location.pathname}?radio=${id}`;
+    const textoCompartir = `📻 Escuchá ${nombre} en vivo por Radios Patagónicas sin publicidades molestas:`;
+
+    // 1. Intentar usar la API nativa de compartir del celular (Inmediatez pura)
+    if (navigator.share) {
+        navigator.share({
+            title: `Radios Patagónicas - ${nombre}`,
+            text: textoCompartir,
+            url: urlDirecta
+        })
+        .then(() => console.log('Compartido con éxito'))
+        .catch((error) => console.log('Error al compartir:', error));
+    } else {
+        // 2. Si está en una PC vieja o navegador que no lo soporta, abre un menú de emergencia
+        const mensajePlataformas = `Elige dónde compartir a ${nombre}:\n\n1. Copiar Enlace\n2. Compartir en Facebook\n3. Compartir en WhatsApp`;
+        const opcion = prompt(mensajePlataformas, "1");
+
+        if (opcion === "1") {
+            navigator.clipboard.writeText(`${textoCompartir} ${urlDirecta}`);
+            alert("¡Enlace copiado al portapapeles! Ya podés pegarlo en los comentarios de Facebook.");
+        } else if (opcion === "2") {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlDirecta)}`, "_blank");
+        } else if (opcion === "3") {
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textoCompartir + " " + urlDirecta)}`, "_blank");
+        }
+    }
 }
 
-// --- Eventos Globales ---
-player.addEventListener("pause", () => {
-    resetUI();
-    now.innerText = "⏸️ Reproducción pausada";
-});
 
-// Manejo de compartir mediante URL al cargar la página
-window.addEventListener("load", () => {
+// --- Eventos Globales y Control de Errores ---
+if (player && now) {
+    player.addEventListener("pause", () => {
+        // Solo resetear si de verdad la URL está vacía (pausa real del usuario)
+        if (player.src === "" || player.paused) {
+            resetUI();
+            now.innerText = "⏸️ Reproducción pausada";
+        }
+    });
+}
+
+// Manejo de compartir mediante URL al cargar la página (Deep Linking Activo)
+window.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const radioId = params.get("radio");
     if (radioId) {
-        const card = document.getElementById(radioId);
-        if (card) {
-            card.scrollIntoView({ behavior: "smooth", block: "center" });
-            card.classList.add("active");
-        }
+        // Un pequeño delay para asegurar que los elementos cargaron visualmente
+        setTimeout(() => {
+            const card = document.getElementById(radioId);
+            if (card) {
+                card.scrollIntoView({ behavior: "smooth", block: "center" });
+                card.classList.add("active");
+                
+                // Intenta reproducir automáticamente si el usuario interactuó antes
+                const btnPlay = card.querySelector(".play");
+                if (btnPlay) {
+                    const urlStreaming = btnPlay.getAttribute("onclick")?.match(/'([^']+)'/)?.[1];
+                    if (urlStreaming) playRadio(btnPlay, urlStreaming);
+                }
+            }
+        }, 300);
     }
 });   
 </script>
