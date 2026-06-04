@@ -7493,7 +7493,7 @@ setInterval(() => {
 }, 5000);
 
 
-// --- Lógica de la Radio (Tu versión original y estable) ---
+// --- Lógica de la Radio (Tu versión original, limpia y estable) ---
 const player = document.getElementById("player");
 const now = document.getElementById("nowPlaying");
 
@@ -7519,17 +7519,16 @@ function playRadio(btn, url) {
     
     const radioName = btn.parentElement.querySelector(".name").innerText;
     now.innerText = "📻 Sonando: " + radioName;
+}
 
-    // =========================================================
-    // 🔥 CONFIGURACIÓN DE ANALYTICS - SEGUIMIENTO DE EMISORAS
-    // =========================================================
-    if (typeof gtag === 'function') {
-        gtag('event', 'reproducir_radio', {
-            'nombre_radio': radioName,
-            'url_stream': url
-        });
-    }
-    // =========================================================
+function resetUI() {
+    document.querySelectorAll(".play").forEach(p => {
+        p.classList.remove("on");
+        p.innerText = "▶ Escuchar";
+    });
+    document.querySelectorAll(".card").forEach(c => {
+        c.classList.remove("active");
+    });
 }
 
 // --- Filtros y Búsqueda ---
@@ -7551,29 +7550,24 @@ function filtrarProvincia(prov) {
     });
 }
 
-
 // --- NUEVA FUNCIÓN COMPARTIR (Liviana y sin tocar el player) ---
 function compartir(id, nombre) {
     const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
     const textoBase = `📻 Escuchá ${nombre} en Radios Patagónicas: ${url}`;
     
-    // Si están en celular, usa el menú nativo (rápido y permite elegir Facebook/WhatsApp)
     if (navigator.share) {
         navigator.share({
             title: `Radios Patagónicas - ${nombre}`,
             text: textoBase
         }).catch(err => console.log(err));
     } else {
-        // Si están en PC, copia el texto directo al portapapeles para pegar en Facebook
         navigator.clipboard.writeText(textoBase).then(() => {
             alert(`¡Enlace de ${nombre} copiado! Ya podés pegarlo en los comentarios de Facebook o WhatsApp.`);
         }).catch(() => {
-            // Plan B por si falla el portapapeles: abre WhatsApp como antes
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textoBase)}`, "_blank");
         });
     }
 }
-
 
 // --- Eventos Globales ---
 player.addEventListener("pause", () => {
@@ -7592,6 +7586,21 @@ window.addEventListener("load", () => {
         }
     }
 });   
+
+// --- EVENTO DE ANALYTICS (Mide sin trabar ni congelar la página) ---
+player.addEventListener("playing", () => {
+    const textoSonando = now.innerText;
+    if (textoSonando.includes("📻 Sonando: ")) {
+        const nombreRadio = textoSonando.replace("📻 Sonando: ", "");
+        
+        if (typeof gtag === 'function') {
+            gtag('event', 'reproducir_radio', {
+                'nombre_radio': nombreRadio,
+                'url_stream': player.src
+            });
+        }
+    }
+});
 </script>
 </body>
 </html>
