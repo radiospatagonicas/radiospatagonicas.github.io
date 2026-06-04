@@ -7519,16 +7519,17 @@ function playRadio(btn, url) {
     
     const radioName = btn.parentElement.querySelector(".name").innerText;
     now.innerText = "📻 Sonando: " + radioName;
-}
 
-function resetUI() {
-    document.querySelectorAll(".play").forEach(p => {
-        p.classList.remove("on");
-        p.innerText = "▶ Escuchar";
-    });
-    document.querySelectorAll(".card").forEach(c => {
-        c.classList.remove("active");
-    });
+    // =========================================================
+    // 🔥 CONFIGURACIÓN DE ANALYTICS - SEGUIMIENTO DE EMISORAS
+    // =========================================================
+    if (typeof gtag === 'function') {
+        gtag('event', 'reproducir_radio', {
+            'nombre_radio': radioName,
+            'url_stream': url
+        });
+    }
+    // =========================================================
 }
 
 // --- Filtros y Búsqueda ---
