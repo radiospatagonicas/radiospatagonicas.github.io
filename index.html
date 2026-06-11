@@ -7579,34 +7579,44 @@ function playRadio(btn, url) {
     const radioName = btn.parentElement.querySelector(".name").innerText;
     now.innerText = "📻 Sonando: " + radioName;
 
-    // ====================================================================
-    // 🔥 EL CHIVATAZO: Le avisamos a Google Analytics qué radio le dieron Play
-    // ====================================================================
-    const radioCity = btn.parentElement.querySelector(".city").innerText;
-    gtag('event', 'click_radio', {
-        'nombre_radio': radioName,
-        'ciudad_radio': radioCity
-    });
-    // ====================================================================
-}
-// --- NUEVA FUNCIÓN COMPARTIR (Liviana y sin tocar el player) ---
-function compartir(id, nombre) {
-    const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
-    const textoBase = `📻 Escuchá ${nombre} en Radios Patagónicas: ${url}`;
-    
-    if (navigator.share) {
-        navigator.share({
-            title: `Radios Patagónicas - ${nombre}`,
-            text: textoBase
-        }).catch(err => console.log(err));
-    } else {
-        navigator.clipboard.writeText(textoBase).then(() => {
-            alert(`¡Enlace de ${nombre} copiado! Ya podés pegarlo en los comentarios de Facebook o WhatsApp.`);
-        }).catch(() => {
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textoBase)}`, "_blank");
-        });
+    // --- Lógica de la Radio (Tu versión original, limpia y estable) ---
+const player = document.getElementById("player");
+const now = document.getElementById("nowPlaying");
+
+function playRadio(btn, url) {
+    const mismaRadio = player.src === url || player.src.includes(url);
+
+    if (mismaRadio && !player.paused) {
+        player.pause();
+        player.src = ""; 
+        resetUI();
+        now.innerText = "🎧 Seleccioná una radio para escuchar";
+        return;
     }
+
+    resetUI();
+
+    player.src = url;
+    player.play().catch(error => console.error("Error al reproducir:", error));
+
+    btn.classList.add("on");
+    btn.innerText = "⏸ Sonando...";
+    btn.parentElement.classList.add("active");
+    
+    const radioName = btn.parentElement.querySelector(".name").innerText;
+    now.innerText = "📻 Sonando: " + radioName;
 }
+
+function resetUI() {
+    document.querySelectorAll(".play").forEach(p => {
+        p.classList.remove("on");
+        p.innerText = "▶ Escuchar";
+    });
+    document.querySelectorAll(".card").forEach(c => {
+        c.classList.remove("active");
+    });
+} 
+
 
 // --- Eventos Globales ---
 player.addEventListener("pause", () => {
