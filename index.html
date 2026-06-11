@@ -7556,10 +7556,6 @@ setInterval(() => {
 }, 5000);
 
 
-// --- Lógica de la Radio (Tu versión original, limpia y estable) ---
-const player = document.getElementById("player");
-const now = document.getElementById("nowPlaying");
-
 function playRadio(btn, url) {
     const mismaRadio = player.src === url || player.src.includes(url);
 
@@ -7582,37 +7578,17 @@ function playRadio(btn, url) {
     
     const radioName = btn.parentElement.querySelector(".name").innerText;
     now.innerText = "📻 Sonando: " + radioName;
-}
 
-function resetUI() {
-    document.querySelectorAll(".play").forEach(p => {
-        p.classList.remove("on");
-        p.innerText = "▶ Escuchar";
+    // ====================================================================
+    // 🔥 EL CHIVATAZO: Le avisamos a Google Analytics qué radio le dieron Play
+    // ====================================================================
+    const radioCity = btn.parentElement.querySelector(".city").innerText;
+    gtag('event', 'click_radio', {
+        'nombre_radio': radioName,
+        'ciudad_radio': radioCity
     });
-    document.querySelectorAll(".card").forEach(c => {
-        c.classList.remove("active");
-    });
+    // ====================================================================
 }
-
-// --- Filtros y Búsqueda ---
-function buscarRadio() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    document.querySelectorAll(".card").forEach(card => {
-        const texto = card.getAttribute("data-name").toLowerCase();
-        card.style.display = texto.includes(input) ? "block" : "none";
-    });
-}
-
-function filtrarProvincia(prov) {
-    const searchInput = document.getElementById("searchInput");
-    if (searchInput) searchInput.value = "";
-    
-    document.querySelectorAll(".card").forEach(card => {
-        const coincide = (prov === "todas" || card.dataset.provincia === prov);
-        card.style.display = coincide ? "block" : "none";
-    });
-}
-
 // --- NUEVA FUNCIÓN COMPARTIR (Liviana y sin tocar el player) ---
 function compartir(id, nombre) {
     const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
