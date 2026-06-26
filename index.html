@@ -114,6 +114,7 @@
         .share-link { display: inline-block; margin-top: 18px; font-size: 12px; color: #00ffcc; cursor: pointer; text-decoration: none; border: 1px solid #333; padding: 5px 10px; border-radius: 10px; }
         .footer { text-align:center; padding:60px 20px; font-size:13px; color:#666; margin-top: auto; border-top: 1px solid #111; background: #0d0d0d; }
         .btn-contacto { display: inline-block; margin-top: 15px; padding: 10px 20px; background: #222; color: #eee; text-decoration: none; border-radius: 8px; border: 1px solid #333; transition: 0.3s; }
+    .btn-contacto { display: inline-block; margin-top: 15px; padding: 10px 20px; background: #222; color: #eee; text-decoration: none; border-radius: 8px; border: 1px solid #333; transition: 0.3s; }
     </style>
 </head>
 <body>
@@ -122,9 +123,9 @@
     <h1 class="logo-texto">
         <span class="parentesis">(</span>RADIOS<span class="parentesis">)</span> PATAGÓNICAS
     </h1>
-    <span class="logo-sub">EL DIAL DEL SUR ARGENTINO</span>
-</header>
-
+   
+ <span class="logo-sub">EL DIAL DEL SUR ARGENTINO</span>
+    <span class="logo-contador" id="contadorEmisoras"></span>
 <div class="player-container">
     <div class="now" id="nowPlaying">🎧 Seleccioná una radio para escuchar</div>
     <div class="player">
@@ -7601,16 +7602,21 @@ function resetUI() {
 // --- Filtros y Búsqueda ---
 function buscarRadio() {
     const input = document.getElementById("searchInput").value.toLowerCase();
+    document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
     document.querySelectorAll(".card").forEach(card => {
-        const texto = card.getAttribute("data-name").toLowerCase();
-        card.style.display = texto.includes(input) ? "block" : "none";
+        const nombre = card.getAttribute("data-name").toLowerCase();
+        const ciudadEl = card.querySelector(".city");
+        const ciudad = ciudadEl ? ciudadEl.innerText.toLowerCase() : "";
+        card.style.display = (nombre.includes(input) || ciudad.includes(input)) ? "block" : "none";
     });
 }
 
 function filtrarProvincia(prov) {
     const searchInput = document.getElementById("searchInput");
     if (searchInput) searchInput.value = "";
-    
+    document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
+    const btn = document.querySelector('.filters button[onclick="filtrarProvincia(\'' + prov + '\')"]');
+    if (btn) btn.classList.add("activo");
     document.querySelectorAll(".card").forEach(card => {
         const coincide = (prov === "todas" || card.dataset.provincia === prov);
         card.style.display = coincide ? "block" : "none";
@@ -7625,7 +7631,10 @@ function compartir(id, nombre) {
 }
 
 // --- Eventos Globales ---
-player.addEventListener("pause", () => {
+const total = document.querySelectorAll(".card").length;
+    const contador = document.getElementById("contadorEmisoras");
+    if (contador) contador.innerText = total + " emisoras en el directorio";
+    player.addEventListener("pause", () => {
     resetUI();
     now.innerText = "⏸️ Reproducción pausada";
 });
