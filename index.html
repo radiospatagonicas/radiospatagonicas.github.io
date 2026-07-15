@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Radios Patagónicas</title>
+    <title>Radios Patagónicas</title>
 
     <meta property="og:title" content="Radios Patagónicas" />
     <meta property="og:description" content="Directorio y archivo digital de las emisoras de radio de la Patagonia. Dial en vivo, frecuencias y estado técnico." />
@@ -13,19 +13,15 @@
     <meta property="og:type" content="website" />
     <meta property="fb:app_id" content="123456789" />
     
-    <!-- PEGÁ ACÁ EL CÓDIGO QUE TE ENVIÓ GOOGLE -->
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MBCXYH14VT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MBCXYH14VT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-MBCXYH14VT');
-</script>
-    <!-- FIN DEL CÓDIGO DE GOOGLE -->
-
-  <style>
+      gtag('config', 'G-MBCXYH14VT');
+    </script>
+    <style>
         body { margin:0; font-family: 'Inter', sans-serif; background:#0a0a0a; color:#eee; display: flex; flex-direction: column; min-height: 100vh; }
         
         /* --- DISEÑO DE LOGO RADIOS PATAGÓNICAS (COMPACTADO) --- */
@@ -45,7 +41,7 @@
         }
         .logo-sub { 
             font-size: 1rem; 
-            color: #0077ff; /* Restaurado a tu Azul Francia */
+            color: #0077ff; /* Tu Azul Francia original */
             font-weight: bold; 
             margin-top: 5px; 
             display: block;
@@ -69,7 +65,7 @@
             text-align:center; 
             padding:10px; 
             background:#161616; 
-            color:#0077ff; /* Restaurado a tu Azul Francia */
+            color:#0077ff; /* Tu Azul Francia original */
             font-size:13px; 
             font-weight: bold; 
             border-bottom: 1px solid #222; 
@@ -109,7 +105,7 @@
 
         .dots { text-align: center; padding: 10px; background: #0a0a0a; }
         .dot { height: 8px; width: 8px; margin: 0 4px; background-color: #333; border-radius: 50%; display: inline-block; transition: 0.3s; }
-        .dot.active { background-color: #0077ff; width: 20px; border-radius: 10px; } /* Restaurado a tu Azul Francia */
+        .dot.active { background-color: #0077ff; width: 20px; border-radius: 10px; } /* Tu Azul Francia original */
 
         /* --- PUBLICIDADES Y FILTROS --- */
         .ads-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 90%; margin: 15px auto; }
@@ -124,7 +120,7 @@
         /* --- GRILLA Y TARJETAS --- */
         .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:15px; padding:15px; }
         .card { background:#161616; padding:22px; border-radius:18px; text-align:center; border: 1px solid #222; transition: 0.3s; }
-        .card.active { border-color: #0077ff; background: #1a1a1a; } /* Restaurado a tu Azul Francia */
+        .card.active { border-color: #0077ff; background: #1a1a1a; } /* Tu Azul Francia original */
         
         .name { font-size:18px; font-weight: bold; margin-bottom: 4px; }
         .city { font-size:11px; color:#666; margin-bottom:18px; text-transform: uppercase; }
@@ -181,7 +177,7 @@
             height: 70px;
         }
         .qr-contenedor h5 {
-            color: #0077ff; /* Restaurado a tu Azul Francia */
+            color: #0077ff; /* Tu Azul Francia original */
             margin: 0 0 3px 0;
             font-size: 13px;
         }
@@ -199,52 +195,62 @@
         }
         .btn-contacto { display: inline-block; margin-top: 10px; padding: 8px 16px; background: #222; color: #eee; text-decoration: none; border-radius: 8px; border: 1px solid #333; transition: 0.3s; }
         .btn-contacto:hover { background: #333; }
- /* --- BOTONES DE CONTACTO EN EL FOOTER --- */
-.contacto-redes {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-    max-width: 220px; /* Para que no se estiren demasiado */
-}
 
-/* Botón de Facebook (Azul oficial) */
-.btn-facebook {
-    background-color: #1877f2 !important;
-    color: #ffffff !important;
-    border: 1px solid #166fe5 !important;
-    font-weight: bold;
-    text-align: center;
-    padding: 10px 15px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: 0.3s ease;
-}
-.btn-facebook:hover {
-    background-color: #166fe5 !important;
-    transform: translateY(-2px);
-}
+        /* --- BOTONES DE CONTACTO EN EL FOOTER --- */
+        .contacto-redes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+            max-width: 220px;
+        }
 
-/* Botón de WhatsApp (Verde oficial) */
-.btn-whatsapp {
-    background-color: #25d366 !important;
-    color: #ffffff !important;
-    border: 1px solid #20ba5a !important;
-    font-weight: bold;
-    text-align: center;
-    padding: 10px 15px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: 0.3s ease;
-}
-.btn-whatsapp:hover {
-    background-color: #20ba5a !important;
-    transform: translateY(-2px);
-}
-<header>     
-</style>
+        /* Botón de Facebook (Azul oficial) */
+        .btn-facebook {
+            background-color: #1877f2 !important;
+            color: #ffffff !important;
+            border: 1px solid #166fe5 !important;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+        .btn-facebook:hover {
+            background-color: #166fe5 !important;
+            transform: translateY(-2px);
+        }
+
+        /* Botón de WhatsApp (Verde oficial) */
+        .btn-whatsapp {
+            background-color: #25d366 !important;
+            color: #ffffff !important;
+            border: 1px solid #20ba5a !important;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+        .btn-whatsapp:hover {
+            background-color: #20ba5a !important;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
+
+    <header>     
+        <h1 class="logo-texto">
+            <span class="parentesis">(</span>RADIOS<span class="parentesis">)</span> PATAGÓNICAS
+        </h1>
+        <span class="logo-sub">EL DIAL DEL SUR ARGENTINO</span>
+        <span class="logo-contador" id="contadorEmisoras"></span>
+    </header>
+
+    <div class="player-container">
 
     <h1 class="logo-texto">
         <span class="parentesis">(</span>RADIOS<span class="parentesis">)</span> PATAGÓNICAS
