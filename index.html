@@ -25,18 +25,18 @@
 </script>
     <!-- FIN DEL CÓDIGO DE GOOGLE -->
 
-    <style>
+  <style>
         body { margin:0; font-family: 'Inter', sans-serif; background:#0a0a0a; color:#eee; display: flex; flex-direction: column; min-height: 100vh; }
         
         /* --- DISEÑO DE LOGO RADIOS PATAGÓNICAS (COMPACTADO) --- */
         header { 
             text-align:center; 
-            padding: 20px 15px; /* Reducido de 40px a 20px para ahorrar espacio */
+            padding: 20px 15px; 
             background: linear-gradient(180deg, #111 0%, #0a0a0a 100%); 
             border-bottom: 1px solid #222; 
         }
         .logo-texto { 
-            font-size: 2rem; /* Ligeramente más chico para pantallas móviles */
+            font-size: 2rem; 
             font-weight: 900; 
             letter-spacing: -1px; 
             color: #fff; 
@@ -45,7 +45,7 @@
         }
         .logo-sub { 
             font-size: 1rem; 
-            color: #06b6d4; /* Cambiado a Celeste Turquesa */
+            color: #0077ff; /* Restaurado a tu Azul Francia */
             font-weight: bold; 
             margin-top: 5px; 
             display: block;
@@ -69,7 +69,7 @@
             text-align:center; 
             padding:10px; 
             background:#161616; 
-            color:#06b6d4; /* Cambiado a Celeste Turquesa */
+            color:#0077ff; /* Restaurado a tu Azul Francia */
             font-size:13px; 
             font-weight: bold; 
             border-bottom: 1px solid #222; 
@@ -83,7 +83,7 @@
         .slider-container {
             width: 100%;
             max-width: 1000px;
-            margin: 15px auto; /* Reducido de 25px a 15px */
+            margin: 15px auto; 
             position: relative;
             overflow: hidden;
             border-radius: 15px;
@@ -101,7 +101,7 @@
         }
         .slide img {
             width: 100%;
-            height: 180px; /* Reducido de 240px a 180px para que las tarjetas suban */
+            height: 180px; 
             object-fit: contain; 
             background: #000;
             display: block;
@@ -109,7 +109,7 @@
 
         .dots { text-align: center; padding: 10px; background: #0a0a0a; }
         .dot { height: 8px; width: 8px; margin: 0 4px; background-color: #333; border-radius: 50%; display: inline-block; transition: 0.3s; }
-        .dot.active { background-color: #06b6d4; width: 20px; border-radius: 10px; } /* Celeste Turquesa en dots */
+        .dot.active { background-color: #0077ff; width: 20px; border-radius: 10px; } /* Restaurado a tu Azul Francia */
 
         /* --- PUBLICIDADES Y FILTROS --- */
         .ads-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 90%; margin: 15px auto; }
@@ -121,21 +121,21 @@
         .search { width:90%; margin:10px auto; }
         .search input { width:100%; padding:15px; border-radius:12px; background: #1a1a1a; color: white; border: 1px solid #333; outline: none; box-sizing: border-box; font-size: 16px; }
 
-        /* --- GRILLA Y TARJETAS (GRIS ATENUADO MANTENIDO) --- */
+        /* --- GRILLA Y TARJETAS --- */
         .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:15px; padding:15px; }
         .card { background:#161616; padding:22px; border-radius:18px; text-align:center; border: 1px solid #222; transition: 0.3s; }
-        .card.active { border-color: #06b6d4; background: #1a1a1a; } /* Borde Turquesa al activar */
+        .card.active { border-color: #0077ff; background: #1a1a1a; } /* Restaurado a tu Azul Francia */
         
         .name { font-size:18px; font-weight: bold; margin-bottom: 4px; }
         .city { font-size:11px; color:#666; margin-bottom:18px; text-transform: uppercase; }
 
-        /* --- BOTÓN PLAY TURQUESA --- */
-        button.play { width:100%; padding:15px; border:none; border-radius:12px; background:#06b6d4; color:#090d16; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        /* --- BOTÓN PLAY AZUL FRANCIA --- */
+        button.play { width:100%; padding:15px; border:none; border-radius:12px; background:#0077ff; color:#ffffff; cursor: pointer; font-weight: bold; transition: 0.3s; }
         button.play.on { background: #ffffff !important; color: #000000 !important; } 
 
         .share-link { display: inline-block; margin-top: 18px; font-size: 12px; color: #00ffcc; cursor: pointer; text-decoration: none; border: 1px solid #333; padding: 5px 10px; border-radius: 10px; }
         
-        /* --- NUEVO FOOTER INTEGRADO CON QR --- */
+        /* --- FOOTER INTEGRADO CON QR --- */
         .footer-sitio {
             background-color: #0d0d0d;
             color: #666;
@@ -164,7 +164,7 @@
         }
         .footer-col p { margin: 5px 0; line-height: 1.4; }
         
-        /* Estilos del QR en el pie */
+        /* Estilos del QR */
         .qr-contenedor {
             display: flex;
             align-items: center;
@@ -181,7 +181,7 @@
             height: 70px;
         }
         .qr-contenedor h5 {
-            color: #06b6d4;
+            color: #0077ff; /* Restaurado a tu Azul Francia */
             margin: 0 0 3px 0;
             font-size: 13px;
         }
