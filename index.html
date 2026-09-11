@@ -12548,57 +12548,70 @@ function buscarRadioRapido() {
         }
     }, 200); // 200ms de espera para suavidad total
 }
-    // --- 4. FILTRO POR PROVINCIA (Bug corregido) ---
-  function filtrarProvincia(prov, btnElement) {
-    // 1. Limpiar buscador de texto
-    document.getElementById("searchInput").value = "";
-    
-    // 2. Actualizar estado visual de los botones
-    const botones = document.querySelectorAll(".filters button");
-    for (let i = 0; i < botones.length; i++) {
-        botones[i].classList.remove("activo");
-    }
-    if (btnElement) btnElement.classList.add("activo");
+       // --- 4. FILTRO POR PROVINCIA Y AM (Con deduplicación inteligente) ---
+    function filtrarProvincia(prov, btnElement) {
+        // 1. Limpiar buscador de texto
+        document.getElementById("searchInput").value = "";
+        
+        // 2. Actualizar estado visual de los botones
+        const botones = document.querySelectorAll(".filters button");
+        for (let i = 0; i < botones.length; i++) {
+            botones[i].classList.remove("activo");
+        }
+        if (btnElement) btnElement.classList.add("activo");
 
-    // 3. Filtrar las tarjetas
-    const cards = document.querySelectorAll(".card");
+        // 3. Filtrar las tarjetas
+        const cards = document.querySelectorAll(".card");
+        const vistas = new Set(); // Memoria para evitar duplicados
 
-    for (let i = 0; i < cards.length; i++) {
-        const card = cards[i];
-        let coincide = false;
+        for (let i = 0; i < cards.length; i++) {
+            const card = cards[i];
+            let coincide = false;
 
-        if (prov === "todas") {
-            coincide = true;
-
-        } else if (prov === "am") {
-            // --- LÓGICA ROBUSTA PARA DETECTAR AMs ---
-            const tipo = card.dataset.tipo; // Por si ya le agregaste este atributo
-            const nombreData = (card.dataset.name || "").toLowerCase();
-            const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
-            
-            // Es AM si: 
-            // a) Tiene el atributo explícito data-tipo="am"
-            // b) El nombre contiene " am " (con espacios, para no caer en "Campana")
-            // c) El nombre empieza con "am " (ej: "am 550")
-            // d) El nombre termina en " am"
-            if (tipo === "am") {
+            if (prov === "todas") {
                 coincide = true;
-            } else if (nombreData.includes(" am ") || nombreData.startsWith("am ") || nombreData.endsWith(" am")) {
-                coincide = true;
-            } else if (nombreVisible.includes(" am ") || nombreVisible.startsWith("am ") || nombreVisible.endsWith(" am")) {
-                coincide = true;
+
+            } else if (prov === "am") {
+                // --- DETECCIÓN ROBUSTA DE AMs ---
+                const nombreData = (card.dataset.name || "").toLowerCase();
+                const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
+                
+                // Es AM si contiene "am", "lu", "lr", "ls", "lv" (señales distintivas)
+                const esAm = nombreData.includes(" am ") || nombreData.startsWith("am ") || nombreData.endsWith(" am") ||
+                             nombreData.includes(" lu ") || nombreData.includes(" lr ") || nombreData.includes(" ls ") || nombreData.includes(" lv ") ||
+                             nombreVisible.includes(" am ") || nombreVisible.startsWith("am ") || nombreVisible.endsWith(" am");
+                
+                if (esAm) {
+                    // Usamos el ID de la tarjeta (o su nombre) como identificador único
+                    const identificador = card.id || nombreData;
+                    
+                    // Si NO la vimos todavía, la mostramos y la guardamos en memoria
+                    if (!vistas.has(identificador)) {
+                        coincide = true;
+                        vistas.add(identificador); 
+                    } else {
+                        // Si YA la vimos, es un duplicado: la ocultamos
+                        coincide = false; 
+                    }
+                }
+
+            } else {
+                // Filtro normal por provincia (ej: 'neuquen', 'rionegro')
+                coincide = card.dataset.provincia === prov;
+                
+                /* 💡 OPCIONAL: Si en el futuro querés que las AM DESAPAREZCAN 
+                   de los filtros de provincia y solo vivan en "Todas las AM", 
+                   descomentá (quitá las //) de las siguientes 3 líneas: */
+                // const nombreDataProv = (card.dataset.name || "").toLowerCase();
+                // if (nombreDataProv.includes(" am ") || nombreDataProv.startsWith("am ")) {
+                //     coincide = false; 
+                // }
             }
 
-        } else {
-            // Filtro normal por provincia
-            coincide = card.dataset.provincia === prov;
+            // "" restaura el grid original, "none" oculta.
+            card.style.display = coincide ? "" : "none";
         }
-
-        // "" restaura el grid original, "none" oculta. El orden NUNCA se altera.
-        card.style.display = coincide ? "" : "none";
     }
-}
-
     // --- 5. NUEVO: FILTRO POR CATEGORÍA ---
     function filtrarCategoria(categoria, btnElement) {
         document.getElementById("searchInput").value = "";
