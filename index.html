@@ -12683,46 +12683,40 @@ function buscarRadioRapido() {
                 return false;
             }
 
-            // 4. Filtrar tarjetas
+                // --- 4. FILTRO POR PROVINCIA Y AM (Versión Simple) ---
+    function filtrarProvincia(prov, btnElement) {
+        try {
+            // 1. Limpiar buscador
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) searchInput.value = "";
+            
+            // 2. Actualizar botones
+            const botones = document.querySelectorAll(".filters button");
+            for (let i = 0; i < botones.length; i++) {
+                botones[i].classList.remove("activo");
+            }
+            if (btnElement) btnElement.classList.add("activo");
+
+            // 3. Filtrar tarjetas
             const cards = document.querySelectorAll(".card");
-            const vistas = new Set();
 
             for (let i = 0; i < cards.length; i++) {
                 const card = cards[i];
+                const tipo = card.dataset.tipo;
+                const provincia = card.dataset.provincia;
                 let coincide = false;
 
                 if (prov === "todas") {
                     coincide = true;
 
                 } else if (prov === "am") {
-                    if (esAM(card)) {
-                        const nombreData = (card.dataset.name || "").toLowerCase();
-                        const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
-                        const texto = nombreData + " " + nombreVisible;
-                        
-                        const matchCallsign = texto.match(/\b(lu|lr|ls|lv|lra)\s*\d+/i);
-                        const matchFreq = texto.match(/\bam\s*\d+/i);
-                        
-                        let huella = "";
-                        if (matchCallsign) {
-                            huella = matchCallsign[0].replace(/\s+/g, '').toLowerCase();
-                        } else if (matchFreq) {
-                            huella = matchFreq[0].replace(/\s+/g, '').toLowerCase();
-                        } else {
-                            huella = card.id || texto.replace(/[^a-z0-9]/g, '');
-                        }
-
-                        if (!vistas.has(huella)) {
-                            coincide = true;
-                            vistas.add(huella);
-                        } else {
-                            coincide = false;
-                        }
-                    }
+                    // Solo muestra las que tienen data-tipo="am"
+                    coincide = (tipo === "am");
 
                 } else {
-                    if (card.dataset.provincia === prov) {
-                        if (esAM(card)) {
+                    // Filtro por provincia
+                    if (provincia === prov) {
+                        if (tipo === "am") {
                             coincide = false;
                         } else {
                             coincide = true;
