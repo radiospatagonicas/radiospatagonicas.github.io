@@ -12609,127 +12609,57 @@ function buscarRadioRapido() {
         }
     }, 200); // 200ms de espera para suavidad total
 }
-              // --- 4. FILTRO POR PROVINCIA Y AM (Detección Ultra-Precisa) ---
-    function filtrarProvincia(prov, btnElement) {
-        try {
-            // 1. Limpiar buscador
-            const searchInput = document.getElementById("searchInput");
-            if (searchInput) searchInput.value = "";
-            
-            // 2. Actualizar botones
-            const botones = document.querySelectorAll(".filters button");
-            for (let i = 0; i < botones.length; i++) {
-                botones[i].classList.remove("activo");
-            }
-            if (btnElement) btnElement.classList.add("activo");
-
-            // 3. Función auxiliar para detectar si una card es AM (versión precisa)
-            function esAM(card) {
-                // Método 1: Tiene el atributo nuevo
-                if (card.dataset.tipo === "am") return true;
-                
-                // Método 2: Detecta por patrones precisos en el nombre
-                const nombreData = (card.dataset.name || "").toLowerCase();
-                const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
-                const texto = nombreData + " " + nombreVisible;
-                
-                // Patrón 1: Señal distintiva + números (LU5, LR1, LS3, LV9, LRA43)
-                // El \d+ asegura que haya números después de la señal
-                if (/\b(lu|lr|ls|lv|lra)\s*\d+\b/i.test(texto)) return true;
-                
-                // Patrón 2: "AM" + números (AM 550, AM600, AM 1440)
-                if (/\bam\s*\d+\b/i.test(texto)) return true;
-                
-                // Patrón 3: ID que empieza con señal + números (lu5-am600, lr1-...)
-                const id = (card.id || "").toLowerCase();
-                if (/^(lu|lr|ls|lv|lra)\d*/.test(id)) return true;
-                
-                return false;
-            }
-    // --- 4. FILTRO POR PROVINCIA Y AM (Versión Final Corregida) ---
-    function filtrarProvincia(prov, btnElement) {
-        try {
-            // 1. Limpiar buscador
-            const searchInput = document.getElementById("searchInput");
-            if (searchInput) searchInput.value = "";
-            
-            // 2. Actualizar botones
-            const botones = document.querySelectorAll(".filters button");
-            for (let i = 0; i < botones.length; i++) {
-                botones[i].classList.remove("activo");
-            }
-            if (btnElement) btnElement.classList.add("activo");
-
-            // 3. Función auxiliar para detectar si una card es AM
-            function esAM(card) {
-                // Método 1: Tiene el atributo nuevo
-                if (card.dataset.tipo === "am") return true;
-                
-                // Método 2: Detecta por patrones en el nombre
-                const nombreData = (card.dataset.name || "").toLowerCase();
-                const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
-                const texto = nombreData + " " + nombreVisible;
-                
-                // Señal distintiva + números obligatorios (LU5, LR1, LS3, LV9, LRA43)
-                if (/\b(lu|lr|ls|lv|lra)\s*\d+\b/i.test(texto)) return true;
-                
-                // "AM" + números (AM 550, AM600)
-                if (/\bam\s*\d+\b/i.test(texto)) return true;
-                
-                // 🔧 CORRECCIÓN CLAVE: El ID debe empezar con señal + NÚMERO (no solo letras)
-                const id = (card.id || "").toLowerCase();
-                if (/^(lu|lr|ls|lv|lra)\d+/.test(id)) return true; // \d+ exige al menos 1 número
-                
-                return false;
-            }
-
-                // --- 4. FILTRO POR PROVINCIA Y AM (Versión Simple) ---
-    function filtrarProvincia(prov, btnElement) {
-        try {
-            // 1. Limpiar buscador
-            const searchInput = document.getElementById("searchInput");
-            if (searchInput) searchInput.value = "";
-            
-            // 2. Actualizar botones
-            const botones = document.querySelectorAll(".filters button");
-            for (let i = 0; i < botones.length; i++) {
-                botones[i].classList.remove("activo");
-            }
-            if (btnElement) btnElement.classList.add("activo");
-
-            // 3. Filtrar tarjetas
-            const cards = document.querySelectorAll(".card");
-
-            for (let i = 0; i < cards.length; i++) {
-                const card = cards[i];
-                const tipo = card.dataset.tipo;
-                const provincia = card.dataset.provincia;
-                let coincide = false;
-
-                if (prov === "todas") {
-                    coincide = true;
-
-                } else if (prov === "am") {
-                    // Solo muestra las que tienen data-tipo="am"
-                    coincide = (tipo === "am");
-
-                } else {
-                    // Filtro por provincia
-                    if (provincia === prov) {
-                        if (tipo === "am") {
-                            coincide = false;
-                        } else {
-                            coincide = true;
-                        }
-                    }
-                }
-
-                card.style.display = coincide ? "" : "none";
-            }
-        } catch (error) {
-            console.error("Error al filtrar:", error);
-        }
+    // --- 4. FILTRO POR PROVINCIA (Bug corregido) ---
+  function filtrarProvincia(prov, btnElement) {
+    // 1. Limpiar buscador de texto
+    document.getElementById("searchInput").value = "";
+    
+    // 2. Actualizar estado visual de los botones
+    const botones = document.querySelectorAll(".filters button");
+    for (let i = 0; i < botones.length; i++) {
+        botones[i].classList.remove("activo");
     }
+    if (btnElement) btnElement.classList.add("activo");
+
+    // 3. Filtrar las tarjetas
+    const cards = document.querySelectorAll(".card");
+
+    for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        let coincide = false;
+
+        if (prov === "todas") {
+            coincide = true;
+
+        } else if (prov === "am") {
+            // --- LÓGICA ROBUSTA PARA DETECTAR AMs ---
+            const tipo = card.dataset.tipo; // Por si ya le agregaste este atributo
+            const nombreData = (card.dataset.name || "").toLowerCase();
+            const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
+            
+            // Es AM si: 
+            // a) Tiene el atributo explícito data-tipo="am"
+            // b) El nombre contiene " am " (con espacios, para no caer en "Campana")
+            // c) El nombre empieza con "am " (ej: "am 550")
+            // d) El nombre termina en " am"
+            if (tipo === "am") {
+                coincide = true;
+            } else if (nombreData.includes(" am ") || nombreData.startsWith("am ") || nombreData.endsWith(" am")) {
+                coincide = true;
+            } else if (nombreVisible.includes(" am ") || nombreVisible.startsWith("am ") || nombreVisible.endsWith(" am")) {
+                coincide = true;
+            }
+
+        } else {
+            // Filtro normal por provincia
+            coincide = card.dataset.provincia === prov;
+        }
+
+        // "" restaura el grid original, "none" oculta. El orden NUNCA se altera.
+        card.style.display = coincide ? "" : "none";
+    }
+}
+
     // --- 5. NUEVO: FILTRO POR CATEGORÍA ---
     function filtrarCategoria(categoria, btnElement) {
         document.getElementById("searchInput").value = "";
@@ -12813,4 +12743,3 @@ function copiarAlPortapapeles(url, nombre) {
 </script>
 </body>
 </html>   
-
