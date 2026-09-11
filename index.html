@@ -12646,10 +12646,46 @@ function buscarRadioRapido() {
                 
                 return false;
             }
+    // --- 4. FILTRO POR PROVINCIA Y AM (Versión Final Corregida) ---
+    function filtrarProvincia(prov, btnElement) {
+        try {
+            // 1. Limpiar buscador
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) searchInput.value = "";
+            
+            // 2. Actualizar botones
+            const botones = document.querySelectorAll(".filters button");
+            for (let i = 0; i < botones.length; i++) {
+                botones[i].classList.remove("activo");
+            }
+            if (btnElement) btnElement.classList.add("activo");
+
+            // 3. Función auxiliar para detectar si una card es AM
+            function esAM(card) {
+                // Método 1: Tiene el atributo nuevo
+                if (card.dataset.tipo === "am") return true;
+                
+                // Método 2: Detecta por patrones en el nombre
+                const nombreData = (card.dataset.name || "").toLowerCase();
+                const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
+                const texto = nombreData + " " + nombreVisible;
+                
+                // Señal distintiva + números obligatorios (LU5, LR1, LS3, LV9, LRA43)
+                if (/\b(lu|lr|ls|lv|lra)\s*\d+\b/i.test(texto)) return true;
+                
+                // "AM" + números (AM 550, AM600)
+                if (/\bam\s*\d+\b/i.test(texto)) return true;
+                
+                // 🔧 CORRECCIÓN CLAVE: El ID debe empezar con señal + NÚMERO (no solo letras)
+                const id = (card.id || "").toLowerCase();
+                if (/^(lu|lr|ls|lv|lra)\d+/.test(id)) return true; // \d+ exige al menos 1 número
+                
+                return false;
+            }
 
             // 4. Filtrar tarjetas
             const cards = document.querySelectorAll(".card");
-            const vistas = new Set(); // Para evitar duplicados
+            const vistas = new Set();
 
             for (let i = 0; i < cards.length; i++) {
                 const card = cards[i];
@@ -12660,7 +12696,6 @@ function buscarRadioRapido() {
 
                 } else if (prov === "am") {
                     if (esAM(card)) {
-                        // 🔍 DEDUPLICACIÓN por "ADN"
                         const nombreData = (card.dataset.name || "").toLowerCase();
                         const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
                         const texto = nombreData + " " + nombreVisible;
@@ -12686,7 +12721,6 @@ function buscarRadioRapido() {
                     }
 
                 } else {
-                    // Filtro por provincia
                     if (card.dataset.provincia === prov) {
                         if (esAM(card)) {
                             coincide = false;
