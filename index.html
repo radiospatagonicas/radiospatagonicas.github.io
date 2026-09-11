@@ -10322,18 +10322,22 @@
     <div class="share-link" onclick="compartir('lv1-am560', 'LV1 Radio Colón AM 560')">🔗 Compartir</div>
 </div>
 
-<!-- LV2 -->
+<!-- LV2 (Histórica AM 970, actualmente operando en FM 99.7) -->
 <div class="card" id="lv2-am970"
      data-provincia="cordoba"
-     data-tipo="am"
-     data-name="lv2 mediterranea cordoba am970">
+     data-tipo="am" 
+     data-name="lv2 mediterranea cordoba am970 fm 99.7">
     <div class="am-logo">
         <img src="logos-am/lv2.png" alt="LV2 Mediterránea">
     </div>
-    <div class="name">LV2 FM 99.7</div>
-    <div class="city">AM 970 — Córdoba</div>
-    <button class="play" onclick="playRadio(this, 'https://corsproxy.io/?http://ea.mp3.icecast.magma.edge-access.net:7200/sc_rad7" ty')">▶ Escuchar</button>
-    <div class="share-link" onclick="compartir('lv2-am970', 'LV2 Mediterránea AM 970')">🔗 Compartir</div>
+    <!-- Badge informativo para que el usuario entienda la situación -->
+    <div class="name">LV2 Mediterránea <span style="font-size: 0.75em; background: #f39c12; color: #000; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold;">Hoy en FM 99.7</span></div>
+    <div class="city">AM 970 (Fuera de aire) — Córdoba</div>
+    
+    <!-- El stream apunta a la señal que realmente está al aire -->
+    <button class="play" onclick="playRadio(this, 'https://corsproxy.io/?http://ea.mp3.icecast.magma.edge-access.net:7200/sc_rad7')">▶ Escuchar FM 99.7</button>
+    
+    <div class="share-link" onclick="compartir('lv2-am970', 'LV2 Mediterránea (Actualmente en FM 99.7)')">🔗 Compartir</div>
 </div> 
 
 <!-- LV3 -->
