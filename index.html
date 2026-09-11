@@ -12608,7 +12608,7 @@ function buscarRadioRapido() {
         }
     }, 200); // 200ms de espera para suavidad total
 }
-          // --- 4. FILTRO POR PROVINCIA Y AM (Versión Híbrida - Detecta AMs viejas y nuevas) ---
+              // --- 4. FILTRO POR PROVINCIA Y AM (Detección Ultra-Precisa) ---
     function filtrarProvincia(prov, btnElement) {
         try {
             // 1. Limpiar buscador
@@ -12622,25 +12622,24 @@ function buscarRadioRapido() {
             }
             if (btnElement) btnElement.classList.add("activo");
 
-            // 3. Función auxiliar para detectar si una card es AM
+            // 3. Función auxiliar para detectar si una card es AM (versión precisa)
             function esAM(card) {
-                // Método 1: Tiene el atributo nuevo (las que ya actualizaste)
+                // Método 1: Tiene el atributo nuevo
                 if (card.dataset.tipo === "am") return true;
                 
-                // Método 2: Detecta por el nombre (para las que todavía no actualizaste)
+                // Método 2: Detecta por patrones precisos en el nombre
                 const nombreData = (card.dataset.name || "").toLowerCase();
                 const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
                 const texto = nombreData + " " + nombreVisible;
                 
-                // Busca señales distintivas (LU, LR, LS, LV, LRA) o la palabra " am "
-                if (texto.includes(" am ") || texto.startsWith("am ") || texto.endsWith(" am") ||
-                    texto.includes(" lu ") || texto.includes(" lr ") || 
-                    texto.includes(" ls ") || texto.includes(" lv ") || 
-                    texto.includes(" lra ")) {
-                    return true;
-                }
+                // Patrón 1: Señal distintiva + números (LU5, LR1, LS3, LV9, LRA43)
+                // El \d+ asegura que haya números después de la señal
+                if (/\b(lu|lr|ls|lv|lra)\s*\d+\b/i.test(texto)) return true;
                 
-                // Caso especial: IDs que empiezan con señales (ej: "lu5-am600", "lr1-...")
+                // Patrón 2: "AM" + números (AM 550, AM600, AM 1440)
+                if (/\bam\s*\d+\b/i.test(texto)) return true;
+                
+                // Patrón 3: ID que empieza con señal + números (lu5-am600, lr1-...)
                 const id = (card.id || "").toLowerCase();
                 if (/^(lu|lr|ls|lv|lra)\d*/.test(id)) return true;
                 
@@ -12649,25 +12648,24 @@ function buscarRadioRapido() {
 
             // 4. Filtrar tarjetas
             const cards = document.querySelectorAll(".card");
-            const vistas = new Set(); // Para evitar duplicados en "Todas las AM"
+            const vistas = new Set(); // Para evitar duplicados
 
             for (let i = 0; i < cards.length; i++) {
                 const card = cards[i];
                 let coincide = false;
 
                 if (prov === "todas") {
-                    coincide = true; // Muestra todo (FM y AM)
+                    coincide = true;
 
                 } else if (prov === "am") {
                     if (esAM(card)) {
-                        // 🔍 DEDUPLICACIÓN por "ADN" de la radio
+                        // 🔍 DEDUPLICACIÓN por "ADN"
                         const nombreData = (card.dataset.name || "").toLowerCase();
                         const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
                         const texto = nombreData + " " + nombreVisible;
                         
-                        // Extraer señal distintiva o frecuencia
-                        const matchCallsign = texto.match(/(lu|lr|ls|lv|lra)\s*\d+/i);
-                        const matchFreq = texto.match(/am\s*\d+/i);
+                        const matchCallsign = texto.match(/\b(lu|lr|ls|lv|lra)\s*\d+/i);
+                        const matchFreq = texto.match(/\bam\s*\d+/i);
                         
                         let huella = "";
                         if (matchCallsign) {
@@ -12682,18 +12680,17 @@ function buscarRadioRapido() {
                             coincide = true;
                             vistas.add(huella);
                         } else {
-                            coincide = false; // Es un duplicado, lo ocultamos
+                            coincide = false;
                         }
                     }
 
                 } else {
-                    // Filtro por provincia (Neuquén, Río Negro, etc.)
-                    // Mostramos las de esa provincia, PERO excluimos las AM
+                    // Filtro por provincia
                     if (card.dataset.provincia === prov) {
                         if (esAM(card)) {
-                            coincide = false; // Es AM, la ocultamos en el filtro provincial
+                            coincide = false;
                         } else {
-                            coincide = true;  // Es FM, la mostramos
+                            coincide = true;
                         }
                     }
                 }
