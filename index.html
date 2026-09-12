@@ -12530,17 +12530,18 @@
     }
     setInterval(() => showSlide(currentSlide + 1), 5000);
 
-        // --- 2. LÓGICA DE LA RADIO (Con Fallback / Señal de Respaldo) ---
+           // --- 2. LÓGICA DE LA RADIO CON SEÑAL DE RESPALDO (FALLBACK) ---
     const player = document.getElementById("player");
     const now = document.getElementById("nowPlaying");
     
-    // URL de tu señal de respaldo (ajusta la ruta si la guardaste en otro lado)
-    const FALLBACK_URL = "https://radiospatagonicas.github.io/audio/senal-respaldo.mp3";
-    let currentRadioUrl = ""; // Para recordar qué estaba sonando
+    // Tu enlace de música incidental de respaldo
+    const FALLBACK_URL = "https://stream.zeno.fm/0r0xa792kwzuv";
+    let currentRadioUrl = ""; // Para recordar qué radio pidió el usuario
 
     function playRadio(btn, url) {
         const mismaRadio = player.src === url || player.src.includes(url);
 
+        // Si hace clic en la misma radio que ya suena, la pausa
         if (mismaRadio && !player.paused) {
             player.pause();
             player.src = ""; 
@@ -12550,46 +12551,56 @@
         }
 
         resetUI();
-        currentRadioUrl = url; // Guardamos la URL original
+        currentRadioUrl = url; // Guardamos la URL original que pidió el usuario
         player.src = url;
         
+        // Intentamos reproducir. Si falla de entrada (ej: Mixed Content), vamos al respaldo
         player.play().catch(error => {
-            console.error("Error al reproducir:", error);
-            activarRespaldo(btn); // Si falla al iniciar, vamos al respaldo
+            console.warn("Error al iniciar stream, activando respaldo:", error);
+            activarRespaldo();
         });
 
+        // Actualizamos la interfaz visual
         btn.classList.add("on");
         btn.innerText = "⏸ Sonando...";
         btn.parentElement.classList.add("active");
         
         const radioName = btn.parentElement.querySelector(".name").innerText;
         now.innerText = "📻 Sonando: " + radioName;
+        now.style.color = "#0077ff"; // Color azul normal
     }
 
-    // 🚨 AQUÍ ESTÁ LA MAGIA: Si el stream se cae mientras suena, saltamos al respaldo
-    player.addEventListener("error", () => {
-        // Solo activamos el respaldo si NO estamos ya en el respaldo
+    // Función dedicada a activar el respaldo
+    function activarRespaldo() {
+        // Solo activamos si NO estamos ya escuchando el respaldo (evita bucles infinitos)
         if (player.src !== FALLBACK_URL && currentRadioUrl) {
-            console.warn("Stream caído. Activando señal de respaldo...");
+            console.log("⚠️ Stream original caído. Cambiando a música de respaldo.");
             player.src = FALLBACK_URL;
-            player.play();
+            player.play().catch(e => console.error("Error hasta en el respaldo", e));
             
-            now.innerText = "⚠️ Emisora temporalmente offline. Reproduciendo señal de respaldo.";
-            now.style.color = "#f39c12"; // Color naranja para alertar
+            now.innerText = "⚠️ Emisora offline temporalmente. Reproduciendo música de respaldo.";
+            now.style.color = "#f39c12"; // Color naranja para alertar al usuario
             
-            // Opcional: Quitar el estado "on" de todos los botones para que el usuario sepa que cambió
+            // Reseteamos visualmente los botones para que el usuario sepa que cambió la fuente
             document.querySelectorAll(".play").forEach(p => {
                 p.classList.remove("on");
                 p.innerText = "▶ Escuchar";
             });
+            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+        }
+    }
+
+    // 🚨 DETECTOR DE CAÍDAS: Si el stream se corta mientras suena, salta al respaldo
+    player.addEventListener("error", () => {
+        if (player.src !== FALLBACK_URL && currentRadioUrl) {
+            activarRespaldo();
         }
     });
 
-    // Si el usuario pausa el respaldo, reseteamos todo
+    // Si el usuario pausa manualmente, reseteamos todo
     player.addEventListener("pause", () => {
         resetUI();
         now.innerText = "⏸️ Reproducción pausada";
-        now.style.color = "#0077ff"; // Volver al color azul original
     });
 
     function resetUI() {
@@ -12598,7 +12609,7 @@
             p.innerText = "▶ Escuchar";
         });
         document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-        now.style.color = "#0077ff";
+        now.style.color = "#0077ff"; // Volver al color azul original
     }
     // --- 3. BÚSQUEDA RÁPIDA (DEBOUNCE) ---
     // Esto evita que se trabe al escribir rápido
