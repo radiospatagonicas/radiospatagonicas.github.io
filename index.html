@@ -12530,9 +12530,13 @@
     }
     setInterval(() => showSlide(currentSlide + 1), 5000);
 
-    // --- 2. LÓGICA DE LA RADIO (Con manejo de errores) ---
+        // --- 2. LÓGICA DE LA RADIO (Con Fallback / Señal de Respaldo) ---
     const player = document.getElementById("player");
     const now = document.getElementById("nowPlaying");
+    
+    // URL de tu señal de respaldo (ajusta la ruta si la guardaste en otro lado)
+    const FALLBACK_URL = "https://radiospatagonicas.github.io/audio/senal-respaldo.mp3";
+    let currentRadioUrl = ""; // Para recordar qué estaba sonando
 
     function playRadio(btn, url) {
         const mismaRadio = player.src === url || player.src.includes(url);
@@ -12546,10 +12550,12 @@
         }
 
         resetUI();
+        currentRadioUrl = url; // Guardamos la URL original
         player.src = url;
+        
         player.play().catch(error => {
             console.error("Error al reproducir:", error);
-            now.innerText = "⚠️ Error: Emisora offline o formato no soportado";
+            activarRespaldo(btn); // Si falla al iniciar, vamos al respaldo
         });
 
         btn.classList.add("on");
@@ -12560,15 +12566,30 @@
         now.innerText = "📻 Sonando: " + radioName;
     }
 
-    // Manejo de errores de stream (si se cae la radio)
+    // 🚨 AQUÍ ESTÁ LA MAGIA: Si el stream se cae mientras suena, saltamos al respaldo
     player.addEventListener("error", () => {
-        resetUI();
-        now.innerText = "⚠️ La emisora no está disponible en este momento.";
+        // Solo activamos el respaldo si NO estamos ya en el respaldo
+        if (player.src !== FALLBACK_URL && currentRadioUrl) {
+            console.warn("Stream caído. Activando señal de respaldo...");
+            player.src = FALLBACK_URL;
+            player.play();
+            
+            now.innerText = "⚠️ Emisora temporalmente offline. Reproduciendo señal de respaldo.";
+            now.style.color = "#f39c12"; // Color naranja para alertar
+            
+            // Opcional: Quitar el estado "on" de todos los botones para que el usuario sepa que cambió
+            document.querySelectorAll(".play").forEach(p => {
+                p.classList.remove("on");
+                p.innerText = "▶ Escuchar";
+            });
+        }
     });
 
+    // Si el usuario pausa el respaldo, reseteamos todo
     player.addEventListener("pause", () => {
         resetUI();
         now.innerText = "⏸️ Reproducción pausada";
+        now.style.color = "#0077ff"; // Volver al color azul original
     });
 
     function resetUI() {
@@ -12577,8 +12598,8 @@
             p.innerText = "▶ Escuchar";
         });
         document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+        now.style.color = "#0077ff";
     }
-
     // --- 3. BÚSQUEDA RÁPIDA (DEBOUNCE) ---
     // Esto evita que se trabe al escribir rápido
    let timeoutBusqueda;
