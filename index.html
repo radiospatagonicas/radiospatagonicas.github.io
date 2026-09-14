@@ -12272,20 +12272,25 @@
             }, 200);
         }
 
-        // --- 4. FILTRO PROVINCIA / AM ---
+               // --- 4. FILTRO POR PROVINCIA Y AM (Versión Final Ajustada) ---
         function filtrarProvincia(prov, btnElement) {
             document.getElementById("searchInput").value = "";
             document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
             if (btnElement) btnElement.classList.add("activo");
 
             document.querySelectorAll(".card").forEach(card => {
-                const tipo = card.dataset.tipo;
+                const tipo = card.dataset.tipo; // "am" o "fm"
                 const provincia = card.dataset.provincia;
                 let coincide = false;
 
-                if (prov === "todas") coincide = true;
-                else if (prov === "am") coincide = (tipo === "am");
-                else if (provincia === prov) coincide = (tipo !== "am"); // Muestra FM, oculta AM en provincias
+                if (prov === "todas") {
+                    coincide = true; // Muestra todo
+                } else if (prov === "am") {
+                    coincide = (tipo === "am"); // Muestra SOLO las AM (sin duplicados visuales si usas IDs únicos)
+                } else {
+                    // Filtro por provincia: Muestra TODO (FM y AM) de esa provincia
+                    coincide = (provincia === prov);
+                }
 
                 card.style.display = coincide ? "" : "none";
             });
