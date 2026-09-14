@@ -508,20 +508,22 @@
     </div>
 
     <!-- FILTROS UNIFICADOS (Provincias + Categorías) -->
-    <div class="filters">
-        <button class="activo" onclick="filtrarProvincia('todas', this)">Todas</button>
-        <button onclick="filtrarProvincia('rionegro', this)">Río Negro</button>
-        <button onclick="filtrarProvincia('neuquen', this)">Neuquén</button>
-        <button onclick="filtrarProvincia('chubut', this)">Chubut</button>
-        <button onclick="filtrarProvincia('santacruz', this)">Santa Cruz</button>
-        <button onclick="filtrarProvincia('tdf', this)">Tierra del Fuego</button>
-        <button onclick="filtrarProvincia('am', this)">Todas las AM</button>
-        <!-- NUEVO: Filtro por Categoría -->
-        <button onclick="filtrarCategoria('musical', this)">🎵 Musical</button>
-        <button onclick="filtrarCategoria('noticias', this)">📰 Noticias</button>
-        <button onclick="filtrarCategoria('historica', this)">📻 Históricas</button>
-    </div>
-
+   <div class="filters">
+    <button class="activo" onclick="filtrarProvincia('todas', this)">Todas</button>
+    <button onclick="filtrarProvincia('rionegro', this)">Río Negro</button>
+    <button onclick="filtrarProvincia('neuquen', this)">Neuquén</button>
+    <button onclick="filtrarProvincia('chubut', this)">Chubut</button>
+    <button onclick="filtrarProvincia('santacruz', this)">Santa Cruz</button>
+    <button onclick="filtrarProvincia('tdf', this)">Tierra del Fuego</button>
+    <button onclick="filtrarProvincia('am', this)">Todas las AM</button>
+    
+    <!-- NUEVOS BOTONES DE CATEGORÍA -->
+    <button onclick="filtrarCategoria('deportiva', this)">⚽ Deportiva</button>
+    <button onclick="filtrarCategoria('informativa', this)">📰 Informativa</button>
+    <button onclick="filtrarCategoria('religiosa', this)">⛪ Religiosa</button>
+    <button onclick="filtrarCategoria('comunitaria', this)">🏘️ Comunitaria</button>
+    <button onclick="filtrarCategoria('musical', this)">🎵 Musical</button>
+</div>
     <div class="search">
         <!-- Cambiado a buscarRadioRapido para el debounce -->
         <input type="text" id="searchInput" onkeyup="buscarRadioRapido()" placeholder="Buscar por nombre, frecuencia o ciudad...">
@@ -12947,24 +12949,35 @@ function buscarRadioRapido() {
     }
 }
 
-    // --- 5. NUEVO: FILTRO POR CATEGORÍA ---
+       // --- 5. FILTRO POR CATEGORÍA (Soporta múltiples categorías) ---
     function filtrarCategoria(categoria, btnElement) {
-        document.getElementById("searchInput").value = "";
-        document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
+        // 1. Limpiar buscador de texto
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) searchInput.value = "";
+
+        // 2. Actualizar estado visual de los botones
+        const botones = document.querySelectorAll(".filters button");
+        for (let i = 0; i < botones.length; i++) {
+            botones[i].classList.remove("activo");
+        }
         if (btnElement) btnElement.classList.add("activo");
 
-        document.querySelectorAll(".card").forEach(card => {
-            // Si no tiene data-categoria, se asume "generalista" y se muestra en "todas"
-            const cat = card.getAttribute("data-categoria") || "generalista"; 
-            
-            if (categoria === "todas" || cat === categoria) {
-                card.style.display = "";
-            } else {
-                card.style.display = "none";
-            }
-        });
-    }
+        // 3. Filtrar las tarjetas
+        const cards = document.querySelectorAll(".card");
 
+        for (let i = 0; i < cards.length; i++) {
+            const card = cards[i];
+            // Obtenemos las categorías y las pasamos a minúsculas. Si no tiene, asumimos "generalista"
+            const cats = (card.dataset.categoria || "generalista").toLowerCase();
+
+            // Si la categoría buscada está incluida en las categorías de la radio, la mostramos
+            if (categoria === "todas" || cats.includes(categoria)) {
+                card.style.display = ""; 
+            } else {
+                card.style.display = "none"; 
+            }
+        }
+    }
     // --- 6. COMPARTIR ---
    function compartir(id, nombre) {
     const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
