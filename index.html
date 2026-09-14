@@ -112,17 +112,21 @@
         <button class="play" onclick="playRadio(this, 'https://sonic.host-live.com:10851/stream')">▶ Escuchar</button>
         <div class="share-link" onclick="compartir('am550', 'AM 550 La Primera')">🔗 Compartir</div>
     </div>
-    
-    <!-- LU5 -->
-  <div class="card" id="lu5-am600" data-provincia="neuquen" data-tipo="am" data-categoria="noticias" data-name="lu5 radio neuquen am600">
-            <div class="am-logo">
-                <img src="logos-am/lu5.png" alt="LU 5" loading="lazy" onerror="this.src='logos-am/radio.png'">
-            </div>
-            <div class="name">LU 5 AM 600 <span style="font-size: 0.85em; color: #2ecc71; margin-left: 8px; font-weight: 600;">⚽ Deportes</span></div>
-            <div class="city">Neuquén</div>
-            <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5?type=.mp3&_=1')">▶ Escuchar</button>
-            <div class="share-link" onclick="compartir('lu5-am600', 'LU 5 AM 600 Neuquén')">🔗 Compartir</div>
-        </div>
+  
+ <!-- LU5 -->
+<div class="card" id="lu5-am600" data-provincia="neuquen" data-tipo="am" data-categoria="noticias" data-name="lu5 radio neuquen am600">
+    <div class="am-logo">
+        <img src="logos-am/lu5.png" alt="LU 5" loading="lazy" onerror="this.src='logos-am/radio.png'">
+    </div>
+    <div class="name">
+        LU 5 AM 600 
+        <!-- AQUÍ ESTÁ EL CAMBIO: Color naranja y texto Noticias -->
+        <span style="font-size: 0.85em; color: #e67e22; margin-left: 8px; font-weight: 600;">📰 Noticias</span>
+    </div>
+    <div class="city">Neuquén</div>
+    <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5?type=.mp3&_=1')">▶ Escuchar</button>
+    <div class="share-link" onclick="compartir('lu5-am600', 'LU 5 AM 600 Neuquén')">🔗 Compartir</div>
+</div>
 
   <!-- LU18 -->
 <div class="card" id="lu18-am640" data-provincia="rionegro" 
@@ -11485,15 +11489,16 @@
     <div class="share-link" onclick="compartir('am1140-luna', 'AM 1140 Radio La Luna')">🔗 Compartir</div>
 </div>
 
- <div class="card" id="am1150-maria" data-provincia="buenosaires" data-tipo="am" data-categoria="religiosa generalista" data-name="am1150 radio maria argentina buenos aires">
+ <!-- RADIO MARÍA AM 1150 CABECERA -->
+<div class="card" id="am1150-maria" data-provincia="buenosaires" data-tipo="am" data-categoria="religiosa" data-name="am1150 radio maria argentina buenos aires">
     <div class="am-logo">
-        <img src="logos-am/radiomaria.png" alt="RADIO MARIA AM 1150 BUENOS AIRES" loading="lazy" onerror="this.src='logos-am/radio.png'">
+        <img src="logos-am/radiomaria.png" alt="RADIO MARIA AM 1150" loading="lazy" onerror="this.src='logos-am/radio.png'">
     </div>
-    <div class="name"> 
+    <div class="name">
+        Radio María AM 1150 
         <span style="font-size: 0.75em; border: 1px solid #9b59b6; color: #9b59b6; padding: 1px 6px; border-radius: 12px; margin-left: 8px; font-weight: 500;"> Religiosa</span>
     </div>
-    <!-- Corregida la provincia en el data-provincia (antes decía "am", ahora "buenosaires") -->
-    <div class="city">AM 1150 — Buenos Aires</div>
+    <div class="city">Buenos Aires</div>
     <button class="play" onclick="playRadio(this, 'https://dreamsiteradiocp2.com/proxy/rmargentina2?mp=/stream')">▶ Escuchar</button>
     <div class="share-link" onclick="compartir('am1150-maria', 'Radio María AM 1150 Buenos Aires')">🔗 Compartir</div>
 </div>
