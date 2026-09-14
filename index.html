@@ -10,7 +10,7 @@
     <meta name="keywords" content="radios patagonia, radios argentinas, radio en vivo, neuquen, rio negro, chubut, santa cruz, tierra del fuego, am, fm">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-    <!-- OPEN GRAPH CORREGIDO -->
+    <!-- OPEN GRAPH -->
     <meta property="og:title" content="Radios Patagónicas | El Dial del Sur" />
     <meta property="og:description" content="Directorio y archivo digital de las emisoras de radio de la Patagonia. Dial en vivo y frecuencias." />
     <meta property="og:image" content="https://radiospatagonicas.github.io/logo-radios-patagonicas.jpg" />
@@ -167,7 +167,6 @@
         <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
     </div>
 
-    <!-- FILTROS UNIFICADOS (Provincias + Categorías actualizadas) -->
     <div class="filters">
         <button class="activo" onclick="filtrarProvincia('todas', this)">Todas</button>
         <button onclick="filtrarProvincia('rionegro', this)">Río Negro</button>
@@ -176,8 +175,6 @@
         <button onclick="filtrarProvincia('santacruz', this)">Santa Cruz</button>
         <button onclick="filtrarProvincia('tdf', this)">Tierra del Fuego</button>
         <button onclick="filtrarProvincia('am', this)">Todas las AM</button>
-        
-        <!-- NUEVOS BOTONES DE CATEGORÍA -->
         <button onclick="filtrarCategoria('deportiva', this)">⚽ Deportiva</button>
         <button onclick="filtrarCategoria('informativa', this)">📰 Informativa</button>
         <button onclick="filtrarCategoria('religiosa', this)">⛪ Religiosa</button>
@@ -190,28 +187,24 @@
     </div>
 
     <!-- ======================================================================= -->
-    <!-- AQUÍ EMPIEZA TU GRILLA DE CARDS. PEGA TODAS TUS 1300+ TARJETAS AQUÍ ABAJO -->
+    <!-- 1. PEGA AQUÍ TODAS TUS CARDS (LAS 1300+) DENTRO DE ESTE DIV "grid"      -->
     <!-- ======================================================================= -->
     <div class="grid" id="radioGrid">
 
-        <!-- Ejemplo de card (borra este ejemplo y pega las tuyas) -->
+        <!-- EJEMPLO DE CARD (Puedes borrar este ejemplo y pegar las tuyas) -->
         <div class="card" id="lu5-am600" data-provincia="neuquen" data-tipo="am" data-categoria="deportiva" data-name="lu5 radio neuquen am600">
             <div class="am-logo">
                 <img src="logos-am/lu5.png" alt="LU 5" loading="lazy" onerror="this.src='logos-am/radio.png'">
             </div>
-            <div class="name">
-                LU 5 AM 600 
-                <span style="font-size: 0.85em; color: #2ecc71; margin-left: 8px; font-weight: 600;">⚽ Deportes</span>
-            </div>
+            <div class="name">LU 5 AM 600 <span style="font-size: 0.85em; color: #2ecc71; margin-left: 8px; font-weight: 600;">⚽ Deportes</span></div>
             <div class="city">Neuquén</div>
             <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5?type=.mp3&_=1')">▶ Escuchar</button>
             <div class="share-link" onclick="compartir('lu5-am600', 'LU 5 AM 600 Neuquén')">🔗 Compartir</div>
         </div>
 
-        <!-- ... AQUÍ SIGUEN EL RESTO DE TUS CARDS ... -->
-
     </div> <!-- CIERRA EL DIV GRID -->
 
+    
    
 
     <div class="card" id="am550" data-provincia="neuquen" data-name="am 550 la primera nqn">
@@ -12289,6 +12282,9 @@
 
     </div>
 
+   <!-- ======================================================================= -->
+    <!-- 2. PEGA AQUÍ TU FOOTER (EL PIE DE PÁGINA)                               -->
+    <!-- ======================================================================= -->
     <footer class="footer-sitio">
         <div class="footer-contenido">
             <div class="footer-col">
@@ -12318,277 +12314,190 @@
         </div>
     </footer>
 
-<script>
-    // --- 1. LÓGICA DEL SLIDER ---
-    let currentSlide = 0;
-    function showSlide(index) {
-        const slider = document.getElementById("slider");
-        const slides = document.querySelectorAll(".slide");
-        const dots = document.querySelectorAll(".dot");
-        if (!slider || slides.length === 0) return;
-
-        currentSlide = index >= slides.length ? 0 : (index < 0 ? slides.length - 1 : index);
-        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-
-        dots.forEach(dot => dot.classList.remove("active"));
-        if (dots[currentSlide]) dots[currentSlide].classList.add("active");
-    }
-    setInterval(() => showSlide(currentSlide + 1), 5000);
-
-           // --- 2. LÓGICA DE LA RADIO CON SEÑAL DE RESPALDO (FALLBACK) ---
-    const player = document.getElementById("player");
-    const now = document.getElementById("nowPlaying");
-    
-    // Tu enlace de música incidental de respaldo
-    const FALLBACK_URL = "https://stream.zeno.fm/0r0xa792kwzuv";
-    let currentRadioUrl = ""; // Para recordar qué radio pidió el usuario
-
-    function playRadio(btn, url) {
-        const mismaRadio = player.src === url || player.src.includes(url);
-
-        // Si hace clic en la misma radio que ya suena, la pausa
-        if (mismaRadio && !player.paused) {
-            player.pause();
-            player.src = ""; 
-            resetUI();
-            now.innerText = "🎧 Seleccioná una radio para escuchar";
-            return;
+    <!-- ======================================================================= -->
+    <!-- 3. PEGA AQUÍ TODO TU JAVASCRIPT (UNA SOLA VEZ, AL FINAL)                -->
+    <!-- ======================================================================= -->
+    <script>
+        // --- 1. LÓGICA DEL SLIDER ---
+        let currentSlide = 0;
+        function showSlide(index) {
+            const slider = document.getElementById("slider");
+            const slides = document.querySelectorAll(".slide");
+            const dots = document.querySelectorAll(".dot");
+            if (!slider || slides.length === 0) return;
+            currentSlide = index >= slides.length ? 0 : (index < 0 ? slides.length - 1 : index);
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach(dot => dot.classList.remove("active"));
+            if (dots[currentSlide]) dots[currentSlide].classList.add("active");
         }
+        setInterval(() => showSlide(currentSlide + 1), 5000);
 
-        resetUI();
-        currentRadioUrl = url; // Guardamos la URL original que pidió el usuario
-        player.src = url;
-        
-        // Intentamos reproducir. Si falla de entrada (ej: Mixed Content), vamos al respaldo
-        player.play().catch(error => {
-            console.warn("Error al iniciar stream, activando respaldo:", error);
-            activarRespaldo();
-        });
-
-        // Actualizamos la interfaz visual
-        btn.classList.add("on");
-        btn.innerText = "⏸ Sonando...";
-        btn.parentElement.classList.add("active");
-        
-        const radioName = btn.parentElement.querySelector(".name").innerText;
-        now.innerText = "📻 Sonando: " + radioName;
-        now.style.color = "#0077ff"; // Color azul normal
-    }
-
-    // Función dedicada a activar el respaldo
-    function activarRespaldo() {
-        // Solo activamos si NO estamos ya escuchando el respaldo (evita bucles infinitos)
-        if (player.src !== FALLBACK_URL && currentRadioUrl) {
-            console.log("⚠️ Stream original caído. Cambiando a música de respaldo.");
-            player.src = FALLBACK_URL;
-            player.play().catch(e => console.error("Error hasta en el respaldo", e));
-            
-            now.innerText = "⚠️ Emisora offline temporalmente. Reproduciendo música de respaldo.";
-            now.style.color = "#f39c12"; // Color naranja para alertar al usuario
-            
-            // Reseteamos visualmente los botones para que el usuario sepa que cambió la fuente
-            document.querySelectorAll(".play").forEach(p => {
-                p.classList.remove("on");
-                p.innerText = "▶ Escuchar";
-            });
-            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-        }
-    }
-
-    // 🚨 DETECTOR DE CAÍDAS: Si el stream se corta mientras suena, salta al respaldo
-    player.addEventListener("error", () => {
-        if (player.src !== FALLBACK_URL && currentRadioUrl) {
-            activarRespaldo();
-        }
-    });
-
-    // Si el usuario pausa manualmente, reseteamos todo
-    player.addEventListener("pause", () => {
-        resetUI();
-        now.innerText = "⏸️ Reproducción pausada";
-    });
-
-    function resetUI() {
-        document.querySelectorAll(".play").forEach(p => {
-            p.classList.remove("on");
-            p.innerText = "▶ Escuchar";
-        });
-        document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-        now.style.color = "#0077ff"; // Volver al color azul original
-    }
-    // --- 3. BÚSQUEDA RÁPIDA (DEBOUNCE) ---
-    // Esto evita que se trabe al escribir rápido
-   let timeoutBusqueda;
-function buscarRadioRapido() {
-    clearTimeout(timeoutBusqueda);
-    timeoutBusqueda = setTimeout(() => {
-        const input = document.getElementById("searchInput").value.toLowerCase().trim();
-        const cards = document.querySelectorAll(".card");
-        
-        // Quitar estado activo de los filtros
-        const botones = document.querySelectorAll(".filters button");
-        for (let i = 0; i < botones.length; i++) {
-            botones[i].classList.remove("activo");
-        }
-        
-        // Bucle for clásico (mucho más rápido que forEach para +1000 elementos)
-        for (let i = 0; i < cards.length; i++) {
-            const card = cards[i];
-            // dataset.name es más rápido que getAttribute
-            const nombre = card.dataset.name ? card.dataset.name.toLowerCase() : "";
-            const ciudadEl = card.querySelector(".city");
-            const ciudad = ciudadEl ? ciudadEl.textContent.toLowerCase() : "";
-            
-            if (nombre.includes(input) || ciudad.includes(input)) {
-                card.style.display = ""; // Restaura el grid original
-            } else {
-                card.style.display = "none";
-            }
-        }
-    }, 200); // 200ms de espera para suavidad total
-}
-    // --- 4. FILTRO POR PROVINCIA (Bug corregido) ---
-  function filtrarProvincia(prov, btnElement) {
-    // 1. Limpiar buscador de texto
-    document.getElementById("searchInput").value = "";
-    
-    // 2. Actualizar estado visual de los botones
-    const botones = document.querySelectorAll(".filters button");
-    for (let i = 0; i < botones.length; i++) {
-        botones[i].classList.remove("activo");
-    }
-    if (btnElement) btnElement.classList.add("activo");
-
-    // 3. Filtrar las tarjetas
-    const cards = document.querySelectorAll(".card");
-
-    for (let i = 0; i < cards.length; i++) {
-        const card = cards[i];
-        let coincide = false;
-
-        if (prov === "todas") {
-            coincide = true;
-
-        } else if (prov === "am") {
-            // --- LÓGICA ROBUSTA PARA DETECTAR AMs ---
-            const tipo = card.dataset.tipo; // Por si ya le agregaste este atributo
-            const nombreData = (card.dataset.name || "").toLowerCase();
-            const nombreVisible = (card.querySelector(".name")?.innerText || "").toLowerCase();
-            
-            // Es AM si: 
-            // a) Tiene el atributo explícito data-tipo="am"
-            // b) El nombre contiene " am " (con espacios, para no caer en "Campana")
-            // c) El nombre empieza con "am " (ej: "am 550")
-            // d) El nombre termina en " am"
-            if (tipo === "am") {
-                coincide = true;
-            } else if (nombreData.includes(" am ") || nombreData.startsWith("am ") || nombreData.endsWith(" am")) {
-                coincide = true;
-            } else if (nombreVisible.includes(" am ") || nombreVisible.startsWith("am ") || nombreVisible.endsWith(" am")) {
-                coincide = true;
-            }
-
-        } else {
-            // Filtro normal por provincia
-            coincide = card.dataset.provincia === prov;
-        }
-
-        // "" restaura el grid original, "none" oculta. El orden NUNCA se altera.
-        card.style.display = coincide ? "" : "none";
-    }
-}
-
-       // --- 5. FILTRO POR CATEGORÍA (Soporta múltiples categorías) ---
-    function filtrarCategoria(categoria, btnElement) {
-        // 1. Limpiar buscador de texto
-        const searchInput = document.getElementById("searchInput");
-        if (searchInput) searchInput.value = "";
-
-        // 2. Actualizar estado visual de los botones
-        const botones = document.querySelectorAll(".filters button");
-        for (let i = 0; i < botones.length; i++) {
-            botones[i].classList.remove("activo");
-        }
-        if (btnElement) btnElement.classList.add("activo");
-
-        // 3. Filtrar las tarjetas
-        const cards = document.querySelectorAll(".card");
-
-        for (let i = 0; i < cards.length; i++) {
-            const card = cards[i];
-            // Obtenemos las categorías y las pasamos a minúsculas. Si no tiene, asumimos "generalista"
-            const cats = (card.dataset.categoria || "generalista").toLowerCase();
-
-            // Si la categoría buscada está incluida en las categorías de la radio, la mostramos
-            if (categoria === "todas" || cats.includes(categoria)) {
-                card.style.display = ""; 
-            } else {
-                card.style.display = "none"; 
-            }
-        }
-    }
-    // --- 6. COMPARTIR ---
-   function compartir(id, nombre) {
-    const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
-    const texto = `📻 Escuchá ${nombre} en vivo en Radios Patagónicas: ${url}`;
-    
-    // 1. Intentamos usar el menú nativo del celular (WhatsApp, Telegram, etc.)
-    if (navigator.share) {
-        navigator.share({ 
-            title: nombre, 
-            text: `Escuchá ${nombre} en vivo`, 
-            url: url 
-        }).catch(() => {
-            // Si el usuario cancela el menú nativo, copiamos al portapapeles
-            copiarAlPortapapeles(url, nombre);
-        });
-    } else {
-        // 2. Si es una PC o navegador antiguo, copiamos directamente y abrimos WhatsApp Web
-        copiarAlPortapapeles(url, nombre);
-        setTimeout(() => {
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, "_blank");
-        }, 800);
-    }
-}
-
-// Función auxiliar para copiar el enlace específico de la radio
-function copiarAlPortapapeles(url, nombre) {
-    navigator.clipboard.writeText(url).then(() => {
-        // Pequeña notificación visual temporal
+        // --- 2. LÓGICA DE LA RADIO CON SEÑAL DE RESPALDO ---
+        const player = document.getElementById("player");
         const now = document.getElementById("nowPlaying");
-        const textoOriginal = now.innerText;
-        now.innerText = `✅ ¡Enlace de ${nombre} copiado al portapapeles!`;
-        now.style.color = "#00ffcc";
-        
-        setTimeout(() => {
-            now.innerText = textoOriginal;
+        const FALLBACK_URL = "https://stream.zeno.fm/0r0xa792kwzuv";
+        let currentRadioUrl = "";
+
+        function playRadio(btn, url) {
+            const mismaRadio = player.src === url || player.src.includes(url);
+            if (mismaRadio && !player.paused) {
+                player.pause();
+                player.src = ""; 
+                resetUI();
+                now.innerText = "🎧 Seleccioná una radio para escuchar";
+                return;
+            }
+            resetUI();
+            currentRadioUrl = url;
+            player.src = url;
+            player.play().catch(error => {
+                console.warn("Error al iniciar stream, activando respaldo:", error);
+                activarRespaldo();
+            });
+            btn.classList.add("on");
+            btn.innerText = "⏸ Sonando...";
+            btn.parentElement.classList.add("active");
+            const radioName = btn.parentElement.querySelector(".name").innerText;
+            now.innerText = "📻 Sonando: " + radioName;
             now.style.color = "#0077ff";
-        }, 2500);
-    }).catch(err => {
-        console.error("Error al copiar: ", err);
-    });
-}
+        }
 
-    // --- 7. EVENTOS GLOBALES ---
-    window.addEventListener("load", () => {
-        // Contador
-        const total = document.querySelectorAll(".card").length;
-        const contador = document.getElementById("contadorEmisoras");
-        if (contador) contador.innerText = total + " emisoras en el directorio";
-
-        // Scroll automático si viene por enlace compartido
-        const params = new URLSearchParams(window.location.search);
-        const radioId = params.get("radio");
-        if (radioId) {
-            const card = document.getElementById(radioId);
-            if (card) {
-                setTimeout(() => {
-                    card.scrollIntoView({ behavior: "smooth", block: "center" });
-                    card.classList.add("active");
-                }, 500);
+        function activarRespaldo() {
+            if (player.src !== FALLBACK_URL && currentRadioUrl) {
+                player.src = FALLBACK_URL;
+                player.play().catch(e => console.error("Error hasta en el respaldo", e));
+                now.innerText = "⚠️ Emisora offline temporalmente. Reproduciendo música de respaldo.";
+                now.style.color = "#f39c12";
+                document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
+                document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
             }
         }
-    });   
-</script>
+
+        player.addEventListener("error", () => {
+            if (player.src !== FALLBACK_URL && currentRadioUrl) activarRespaldo();
+        });
+
+        player.addEventListener("pause", () => {
+            resetUI();
+            now.innerText = "⏸️ Reproducción pausada";
+        });
+
+        function resetUI() {
+            document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
+            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+            now.style.color = "#0077ff";
+        }
+
+        // --- 3. BÚSQUEDA RÁPIDA ---
+        let timeoutBusqueda;
+        function buscarRadioRapido() {
+            clearTimeout(timeoutBusqueda);
+            timeoutBusqueda = setTimeout(() => {
+                const input = document.getElementById("searchInput").value.toLowerCase().trim();
+                const cards = document.querySelectorAll(".card");
+                document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
+                for (let i = 0; i < cards.length; i++) {
+                    const card = cards[i];
+                    const nombre = card.dataset.name ? card.dataset.name.toLowerCase() : "";
+                    const ciudadEl = card.querySelector(".city");
+                    const ciudad = ciudadEl ? ciudadEl.textContent.toLowerCase() : "";
+                    card.style.display = (nombre.includes(input) || ciudad.includes(input)) ? "" : "none";
+                }
+            }, 200);
+        }
+
+        // --- 4. FILTRO POR PROVINCIA Y AM (Versión Simple y Estable) ---
+        function filtrarProvincia(prov, btnElement) {
+            try {
+                const searchInput = document.getElementById("searchInput");
+                if (searchInput) searchInput.value = "";
+                const botones = document.querySelectorAll(".filters button");
+                for (let i = 0; i < botones.length; i++) botones[i].classList.remove("activo");
+                if (btnElement) btnElement.classList.add("activo");
+
+                const cards = document.querySelectorAll(".card");
+                for (let i = 0; i < cards.length; i++) {
+                    const card = cards[i];
+                    const tipo = card.dataset.tipo;
+                    const provincia = card.dataset.provincia;
+                    let coincide = false;
+
+                    if (prov === "todas") {
+                        coincide = true;
+                    } else if (prov === "am") {
+                        coincide = (tipo === "am");
+                    } else {
+                        if (provincia === prov) {
+                            coincide = (tipo !== "am"); // Muestra FM, oculta AM en filtros provinciales
+                        }
+                    }
+                    card.style.display = coincide ? "" : "none";
+                }
+            } catch (error) {
+                console.error("Error al filtrar:", error);
+            }
+        }
+
+        // --- 5. FILTRO POR CATEGORÍA ---
+        function filtrarCategoria(categoria, btnElement) {
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) searchInput.value = "";
+            document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
+            if (btnElement) btnElement.classList.add("activo");
+
+            document.querySelectorAll(".card").forEach(card => {
+                const cats = (card.dataset.categoria || "generalista").toLowerCase();
+                card.style.display = (categoria === "todas" || cats.includes(categoria)) ? "" : "none";
+            });
+        }
+
+        // --- 6. COMPARTIR ---
+        function compartir(id, nombre) {
+            const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
+            const texto = `📻 Escuchá ${nombre} en vivo en Radios Patagónicas: ${url}`;
+            if (navigator.share) {
+                navigator.share({ title: nombre, text: `Escuchá ${nombre} en vivo`, url: url }).catch(() => {
+                    copiarAlPortapapeles(url, nombre);
+                });
+            } else {
+                copiarAlPortapapeles(url, nombre);
+                setTimeout(() => {
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, "_blank");
+                }, 800);
+            }
+        }
+
+        function copiarAlPortapapeles(url, nombre) {
+            navigator.clipboard.writeText(url).then(() => {
+                const nowEl = document.getElementById("nowPlaying");
+                const textoOriginal = nowEl.innerText;
+                nowEl.innerText = `✅ ¡Enlace de ${nombre} copiado!`;
+                nowEl.style.color = "#00ffcc";
+                setTimeout(() => {
+                    nowEl.innerText = textoOriginal;
+                    nowEl.style.color = "#0077ff";
+                }, 2500);
+            }).catch(err => console.error("Error al copiar: ", err));
+        }
+
+        // --- 7. EVENTOS GLOBALES ---
+        window.addEventListener("load", () => {
+            const total = document.querySelectorAll(".card").length;
+            const contador = document.getElementById("contadorEmisoras");
+            if (contador) contador.innerText = total + " emisoras en el directorio";
+
+            const params = new URLSearchParams(window.location.search);
+            const radioId = params.get("radio");
+            if (radioId) {
+                const card = document.getElementById(radioId);
+                if (card) {
+                    setTimeout(() => {
+                        card.scrollIntoView({ behavior: "smooth", block: "center" });
+                        card.classList.add("active");
+                    }, 500);
+                }
+            }
+        });   
+    </script>
 </body>
-</html>   
+</html>
