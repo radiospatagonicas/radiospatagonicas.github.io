@@ -12271,10 +12271,23 @@
         <button onclick="filtrarProvincia('santacruz', this)">Santa Cruz</button>
         <button onclick="filtrarProvincia('tdf', this)">Tierra del Fuego</button>
         <button onclick="filtrarProvincia('am', this)">Todas las AM</button>
-        <!-- NUEVO: Filtro por Categoría -->
-        <button onclick="filtrarCategoria('musical', this)">🎵 Musical</button>
-        <button onclick="filtrarCategoria('noticias', this)">📰 Noticias</button>
-        <button onclick="filtrarCategoria('historica', this)">📻 Históricas</button>
+      
+    /* --- BADGES DE CATEGORÍAS --- */
+.badge { 
+    font-size: 0.85em; 
+    margin-left: 8px; 
+    font-weight: 600; 
+    padding: 1px 6px; 
+    border-radius: 12px; 
+    display: inline-block; 
+    border: 1px solid transparent;
+}
+.badge-deportiva { color: #2ecc71; border-color: #2ecc71; }
+.badge-informativa { color: #e67e22; border-color: #e67e22; }
+.badge-religiosa { color: #9b59b6; border-color: #9b59b6; }
+.badge-comunitaria { color: #3498db; border-color: #3498db; }
+.badge-musical { color: #e74c3c; border-color: #e74c3c; }
+.badge-municipal { color: #16a085; border-color: #16a085; }
     </div>
 
     <div class="search">
