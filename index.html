@@ -6,7 +6,6 @@
     <title>Radios Patagónicas | El Dial del Sur Argentino en Vivo</title>
     <meta name="description" content="Directorio y archivo digital de las emisoras de radio de la Patagonia argentina.">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-
     <style>
         body { margin:0; font-family: 'Inter', system-ui, sans-serif; background:#0a0a0a; color:#eee; display: flex; flex-direction: column; min-height: 100vh; }
         header { text-align:center; padding: 20px 15px; background: linear-gradient(180deg, #111 0%, #0a0a0a 100%); border-bottom: 1px solid #222; }
@@ -47,21 +46,25 @@
         .footer-col { flex: 1; min-width: 200px; }
         .footer-col h3, .footer-col h4 { color: #fff; margin-top: 0; font-size: 15px; }
         .footer-bottom { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #1a1a1a; }
+        .badge { font-size: 0.85em; margin-left: 8px; font-weight: 600; padding: 1px 6px; border-radius: 12px; display: inline-block; border: 1px solid transparent; }
+        .badge-deportiva { color: #2ecc71; border-color: #2ecc71; }
+        .badge-informativa { color: #e67e22; border-color: #e67e22; }
+        .badge-religiosa { color: #9b59b6; border-color: #9b59b6; }
+        .badge-comunitaria { color: #3498db; border-color: #3498db; }
+        .badge-musical { color: #e74c3c; border-color: #e74c3c; }
+        .badge-municipal { color: #16a085; border-color: #16a085; }
     </style>
 </head>
 <body>
-
     <header>     
         <h1 class="logo-texto"><span class="parentesis">(</span>RADIOS<span class="parentesis">)</span> PATAGÓNICAS</h1>
         <span class="logo-sub">EL DIAL DEL SUR ARGENTINO</span>
         <span class="logo-contador" id="contadorEmisoras"></span>
     </header>
-
     <div class="player-container">
         <div class="now" id="nowPlaying">🎧 Seleccioná una radio para escuchar</div>
         <div class="player"><audio id="player" controls></audio></div>
     </div>
-
     <div class="slider-container">
         <div class="slider" id="slider">
             <div class="slide"><img src="fm-carolina.jpg" alt="FM Carolina" loading="lazy"></div>
@@ -74,12 +77,10 @@
             <span class="dot" onclick="showSlide(2)"></span>
         </div>
     </div>
-
     <div class="ads-container">
         <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
         <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
     </div>
-
     <div class="filters">
         <button class="activo" onclick="filtrarProvincia('todas', this)">Todas</button>
         <button onclick="filtrarProvincia('rionegro', this)">Río Negro</button>
@@ -91,16 +92,15 @@
         <button onclick="filtrarCategoria('deportiva', this)">⚽ Deportiva</button>
         <button onclick="filtrarCategoria('informativa', this)">📰 Informativa</button>
         <button onclick="filtrarCategoria('religiosa', this)">⛪ Religiosa</button>
+        <button onclick="filtrarCategoria('comunitaria', this)">🏘️ Comunitaria</button>
         <button onclick="filtrarCategoria('musical', this)">🎵 Musical</button>
-         <button onclick="filtrarCategoria('municipal', this)">🎵 Municipal</button>
-         <button onclick="filtrarCategoria('comunitaria', this)">🎵 Comunitaria</button>
+        <button onclick="filtrarCategoria('municipal', this)">🏛️ Municipal</button>
     </div>
-
     <div class="search">
         <input type="text" id="searchInput" onkeyup="buscarRadioRapido()" placeholder="Buscar por nombre, frecuencia o ciudad...">
     </div>
-
     <div class="grid" id="radioGrid">
+
 
     
    
@@ -12334,7 +12334,9 @@
 
     </div>
 
-     <footer class="footer-sitio">
+         </div> <!-- ESTE ES EL CIERRE DE LA GRILLA (grid) -->
+
+    <footer class="footer-sitio">
         <div class="footer-contenido">
             <div class="footer-col">
                 <h3>RADIOS PATAGÓNICAS</h3>
@@ -12347,7 +12349,6 @@
     </footer>
 
     <script>
-        // --- 1. SLIDER ---
         let currentSlide = 0;
         function showSlide(index) {
             const slider = document.getElementById("slider");
@@ -12361,70 +12362,45 @@
         }
         setInterval(() => showSlide(currentSlide + 1), 5000);
 
-          // --- 2. REPRODUCTOR BLINDADO (Opción Nuclear Anti-Fantasma) ---
-    const player = document.getElementById("player");
-    const now = document.getElementById("nowPlaying");
-    const FALLBACK_URL = "https://stream.zeno.fm/0r0xa792kwzuv";
-    let currentRadioUrl = "";
+        const player = document.getElementById("player");
+        const now = document.getElementById("nowPlaying");
+        const FALLBACK_URL = "https://stream.zeno.fm/0r0xa792kwzuv";
+        let currentRadioUrl = "";
 
-    function playRadio(btn, url) {
-        // 1. DESTRUIR CUALQUIER AUDIO ANTERIOR (Incluido el respaldo fantasma)
-        player.pause();
-        player.removeAttribute('src'); // Elimina la fuente por completo del DOM
-        player.load();                 // Fuerza al navegador a liberar la memoria
-        
-        // 2. Limpiar la interfaz visual
-        resetUI();
-        
-        // 3. Preparar el nuevo stream
-        currentRadioUrl = url;
-        player.src = url;
-        
-        // 4. Intentar reproducir
-        player.play().catch(() => {
-            console.warn("Falló el stream original, activando respaldo...");
-            activarRespaldo();
-        });
-        
-        // 5. Actualizar interfaz visual
-        btn.classList.add("on");
-        btn.innerText = "⏸ Sonando...";
-        btn.parentElement.classList.add("active");
-        now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
-        now.style.color = "#0077ff";
-    }
+        function playRadio(btn, url) {
+            player.pause();
+            player.removeAttribute('src'); 
+            player.load(); 
+            resetUI();
+            currentRadioUrl = url;
+            player.src = url;
+            player.play().catch(() => activarRespaldo());
+            btn.classList.add("on");
+            btn.innerText = "⏸ Sonando...";
+            btn.parentElement.classList.add("active");
+            now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
+            now.style.color = "#0077ff";
+        }
 
-    function activarRespaldo() {
-        // Si ya estamos en el respaldo, no hacer nada (evita bucles infinitos)
-        if (currentRadioUrl === "respaldo_activo") return;
-        
-        // Destruir el stream fallido
-        player.pause();
-        player.removeAttribute('src');
-        player.load();
-        
-        // Activar el respaldo
-        currentRadioUrl = "respaldo_activo"; // Marcamos que estamos en respaldo
-        player.src = FALLBACK_URL;
-        player.play().catch(e => console.error("Error en respaldo", e));
-        
-        now.innerText = "⚠️ Emisora offline. Reproduciendo música de respaldo.";
-        now.style.color = "#f39c12";
-        
-        // Quitar estado "activo" de todas las tarjetas
-        resetUI();
-    }
+        function activarRespaldo() {
+            if (currentRadioUrl === "respaldo_activo") return;
+            player.pause();
+            player.removeAttribute('src');
+            player.load();
+            currentRadioUrl = "respaldo_activo";
+            player.src = FALLBACK_URL;
+            player.play().catch(e => console.error("Error en respaldo", e));
+            now.innerText = "⚠️ Emisora offline. Reproduciendo música de respaldo.";
+            now.style.color = "#f39c12";
+            resetUI();
+        }
 
-    function resetUI() {
-        document.querySelectorAll(".play").forEach(p => { 
-            p.classList.remove("on"); 
-            p.innerText = "▶ Escuchar"; 
-        });
-        document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-        now.style.color = "#0077ff";
-    }
+        function resetUI() {
+            document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
+            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+            now.style.color = "#0077ff";
+        }
 
-        // --- 3. BÚSQUEDA ---
         let timeoutBusqueda;
         function buscarRadioRapido() {
             clearTimeout(timeoutBusqueda);
@@ -12439,43 +12415,31 @@
             }, 200);
         }
 
-               // --- 4. FILTRO POR PROVINCIA Y AM (Versión Final Ajustada) ---
         function filtrarProvincia(prov, btnElement) {
             document.getElementById("searchInput").value = "";
             document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
             if (btnElement) btnElement.classList.add("activo");
-
             document.querySelectorAll(".card").forEach(card => {
-                const tipo = card.dataset.tipo; // "am" o "fm"
+                const tipo = card.dataset.tipo;
                 const provincia = card.dataset.provincia;
                 let coincide = false;
-
-                if (prov === "todas") {
-                    coincide = true; // Muestra todo
-                } else if (prov === "am") {
-                    coincide = (tipo === "am"); // Muestra SOLO las AM (sin duplicados visuales si usas IDs únicos)
-                } else {
-                    // Filtro por provincia: Muestra TODO (FM y AM) de esa provincia
-                    coincide = (provincia === prov);
-                }
-
+                if (prov === "todas") coincide = true;
+                else if (prov === "am") coincide = (tipo === "am");
+                else if (provincia === prov) coincide = (tipo !== "am"); 
                 card.style.display = coincide ? "" : "none";
             });
         }
 
-        // --- 5. FILTRO CATEGORÍA ---
         function filtrarCategoria(categoria, btnElement) {
             document.getElementById("searchInput").value = "";
             document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
             if (btnElement) btnElement.classList.add("activo");
-
             document.querySelectorAll(".card").forEach(card => {
                 const cats = (card.dataset.categoria || "generalista").toLowerCase();
                 card.style.display = (categoria === "todas" || cats.includes(categoria)) ? "" : "none";
             });
         }
 
-        // --- 6. COMPARTIR ---
         function compartir(id, nombre) {
             const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
             navigator.clipboard.writeText(url).then(() => {
@@ -12486,7 +12450,6 @@
             });
         }
 
-        // --- 7. INICIO ---
         window.addEventListener("load", () => {
             const total = document.querySelectorAll(".card").length;
             const contador = document.getElementById("contadorEmisoras");
