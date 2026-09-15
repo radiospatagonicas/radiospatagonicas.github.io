@@ -12226,125 +12226,16 @@
     <div class="share-link" onclick="compartir('rae', 'RAE Radiodifusión Argentina al Exterior')">🔗 Compartir</div>
 </div>
 
-<div class="card" id="la2x4" data-provincia="am" data-tipo="am" data-name="la 2x4 radio tango buenos aires ciudad fm92.7">
-    <div class="am-logo"><img src="logos-am/la2x4.png" alt="La 2x4 Radio de Tango"></div>
-    <div class="name">La 2x4 — Radio de Tango</div>
-    <div class="city">FM 92.7 — Ciudad de Buenos Aires</div>
-    <button class="play" onclick="playRadio(this, 'https://media.radios.ar:9270/')">▶ Escuchar</button>
-    <div class="share-link" onclick="compartir('la2x4', 'La 2x4 Radio de Tango Buenos Aires')">🔗 Compartir</div>
-</div>
-
-    
-</div>
-
-
-
-    <header>     
-        <h1 class="logo-texto">
-            <span class="parentesis">(</span>RADIOS<span class="parentesis">)</span> PATAGÓNICAS
-        </h1>
-        <span class="logo-sub">EL DIAL DEL SUR ARGENTINO</span>
-        <span class="logo-contador" id="contadorEmisoras"></span>
-    </header>
-
-    <div class="player-container">
-        <div class="now" id="nowPlaying">🎧 Seleccioná una radio para escuchar</div>
-        <div class="player">
-            <audio id="player" controls></audio> <!-- Quité autoplay para evitar bloqueos del navegador -->
-        </div>
-    </div>
-
-    <div class="slider-container">
-        <div class="slider" id="slider">
-            <div class="slide"><img src="fm-carolina.jpg" alt="FM Carolina" loading="lazy"></div>
-            <div class="slide"><a href="https://wa.me/5493755596267" target="_blank"><img src="banner-drevanz-2000x240.png" alt="Drevanz" loading="lazy"></a></div>
-            <div class="slide"><img src="anunciaxtres.png" alt="Anuncia x Tres" class="recortar" loading="lazy"></div>
-        </div>
-        <div class="dots" id="dots">
-            <span class="dot active" onclick="showSlide(0)"></span>
-            <span class="dot" onclick="showSlide(1)"></span>
-            <span class="dot" onclick="showSlide(2)"></span>
-        </div>
-    </div>
-
-    <div class="ads-container">
-        <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
-        <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
-    </div>
-
-    <!-- FILTROS UNIFICADOS (Provincias + Categorías) -->
-    <div class="filters">
-        <button class="activo" onclick="filtrarProvincia('todas', this)">Todas</button>
-        <button onclick="filtrarProvincia('rionegro', this)">Río Negro</button>
-        <button onclick="filtrarProvincia('neuquen', this)">Neuquén</button>
-        <button onclick="filtrarProvincia('chubut', this)">Chubut</button>
-        <button onclick="filtrarProvincia('santacruz', this)">Santa Cruz</button>
-        <button onclick="filtrarProvincia('tdf', this)">Tierra del Fuego</button>
-        <button onclick="filtrarProvincia('am', this)">Todas las AM</button>
-      
-        /* ... otros estilos que ya tenías ... */
-        .btn-whatsapp { background-color: #25d366 !important; border: 1px solid #20ba5a !important; }
-
-        /* --- BADGES DE CATEGORÍAS (PEGAR AQUÍ) --- */
-        .badge { font-size: 0.85em; margin-left: 8px; font-weight: 600; padding: 1px 6px; border-radius: 12px; display: inline-block; border: 1px solid transparent; }
-        .badge-deportiva { color: #2ecc71; border-color: #2ecc71; }
-        .badge-informativa { color: #e67e22; border-color: #e67e22; }
-        .badge-religiosa { color: #9b59b6; border-color: #9b59b6; }
-        .badge-comunitaria { color: #3498db; border-color: #3498db; }
-        .badge-musical { color: #e74c3c; border-color: #e74c3c; }
-        .badge-municipal { color: #16a085; border-color: #16a085; }
-    </style>
-</head>
-
-    <div class="search">
-        <!-- Cambiado a buscarRadioRapido para el debounce -->
-        <input type="text" id="searchInput" onkeyup="buscarRadioRapido()" placeholder="Buscar por nombre, frecuencia o ciudad...">
-    </div>
-
-    <div class="grid" id="radioGrid">
-
-        <!-- EJEMPLO 1: Tarjeta Normal (Tus 1.290 tarjetas actuales funcionan así, sin cambios) -->
-        <div class="card" id="am550" data-provincia="neuquen" data-name="am 550 la primera nqn">
-            <div class="am-logo">
-                <!-- NUEVO: loading="lazy" para que no pese al cargar la web -->
-                <img src="logos-am/lrg206.png" alt="AM 550 LA PRIMERA" loading="lazy">
-            </div>
-            <div class="name">LRG 206 AM 550</div>
-            <div class="city">Neuquén</div>
-            <button class="play" onclick="playRadio(this, 'https://sonic.host-live.com:10851/stream')">▶ Escuchar</button>
-            <div class="share-link" onclick="compartir('am550', 'AM 550 La Primera')">🔗 Compartir</div>
-        </div>
-        
-        <!-- EJEMPLO 2: Tarjeta con NUEVA CATEGORÍA (Solo agregas data-categoria) -->
-        <div class="card" id="lu5" data-provincia="neuquen" data-categoria="noticias" data-name="am 600 LU 5 Neuquen nqn">
-            <div class="am-logo">
-                <img src="logos-am/lu5.png" alt="LU 5" loading="lazy">
-            </div>
-            <div class="name">LU 5 AM 600</div>
-            <div class="city">Neuquén</div>
-            <button class="play" onclick="playRadio(this, 'https://live.lu5am.com:8443/LU5?type=.mp3&_=1')">▶ Escuchar</button>
-            <div class="share-link" onclick="compartir('lu5', 'LU 5 AM 600 Neuquén')">🔗 Compartir</div>
+    <!-- La 2x4) -->
+        <div class="card" id="la2x4" data-provincia="buenosaires" data-tipo="am" data-categoria="musical" data-name="la 2x4 radio tango buenos aires ciudad fm92.7">
+            <div class="am-logo"><img src="logos-am/la2x4.png" alt="La 2x4 Radio de Tango" loading="lazy" onerror="this.src='logos-am/radio.png'"></div>
+            <div class="name">La 2x4 — Radio de Tango <span class="badge badge-musical">🎵 Musical</span></div>
+            <div class="city">FM 92.7 — Ciudad de Buenos Aires</div>
+            <button class="play" onclick="playRadio(this, 'https://media.radios.ar:9270/')">▶ Escuchar</button>
+            <div class="share-link" onclick="compartir('la2x4', 'La 2x4 Radio de Tango Buenos Aires')">🔗 Compartir</div>
         </div>
 
-        <!-- EJEMPLO 3: Tarjeta HISTÓRICA (Para el mes de la radiodifusión) -->
-        <!-- Nota la clase extra "historica" en el div principal -->
-        <div class="card historica" id="radiohistorica1" data-provincia="rionegro" data-categoria="historica" data-name="radio historica roca"> 
-            <div class="am-logo">
-                <img src="logos-am/lu18.png" alt="Radio Histórica" loading="lazy">
-            </div>
-            <div class="name">Radio Ejemplo Histórica</div>  
-            <div class="city">General Roca (Fuera del aire)</div>   
-            <!-- Aquí puedes poner el MP3 de la señal distintiva en lugar del botón de play -->
-            <audio controls style="width: 100%; margin-top: 10px; height: 35px; border-radius: 8px;">
-                <source src="audio/senal-distintiva.mp3" type="audio/mpeg">
-                Tu navegador no soporta audio.
-            </audio>
-            <div class="share-link" onclick="compartir('radiohistorica1', 'Radio Histórica de Roca')">🔗 Compartir</div>
-        </div>
-
-    </div>
-
-         </div> <!-- ESTE ES EL CIERRE DE LA GRILLA (grid) -->
+    </div> <!-- ESTE ES EL ÚNICO CIERRE DE LA GRILLA (grid). NO DEBE HABER NADA MÁS AQUÍ -->
 
     <footer class="footer-sitio">
         <div class="footer-contenido">
@@ -12359,6 +12250,7 @@
     </footer>
 
     <script>
+        // --- 1. SLIDER ---
         let currentSlide = 0;
         function showSlide(index) {
             const slider = document.getElementById("slider");
@@ -12372,21 +12264,17 @@
         }
         setInterval(() => showSlide(currentSlide + 1), 5000);
 
+        // --- 2. REPRODUCTOR ---
         const player = document.getElementById("player");
         const now = document.getElementById("nowPlaying");
         const FALLBACK_URL = "https://stream.zeno.fm/0r0xa792kwzuv";
         let currentRadioUrl = "";
 
         function playRadio(btn, url) {
-            player.pause();
-            player.removeAttribute('src'); 
-            player.load(); 
-            resetUI();
-            currentRadioUrl = url;
-            player.src = url;
+            player.pause(); player.removeAttribute('src'); player.load(); resetUI();
+            currentRadioUrl = url; player.src = url;
             player.play().catch(() => activarRespaldo());
-            btn.classList.add("on");
-            btn.innerText = "⏸ Sonando...";
+            btn.classList.add("on"); btn.innerText = "⏸ Sonando...";
             btn.parentElement.classList.add("active");
             now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
             now.style.color = "#0077ff";
@@ -12394,15 +12282,11 @@
 
         function activarRespaldo() {
             if (currentRadioUrl === "respaldo_activo") return;
-            player.pause();
-            player.removeAttribute('src');
-            player.load();
-            currentRadioUrl = "respaldo_activo";
-            player.src = FALLBACK_URL;
+            player.pause(); player.removeAttribute('src'); player.load();
+            currentRadioUrl = "respaldo_activo"; player.src = FALLBACK_URL;
             player.play().catch(e => console.error("Error en respaldo", e));
             now.innerText = "⚠️ Emisora offline. Reproduciendo música de respaldo.";
-            now.style.color = "#f39c12";
-            resetUI();
+            now.style.color = "#f39c12"; resetUI();
         }
 
         function resetUI() {
@@ -12411,6 +12295,7 @@
             now.style.color = "#0077ff";
         }
 
+        // --- 3. BÚSQUEDA Y FILTROS ---
         let timeoutBusqueda;
         function buscarRadioRapido() {
             clearTimeout(timeoutBusqueda);
