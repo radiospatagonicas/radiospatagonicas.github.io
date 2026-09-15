@@ -12365,48 +12365,63 @@
         }
         setInterval(() => showSlide(currentSlide + 1), 5000);
 
-        // --- 2. REPRODUCTOR CON RESPALDO ---
-        const player = document.getElementById("player");
-        const now = document.getElementById("nowPlaying");
-        const FALLBACK_URL = "https://stream.zeno.fm/0r0xa792kwzuv";
-        let currentRadioUrl = "";
+       // --- 2. REPRODUCTOR CON RESPALDO (Versión Blindada) ---
+const player = document.getElementById("player");
+const now = document.getElementById("nowPlaying");
+const FALLBACK_URL = "https://stream.zeno.fm/0r0xa792kwzuv";
+let currentRadioUrl = "";
 
-        function playRadio(btn, url) {
-            const mismaRadio = player.src === url || player.src.includes(url);
-            if (mismaRadio && !player.paused) {
-                player.pause(); player.src = ""; resetUI();
-                now.innerText = "🎧 Seleccioná una radio para escuchar";
-                return;
-            }
-            resetUI();
-            currentRadioUrl = url;
-            player.src = url;
-            player.play().catch(() => activarRespaldo());
-            btn.classList.add("on"); btn.innerText = "⏸ Sonando...";
-            btn.parentElement.classList.add("active");
-            now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
-            now.style.color = "#0077ff";
-        }
+function playRadio(btn, url) {
+    // 1. MATAR CUALQUIER STREAM ANTERIOR (incluido el respaldo)
+    player.pause();
+    player.src = ""; 
+    player.load(); // <- ESTO LIMPIA LA MEMORIA DEL REPRODUCTOR
+    
+    // 2. Resetear UI visual
+    resetUI();
+    
+    // 3. Configurar nuevo stream
+    currentRadioUrl = url;
+    player.src = url;
+    
+    // 4. Intentar reproducir
+    player.play().catch(() => {
+        console.warn("Falló el stream original, activando respaldo...");
+        activarRespaldo();
+    });
+    
+    // 5. Actualizar UI visual
+    btn.classList.add("on");
+    btn.innerText = "⏸ Sonando...";
+    btn.parentElement.classList.add("active");
+    now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
+    now.style.color = "#0077ff";
+}
 
-        function activarRespaldo() {
-            if (player.src !== FALLBACK_URL && currentRadioUrl) {
-                player.src = FALLBACK_URL;
-                player.play();
-                now.innerText = "⚠️ Emisora offline. Reproduciendo música de respaldo.";
-                now.style.color = "#f39c12";
-                document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
-                document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-            }
-        }
+function activarRespaldo() {
+    // Evitar bucle infinito si ya estamos en el respaldo
+    if (player.src.includes("zeno.fm")) return; 
+    
+    player.pause();
+    player.src = "";
+    player.load(); // Limpiar memoria
+    
+    player.src = FALLBACK_URL;
+    player.play().catch(e => console.error("Error hasta en el respaldo", e));
+    
+    now.innerText = "⚠️ Emisora offline. Reproduciendo música de respaldo.";
+    now.style.color = "#f39c12";
+    
+    // Quitar estado "activo" de todas las cards para que el usuario sepa que cambió
+    document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
+    document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+}
 
-        player.addEventListener("error", () => { if (player.src !== FALLBACK_URL && currentRadioUrl) activarRespaldo(); });
-        player.addEventListener("pause", () => { resetUI(); now.innerText = "⏸️ Reproducción pausada"; });
-
-        function resetUI() {
-            document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
-            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-            now.style.color = "#0077ff";
-        }
+function resetUI() {
+    document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
+    document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+    now.style.color = "#0077ff";
+}
 
         // --- 3. BÚSQUEDA ---
         let timeoutBusqueda;
