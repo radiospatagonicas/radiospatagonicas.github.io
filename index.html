@@ -26,9 +26,19 @@
         .dot.active { background-color: #0077ff; width: 20px; border-radius: 10px; }
         .ads-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 90%; margin: 15px auto; }
         .ad-box { background: #161616; padding: 15px; border-radius: 8px; border: 1px dashed #333; color: #555; text-decoration: none; text-align: center; font-size: 11px; }
-        .filters { display:flex; overflow-x:auto; gap:8px; padding:10px 15px; scrollbar-width: none; }
-        .filters button { padding:8px 18px; border:none; border-radius:20px; background:#222; color:white; cursor: pointer; font-size: 13px; border: 1px solid #333; white-space: nowrap; transition: 0.2s; }
-        .filters button.activo { background: #0077ff; border-color: #0077ff; }
+                /* --- FILTROS (Ahora se quedan pegados al bajar) --- */
+        .filters { 
+            display: flex; 
+            overflow-x: auto; 
+            gap: 8px; 
+            padding: 10px 15px; 
+            scrollbar-width: none; 
+            position: sticky; /* Magia: se queda pegado */
+            top: 115px; /* Se ajusta justo debajo del reproductor */
+            z-index: 50; /* Asegura que quede por encima de las tarjetas */
+            background: #0a0a0a; /* Mismo fondo que la web para que no sea transparente */
+            border-bottom: 1px solid #222;
+        }
         .search { width:90%; margin:10px auto; }
         .search input { width:100%; padding:15px; border-radius:12px; background: #1a1a1a; color: white; border: 1px solid #333; outline: none; box-sizing: border-box; font-size: 16px; }
         .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:15px; padding:15px; }
