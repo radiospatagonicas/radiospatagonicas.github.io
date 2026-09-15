@@ -12361,63 +12361,68 @@
         }
         setInterval(() => showSlide(currentSlide + 1), 5000);
 
-       // --- 2. REPRODUCTOR CON RESPALDO (Versión Blindada) ---
-const player = document.getElementById("player");
-const now = document.getElementById("nowPlaying");
-const FALLBACK_URL = "https://stream.zeno.fm/0r0xa792kwzuv";
-let currentRadioUrl = "";
+          // --- 2. REPRODUCTOR BLINDADO (Opción Nuclear Anti-Fantasma) ---
+    const player = document.getElementById("player");
+    const now = document.getElementById("nowPlaying");
+    const FALLBACK_URL = "https://stream.zeno.fm/0r0xa792kwzuv";
+    let currentRadioUrl = "";
 
-function playRadio(btn, url) {
-    // 1. MATAR CUALQUIER STREAM ANTERIOR (incluido el respaldo)
-    player.pause();
-    player.src = ""; 
-    player.load(); // <- ESTO LIMPIA LA MEMORIA DEL REPRODUCTOR
-    
-    // 2. Resetear UI visual
-    resetUI();
-    
-    // 3. Configurar nuevo stream
-    currentRadioUrl = url;
-    player.src = url;
-    
-    // 4. Intentar reproducir
-    player.play().catch(() => {
-        console.warn("Falló el stream original, activando respaldo...");
-        activarRespaldo();
-    });
-    
-    // 5. Actualizar UI visual
-    btn.classList.add("on");
-    btn.innerText = "⏸ Sonando...";
-    btn.parentElement.classList.add("active");
-    now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
-    now.style.color = "#0077ff";
-}
+    function playRadio(btn, url) {
+        // 1. DESTRUIR CUALQUIER AUDIO ANTERIOR (Incluido el respaldo fantasma)
+        player.pause();
+        player.removeAttribute('src'); // Elimina la fuente por completo del DOM
+        player.load();                 // Fuerza al navegador a liberar la memoria
+        
+        // 2. Limpiar la interfaz visual
+        resetUI();
+        
+        // 3. Preparar el nuevo stream
+        currentRadioUrl = url;
+        player.src = url;
+        
+        // 4. Intentar reproducir
+        player.play().catch(() => {
+            console.warn("Falló el stream original, activando respaldo...");
+            activarRespaldo();
+        });
+        
+        // 5. Actualizar interfaz visual
+        btn.classList.add("on");
+        btn.innerText = "⏸ Sonando...";
+        btn.parentElement.classList.add("active");
+        now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
+        now.style.color = "#0077ff";
+    }
 
-function activarRespaldo() {
-    // Evitar bucle infinito si ya estamos en el respaldo
-    if (player.src.includes("zeno.fm")) return; 
-    
-    player.pause();
-    player.src = "";
-    player.load(); // Limpiar memoria
-    
-    player.src = FALLBACK_URL;
-    player.play().catch(e => console.error("Error hasta en el respaldo", e));
-    
-    now.innerText = "⚠️ Emisora offline. Reproduciendo música de respaldo.";
-    now.style.color = "#f39c12";
-    
-    // Quitar estado "activo" de todas las cards para que el usuario sepa que cambió
-    document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
-    document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-}
+    function activarRespaldo() {
+        // Si ya estamos en el respaldo, no hacer nada (evita bucles infinitos)
+        if (currentRadioUrl === "respaldo_activo") return;
+        
+        // Destruir el stream fallido
+        player.pause();
+        player.removeAttribute('src');
+        player.load();
+        
+        // Activar el respaldo
+        currentRadioUrl = "respaldo_activo"; // Marcamos que estamos en respaldo
+        player.src = FALLBACK_URL;
+        player.play().catch(e => console.error("Error en respaldo", e));
+        
+        now.innerText = "⚠️ Emisora offline. Reproduciendo música de respaldo.";
+        now.style.color = "#f39c12";
+        
+        // Quitar estado "activo" de todas las tarjetas
+        resetUI();
+    }
 
-function resetUI() {
-    document.querySelectorAll(".play").forEach(p => { p.classList.remove("on"); p.innerText = "▶ Escuchar"; });
-    document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-    now.style.color = "#0077ff";
-}
+    function resetUI() {
+        document.querySelectorAll(".play").forEach(p => { 
+            p.classList.remove("on"); 
+            p.innerText = "▶ Escuchar"; 
+        });
+        document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+        now.style.color = "#0077ff";
+    }
 
         // --- 3. BÚSQUEDA ---
         let timeoutBusqueda;
