@@ -63,8 +63,69 @@
         .badge-comunitaria { color: #3498db; border-color: #3498db; }
         .badge-musical { color: #e74c3c; border-color: #e74c3c; }
         .badge-municipal { color: #16a085; border-color: #16a085; }
+                /* --- BUSCADOR FLOTANTE --- */
+        .fab-search {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #0077ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,119,255,0.5);
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+        .fab-search:hover { transform: scale(1.1); }
+        
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); /* Fondo oscuro semitransparente */
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        .search-modal.active { display: flex; }
+        
+        .search-modal-content {
+            background: #161616;
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            border: 1px solid #333;
+        }
+        .close-modal {
+            position: absolute;
+            top: 10px; right: 15px;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .close-modal:hover { color: #0077ff; }
     </style>
 </head>
+    <!-- VENTANA EMERGENTE DE BÚSQUEDA -->
+    <div class="search-modal" id="searchModal" onclick="closeSearchModal(event)">
+        <div class="search-modal-content">
+            <span class="close-modal" onclick="toggleSearchModal()">✕</span>
+            <h3 style="color:#fff; margin-top:0; margin-bottom:15px;">🔍 Buscar Emisora</h3>
+            <input type="text" id="floatingSearchInput" onkeyup="buscarRadioRapidoFloating()" 
+                   placeholder="Escribí el nombre, frecuencia o ciudad..." 
+                   style="width:100%; padding:15px; border-radius:12px; background:#0a0a0a; color:white; border:1px solid #333; font-size:16px; outline:none; box-sizing: border-box;">
+            <p style="color:#666; font-size:12px; margin-top:10px; text-align:center;">Tocá la X o afuera del cuadro para cerrar</p>
+        </div>
 <body>
     <header>     
         <h1 class="logo-texto"><span class="parentesis">(</span>RADIOS<span class="parentesis">)</span> PATAGÓNICAS</h1>
@@ -13149,6 +13210,44 @@
             const contador = document.getElementById("contadorEmisoras");
             if (contador) contador.innerText = total + " emisoras en el directorio";
         });   
-    </script>
+    
+        <!-- BOTÓN FLOTANTE DE BÚSQUEDA -->
+    <div class="fab-search" onclick="toggleSearchModal()" title="Buscar emisora">🔍</div>
+
+                // --- 8. LÓGICA DEL BUSCADOR FLOTANTE ---
+        function toggleSearchModal() {
+            const modal = document.getElementById("searchModal");
+            modal.classList.toggle("active");
+            if (modal.classList.contains("active")) {
+                // Enfocar el input automáticamente y limpiar
+                const input = document.getElementById("floatingSearchInput");
+                input.value = "";
+                input.focus();
+                // Sincronizar con el buscador principal por si el usuario sube el scroll
+                document.getElementById("searchInput").value = "";
+                document.querySelectorAll(".card").forEach(c => c.style.display = ""); 
+            }
+        }
+
+        function closeSearchModal(e) {
+            if (e.target.id === "searchModal") toggleSearchModal();
+        }
+
+        function buscarRadioRapidoFloating() {
+            const input = document.getElementById("floatingSearchInput").value.toLowerCase().trim();
+            
+            // Sincronizamos con el buscador de arriba para mantener consistencia
+            document.getElementById("searchInput").value = input;
+            document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
+            
+            document.querySelectorAll(".card").forEach(card => {
+                const nombre = (card.dataset.name || "").toLowerCase();
+                const ciudad = (card.querySelector(".city")?.textContent || "").toLowerCase();
+                card.style.display = (nombre.includes(input) || ciudad.includes(input)) ? "" : "none";
+            });
+        }
+</script>
+    
+    </div>
 </body>
 </html>
