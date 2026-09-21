@@ -13124,14 +13124,24 @@
             });
         }
 
-        function compartir(id, nombre) {
+                function compartir(id, nombre) {
+            // Este enlace lleva DIRECTO a la radio y hace scroll automático al cargar
             const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
+            const texto = `📻 Estoy escuchando *${nombre}* en vivo en Radios Patagónicas:\n${url}`;
+            
             navigator.clipboard.writeText(url).then(() => {
                 const textoOriginal = now.innerText;
-                now.innerText = `✅ ¡Enlace copiado!`;
+                now.innerText = `✅ ¡Enlace de ${nombre} copiado!`;
                 now.style.color = "#00ffcc";
                 setTimeout(() => { now.innerText = textoOriginal; now.style.color = "#0077ff"; }, 2500);
             });
+
+            // Si está en celular, abre WhatsApp directamente con el mensaje listo
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                setTimeout(() => {
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, "_blank");
+                }, 500);
+            }
         }
 
         window.addEventListener("load", () => {
