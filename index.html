@@ -219,6 +219,7 @@
     <button class="play" onclick="playRadio(this, 'https://cdn.instream.audio/:9366/stream?nocache=1774299487469')">▶ Escuchar</button>
     <div class="share-link" onclick="compartir('am1400', 'AM Cumbre 1400')">🔗 Compartir</div>
  </div>
+        
 <div class="card" id="drevanz" data-provincia="rionegro" data-tipo="auspiciante" data-categoria="generalista" data-name="drevanz producciones streaming para radios"> 
     <div class="am-logo">
         <img src="logos-am/drevanz.png" alt="DREVANZ PRODUCCIONES" loading="lazy">
@@ -226,11 +227,16 @@
     <div class="name">Drevanz Streaming</div> 
     <div class="city">Mar del Plata</div>
     
-    <!-- BOTÓN CONVERTIDO EN ENLACE WEB (Mantiene el estilo azul del botón play) -->
-    <a href="https://www.drevanzproducciones.com.ar" target="_blank" rel="noopener noreferrer" class="play" style="text-decoration: none; display: block; text-align: center; line-height: 15px;">
-        🌐 Visitar Web
-    </a>
+    <!-- 1. BOTÓN PRINCIPAL: Escuchar el stream (funciona igual que las radios) -->
+    <button class="play" onclick="playRadio(this, 'https://stream.radioinfo.ar/9890/stream/?type=http&nocache=1')">▶ Escuchar</button>
     
+    <!-- 2. BOTÓN SECUNDARIO: Ir a la web (se abre en pestaña nueva para no salir de tu sitio) -->
+    <!-- ⚠️ IMPORTANTE: Reemplazá 'https://www.drevanzproducciones.com.ar' por la URL real de ellos -->
+    <a href="https://www.drevanzproducciones.com.ar" target="_blank" rel="noopener noreferrer" style="display: block; margin-top: 12px; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 600; background: #222; padding: 10px; border-radius: 10px; border: 1px solid #333; transition: 0.3s; text-align: center;">
+        🌐 Visitar sitio web
+    </a>
+
+    <!-- 3. COMPARTIR -->
     <div class="share-link" onclick="compartir('drevanz', 'Drevanz Producciones')">🔗 Compartir</div>
 </div>
 
