@@ -16,7 +16,7 @@
         .player-container { position: sticky; top: 0; z-index: 100; background: #111; padding: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .now { text-align:center; padding:10px; background:#161616; color:#0077ff; font-size:13px; font-weight: bold; border-bottom: 1px solid #222; transition: color 0.3s; }
         .player { width:90%; margin:0 auto; }
-        audio { width:100%; height: 40px; }
+        <audio id="player" controls preload="none"></audio>
         .slider-container { width: 100%; max-width: 1000px; margin: 15px auto; position: relative; overflow: hidden; border-radius: 15px; border: 1px solid #333; background: #000; }
         .slider { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .slide { min-width: 100%; box-sizing: border-box; background: #000; }
@@ -13229,38 +13229,47 @@
             slider.style.transform = `translateX(-${currentSlide * 100}%)`;
             dots.forEach(dot => dot.classList.remove("active"));
             if (dots[currentSlide]) dots[currentSlide].classList.add("active");
-        }
-               // --- REPRODUCTOR LIMPIO Y RÁPIDO (Sin respaldo) ---
+        }        // --- REPRODUCTOR ULTRA RÁPIDO (Con Cache Buster) ---
         const player = document.getElementById("player");
         const now = document.getElementById("nowPlaying");
-        let currentRadioUrl = "";
 
         function playRadio(btn, url) {
-            // 1. Limpiar cualquier audio anterior inmediatamente
-            player.pause();
-            player.removeAttribute('src');
-            player.load();
+            // 1. Feedback inmediato
+            btn.innerText = "⏳ Conectando...";
             resetUI();
 
-            // 2. Preparar nuevo stream
-            currentRadioUrl = url;
-            player.src = url;
-            btn.innerText = "⏳ Cargando...";
+            // 2. TRUCO CLAVE: Agregamos un timestamp único al final de la URL.
+            // Esto engaña al navegador y lo obliga a crear una conexión NUEVA e inmediata,
+            // evitando que se quede 20 segundos esperando una conexión vieja en caché.
+            const separator = url.includes('?') ? '&' : '?';
+            const freshUrl = url + separator + 't=' + new Date().getTime();
 
-            // 3. Intentar reproducir
+            // 3. Asignar y reproducir DIRECTAMENTE (Sin removeAttribute ni load, que a veces generan el delay)
+            player.src = freshUrl;
+
             player.play().then(() => {
-                // Si funciona, se ve así:
+                // Si suena al instante:
                 btn.classList.add("on");
                 btn.innerText = "⏸ Sonando...";
                 btn.parentElement.classList.add("active");
                 now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
                 now.style.color = "#0077ff";
-            }).catch(() => {
-                // Si falla (ej: URL incorrecta o radio caída), avisa al instante sin esperar
-                now.innerText = "⚠️ No se pudo conectar con esta emisora.";
+            }).catch((error) => {
+                // Si realmente está caída:
+                console.error("Error de reproducción:", error);
+                now.innerText = "⚠️ No se pudo conectar. Intenta de nuevo.";
                 now.style.color = "#f39c12";
                 btn.innerText = "▶ Escuchar";
             });
+        }
+
+        function resetUI() {
+            document.querySelectorAll(".play").forEach(p => { 
+                p.classList.remove("on"); 
+                p.innerText = "▶ Escuchar"; 
+            });
+            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+            now.style.color = "#0077ff";
         }
 
         function resetUI() {
