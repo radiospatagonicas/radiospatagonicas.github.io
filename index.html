@@ -13229,40 +13229,51 @@
             slider.style.transform = `translateX(-${currentSlide * 100}%)`;
             dots.forEach(dot => dot.classList.remove("active"));
             if (dots[currentSlide]) dots[currentSlide].classList.add("active");
-        }        // --- REPRODUCTOR ULTRA RÁPIDO (Con Cache Buster) ---
+        }       
+        
+                // --- REPRODUCTOR ESTABLE Y CONTROLADO ---
         const player = document.getElementById("player");
         const now = document.getElementById("nowPlaying");
 
         function playRadio(btn, url) {
-            // 1. Feedback inmediato
-            btn.innerText = "⏳ Conectando...";
+            // 1. LIMPIEZA TOTAL: Frenar, borrar fuente y forzar recarga del motor de audio
+            player.pause();
+            player.removeAttribute('src');
+            player.load(); // Esto es OBLIGATORIO para que el navegador suelte la conexión anterior
+
+            // 2. RESETEAR INTERFAZ: Volver todos los botones a "Escuchar" inmediatamente
             resetUI();
 
-            // 2. TRUCO CLAVE: Agregamos un timestamp único al final de la URL.
-            // Esto engaña al navegador y lo obliga a crear una conexión NUEVA e inmediata,
-            // evitando que se quede 20 segundos esperando una conexión vieja en caché.
-            const separator = url.includes('?') ? '&' : '?';
-            const freshUrl = url + separator + 't=' + new Date().getTime();
+            // 3. PREPARAR NUEVA CONEXIÓN
+            btn.innerText = "⏳ Conectando...";
+            player.src = url;
 
-            // 3. Asignar y reproducir DIRECTAMENTE (Sin removeAttribute ni load, que a veces generan el delay)
-            player.src = freshUrl;
-
+            // 4. INTENTAR REPRODUCIR
             player.play().then(() => {
-                // Si suena al instante:
+                // Si conecta exitosamente:
                 btn.classList.add("on");
                 btn.innerText = "⏸ Sonando...";
                 btn.parentElement.classList.add("active");
                 now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
                 now.style.color = "#0077ff";
             }).catch((error) => {
-                // Si realmente está caída:
-                console.error("Error de reproducción:", error);
-                now.innerText = "⚠️ No se pudo conectar. Intenta de nuevo.";
+                // Si el stream tarda demasiado o está caído:
+                console.error("Error al reproducir:", error);
+                now.innerText = "⚠️ La emisora está tardando en responder o está offline.";
                 now.style.color = "#f39c12";
                 btn.innerText = "▶ Escuchar";
             });
         }
 
+        function resetUI() {
+            // Vuelve todos los botones a su estado original
+            document.querySelectorAll(".play").forEach(p => { 
+                p.classList.remove("on"); 
+                p.innerText = "▶ Escuchar"; 
+            });
+            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+            now.style.color = "#0077ff";
+        }
         function resetUI() {
             document.querySelectorAll(".play").forEach(p => { 
                 p.classList.remove("on"); 
