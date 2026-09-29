@@ -36,8 +36,15 @@
         .card.active { border-color: #0077ff; background: #1a1a1a; }
         .name { font-size:18px; font-weight: bold; margin-bottom: 4px; line-height: 1.4; }
         .city { font-size:11px; color:#666; margin-bottom:18px; text-transform: uppercase; }
-        .am-logo { height: 90px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; background: #ffffff; border-radius: 12px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-        .am-logo img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; display: block; }
+        .am-logo img { 
+    max-width: 100%; 
+    max-height: 100%; 
+    width: auto; 
+    height: auto; 
+    object-fit: contain; 
+    display: block;
+    margin: 0 auto;  /* ← AGREGÁ ESTA LÍNEA */
+}
         button.play { width:100%; padding:15px; border:none; border-radius:12px; background:#0077ff; color:#ffffff; cursor: pointer; font-weight: bold; transition: 0.3s; }
         button.play.on { background: #ffffff !important; color: #000000 !important; } 
         .share-link { display: inline-block; margin-top: 18px; font-size: 12px; color: #00ffcc; cursor: pointer; text-decoration: none; border: 1px solid #333; padding: 5px 10px; border-radius: 10px; }
