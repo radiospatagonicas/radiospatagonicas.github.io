@@ -133,14 +133,23 @@ img {
     overflow: hidden;  /* ← AGREGÁ ESTA LÍNEA */
 }
 
+.am-logo { 
+    height: 100px; /* Un poco más de altura para dar aire */
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    margin-bottom: 15px; 
+    background: #ffffff; 
+    border-radius: 12px; 
+    padding: 5px; /* Reducido de 10px a 5px para que el logo aproveche más espacio */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3); 
+}
+
 .am-logo img { 
-    max-width: 100%; 
-    max-height: 100%; 
-    width: auto; 
-    height: auto; 
-    object-fit: contain; 
+    width: 100%;       /* Intenta ocupar todo el ancho disponible */
+    height: 100%;      /* Intenta ocupar todo el alto disponible */
+    object-fit: contain; /* CLAVE: Estira lo máximo posible SIN deformar ni recortar */
     display: block;
-    margin: auto;  /* ← CAMBIÁ A "auto" en vez de "0 auto" */
 }
         button.play { width:100%; padding:15px; border:none; border-radius:12px; background:#0077ff; color:#ffffff; cursor: pointer; font-weight: bold; transition: 0.3s; }
         button.play.on { background: #ffffff !important; color: #000000 !important; } 
