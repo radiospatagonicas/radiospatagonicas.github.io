@@ -187,7 +187,7 @@ img {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #ffeb3b; /* Amarillo de advertencia (cambia a #d32f2f para rojo) */
+  background-color: #ffeb3b; /* Amarillo de advertencia */
   color: #000000;
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 14px;
@@ -196,13 +196,22 @@ img {
   z-index: 99999;
   overflow: hidden;
   white-space: nowrap;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  
+  /* CAMBIO CLAVE: Borde simple en lugar de sombra difuminada */
+  border-bottom: 2px solid rgba(0,0,0,0.1); 
 }
 
 .marquesina-texto {
   display: inline-block;
   padding-left: 100%;
-  animation: desplazar 20s linear infinite;
+  
+  /* ACELERACIÓN POR HARDWARE (GPU) para que no use CPU */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* Para compatibilidad */
+  
+  animation: desplazar 25s linear infinite;
 }
 
 @keyframes desplazar {
@@ -210,11 +219,10 @@ img {
   100% { transform: translateX(-100%); }
 }
 
-/* IMPORTANTE: Compensa la altura del banner para que no tape el contenido */
+/* Compensación para que no tape el contenido */
 body {
-  margin-top: 40px !important; /* Ajusta este valor si el banner es más alto o más bajo */
+  margin-top: 42px !important; 
 }
-        
     </style>
 </head>
 <body>
