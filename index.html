@@ -590,9 +590,15 @@ button.play.on {
 
 <div class="slider-container">
     <div class="slider" id="slider">
-        <div class="slide"><img src="fm-carolina.jpg" alt="FM Carolina" loading="lazy"></div>
-        <div class="slide"><img src="banner-drevanz-2000x240.png" alt="Drevanz" loading="lazy"></div>
-        <div class="slide"><img src="anunciaxtres.png" alt="Anuncia x Tres" loading="lazy"></div>
+        <div class="slide">
+            <img src="fm-carolina.jpg" alt="FM Carolina" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerText='Falta: fm-carolina.jpg'">
+        </div>
+        <div class="slide">
+            <img src="banner-drevanz-2000x240.png" alt="Drevanz" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerText='Falta: banner-drevanz-2000x240.png'">
+        </div>
+        <div class="slide">
+            <img src="anunciaxtres.png" alt="Anuncia x Tres" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerText='Falta: anunciaxtres.png'">
+        </div>
     </div>
     <div class="dots" id="dots">
         <span class="dot active" onclick="showSlide(0)"></span>
@@ -658,7 +664,51 @@ if (slides.length > 0) {
     showSlide(slideIndex);
 }
 </script>
+
+    <!-- ... todo tu contenido de radios y footer va arriba ... -->
+
+    <script>
+    // Esperamos a que TODO el HTML esté cargado antes de ejecutar
+    document.addEventListener('DOMContentLoaded', function() {
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const slider = document.querySelector('.slider');
+
+        if (slides.length === 0 || !slider) return; // Si no hay slides, no hace nada
+
+        function showSlide(index) {
+            if (index >= slides.length) slideIndex = 0;
+            if (index < 0) slideIndex = slides.length - 1;
+            else slideIndex = index;
+            
+            slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+            
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === slideIndex);
+            });
+        }
+
+        function nextSlide() {
+            showSlide(slideIndex + 1);
+        }
+
+        // Iniciar
+        showSlide(slideIndex);
+        
+        // Desplazar cada 4 segundos
+        setInterval(nextSlide, 4000);
+    });
+    </script>
 </body>
+</html>
+
+
+
+
+    
+</body>
+
 </html>
 
     <div class="grid" id="radioGrid">
