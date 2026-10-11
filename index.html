@@ -7,7 +7,6 @@
     <meta name="description" content="Directorio y archivo digital de las emisoras de radio de la Patagonia argentina.">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
-       
 /* PREVENIR OVERFLOW GLOBAL */
 * {
     box-sizing: border-box;
@@ -19,6 +18,7 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
 /* Asegurar que los contenedores con porcentaje no se pasen */
 .slider-container,
 .ads-container,
@@ -35,43 +35,84 @@ img {
     max-width: 100%;
     height: auto;
 }
-        body { margin:0; font-family: 'Inter', system-ui, sans-serif; background:#0a0a0a; color:#eee; display: flex; flex-direction: column; min-height: 100vh; }
-        header { text-align:center; padding: 20px 15px; background: linear-gradient(180deg, #111 0%, #0a0a0a 100%); border-bottom: 1px solid #222; }
-        .logo-texto { font-size: 2rem; font-weight: 900; letter-spacing: -1px; color: #fff; margin: 0; text-transform: uppercase; }
-        .logo-sub { font-size: 1rem; color: #0077ff; font-weight: bold; margin-top: 5px; display: block; }
-        .parentesis { color: #444; font-weight: 300; }
-        .logo-contador { display: inline-block; font-size: 0.8rem; background-color: #222; color: #94a3b8; padding: 3px 8px; border-radius: 6px; margin-top: 8px; border: 1px solid #333; }
-        .player-container { position: sticky; top: 0; z-index: 100; background: #111; padding: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .now { text-align:center; padding:10px; background:#161616; color:#0077ff; font-size:13px; font-weight: bold; border-bottom: 1px solid #222; transition: color 0.3s; }
-        .player { width:90%; margin:0 auto; }
-        <audio id="player" controls preload="none"></audio>
-        .slider-container { 
-    width: 100%; 
-    max-width: 1000px; 
-    margin: 15px auto; 
-    position: relative; 
-    overflow: hidden; 
-    border-radius: 15px; 
-    border: 1px solid #333; 
-    background: #000;
-    box-sizing: border-box;  /* ← AGREGAR */
-}
 
-.slider { 
+body { 
+    margin: 0; 
+    font-family: 'Inter', system-ui, sans-serif; 
+    background: #0a0a0a; 
+    color: #eee; 
     display: flex; 
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;  /* ← AGREGAR */
+    flex-direction: column; 
+    min-height: 100vh; 
+    margin-top: 42px;
 }
 
-.slide { 
-    min-width: 100%; 
-    box-sizing: border-box; 
-    background: #000;
-    flex-shrink: 0;  /* ← AGREGAR para que no se encoja */
-    padding: 0;  /* ← AGREGAR para asegurar cero padding */
-    margin: 0;  /* ← AGREGAR para asegurar cero margin */
+header { 
+    text-align: center; 
+    padding: 20px 15px; 
+    background: linear-gradient(180deg, #111 0%, #0a0a0a 100%); 
+    border-bottom: 1px solid #222; 
 }
 
+.logo-texto { 
+    font-size: 2rem; 
+    font-weight: 900; 
+    letter-spacing: -1px; 
+    color: #fff; 
+    margin: 0; 
+    text-transform: uppercase; 
+}
+
+.logo-sub { 
+    font-size: 1rem; 
+    color: #0077ff; 
+    font-weight: bold; 
+    margin-top: 5px; 
+    display: block; 
+}
+
+.parentesis { 
+    color: #444; 
+    font-weight: 300; 
+}
+
+.logo-contador { 
+    display: inline-block; 
+    font-size: 0.8rem; 
+    background-color: #222; 
+    color: #94a3b8; 
+    padding: 3px 8px; 
+    border-radius: 6px; 
+    margin-top: 8px; 
+    border: 1px solid #333; 
+}
+
+.player-container { 
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    background: #111; 
+    padding: 10px 0; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+}
+
+.now { 
+    text-align: center; 
+    padding: 10px; 
+    background: #161616; 
+    color: #0077ff; 
+    font-size: 13px; 
+    font-weight: bold; 
+    border-bottom: 1px solid #222; 
+    transition: color 0.3s; 
+}
+
+.player { 
+    width: 90%; 
+    margin: 0 auto; 
+}
+
+/* SLIDER */
 .slider-container { 
     width: 100%; 
     max-width: 1000px; 
@@ -100,53 +141,61 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 180px;
-}
-
-.slider-container { 
-    width: 100%; 
-    max-width: 1000px; 
-    margin: 15px auto; 
-    position: relative; 
-    overflow: hidden; 
-    border-radius: 15px; 
-    border: 1px solid #333; 
-    background: #000;
-    box-sizing: border-box;
-}
-
-.slider { 
-    display: flex; 
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;
-}
-
-.slide { 
-    min-width: 100%; 
-    box-sizing: border-box; 
-    background: #000;
-    flex-shrink: 0;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 240px; /* ← AUMENTADO de 180px a 240px */
+    height: 240px;
 }
 
 .slide img { 
-    width: auto;
-    height: 240px; /* ← FIJO en 240px */
     max-width: 100%;
+    max-height: 240px;
+    width: auto;
+    height: auto;
     object-fit: contain;
     display: block;
 }
-        .dots { text-align: center; padding: 10px; background: #0a0a0a; }
-        .dot { height: 8px; width: 8px; margin: 0 4px; background-color: #333; border-radius: 50%; display: inline-block; transition: 0.3s; cursor: pointer; }
-        .dot.active { background-color: #0077ff; width: 20px; border-radius: 10px; }
-        .ads-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 90%; margin: 15px auto; }
-        .ad-box { background: #161616; padding: 15px; border-radius: 8px; border: 1px dashed #333; color: #555; text-decoration: none; text-align: center; font-size: 11px; }
-        .filters { 
+
+.dots { 
+    text-align: center; 
+    padding: 10px; 
+    background: #0a0a0a; 
+}
+
+.dot { 
+    height: 8px; 
+    width: 8px; 
+    margin: 0 4px; 
+    background-color: #333; 
+    border-radius: 50%; 
+    display: inline-block; 
+    transition: 0.3s; 
+    cursor: pointer; 
+}
+
+.dot.active { 
+    background-color: #0077ff; 
+    width: 20px; 
+    border-radius: 10px; 
+}
+
+.ads-container { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px; 
+    width: 90%; 
+    margin: 15px auto; 
+}
+
+.ad-box { 
+    background: #161616; 
+    padding: 15px; 
+    border-radius: 8px; 
+    border: 1px dashed #333; 
+    color: #555; 
+    text-decoration: none; 
+    text-align: center; 
+    font-size: 11px; 
+}
+
+.filters { 
     display: flex; 
     overflow-x: auto; 
     gap: 8px; 
@@ -157,8 +206,8 @@ img {
     z-index: 50; 
     background: #0a0a0a; 
     border-bottom: 1px solid #222;
-    max-width: 100%;  /* ← AGREGAR */
-    box-sizing: border-box;  /* ← AGREGAR */
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .filters button { 
@@ -172,120 +221,413 @@ img {
     border: 1px solid #333; 
     white-space: nowrap; 
     transition: 0.2s;
-    flex-shrink: 0;  /* ← AGREGAR para que no se encojan */
+    flex-shrink: 0;
 }
-        .search { width:90%; margin:10px auto; }
-        .search input { width:100%; padding:15px; border-radius:12px; background: #1a1a1a; color: white; border: 1px solid #333; outline: none; box-sizing: border-box; font-size: 16px; }
-        .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:15px; padding:15px; }
-        .card { background:#161616; padding:22px; border-radius:18px; text-align:center; border: 1px solid #222; transition: 0.3s; }
-        .card.active { border-color: #0077ff; background: #1a1a1a; }
-        .name { font-size:18px; font-weight: bold; margin-bottom: 4px; line-height: 1.4; }
-        .city { font-size:11px; color:#666; margin-bottom:18px; text-transform: uppercase; }
-       .am-logo { 
-    height: 90px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    margin-bottom: 15px; 
-    background: #ffffff; 
+
+.search { 
+    width: 90%; 
+    margin: 10px auto; 
+}
+
+.search input { 
+    width: 100%; 
+    padding: 15px; 
     border-radius: 12px; 
-    padding: 10px; 
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    overflow: hidden;  /* ← AGREGÁ ESTA LÍNEA */
+    background: #1a1a1a; 
+    color: white; 
+    border: 1px solid #333; 
+    outline: none; 
+    box-sizing: border-box; 
+    font-size: 16px; 
+}
+
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    gap: 15px; 
+    padding: 15px; 
+}
+
+@media (min-width: 1200px) {
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.card { 
+    background: #161616; 
+    padding: 22px; 
+    border-radius: 18px; 
+    text-align: center; 
+    border: 1px solid #222; 
+    transition: 0.3s; 
+}
+
+.card.active { 
+    border-color: #0077ff; 
+    background: #1a1a1a; 
+}
+
+.name { 
+    font-size: 18px; 
+    font-weight: bold; 
+    margin-bottom: 4px; 
+    line-height: 1.4; 
+}
+
+.city { 
+    font-size: 11px; 
+    color: #666; 
+    margin-bottom: 18px; 
+    text-transform: uppercase; 
 }
 
 .am-logo { 
-    height: 100px; /* Un poco más de altura para dar aire */
+    height: 100px;
     display: flex; 
     align-items: center; 
     justify-content: center; 
     margin-bottom: 15px; 
     background: #ffffff; 
     border-radius: 12px; 
-    padding: 5px; /* Reducido de 10px a 5px para que el logo aproveche más espacio */
+    padding: 5px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3); 
+    overflow: hidden;
 }
 
 .am-logo img { 
-    width: 100%;       /* Intenta ocupar todo el ancho disponible */
-    height: 100%;      /* Intenta ocupar todo el alto disponible */
-    object-fit: contain; /* CLAVE: Estira lo máximo posible SIN deformar ni recortar */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     display: block;
 }
-        button.play { width:100%; padding:15px; border:none; border-radius:12px; background:#0077ff; color:#ffffff; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        button.play.on { background: #ffffff !important; color: #000000 !important; } 
-        .share-link { display: inline-block; margin-top: 18px; font-size: 12px; color: #00ffcc; cursor: pointer; text-decoration: none; border: 1px solid #333; padding: 5px 10px; border-radius: 10px; }
-        .footer-sitio { background-color: #0d0d0d; color: #666; padding: 40px 20px 20px 20px; margin-top: auto; border-top: 1px solid #111; font-size: 13px; }
-        .footer-contenido { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; text-align: left; }
-        .footer-col { flex: 1; min-width: 200px; }
-        .footer-col h3, .footer-col h4 { color: #fff; margin-top: 0; font-size: 15px; }
-        .footer-bottom { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #1a1a1a; }
-        .contacto-redes { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; max-width: 220px; }
-        .btn-contacto { display: inline-block; padding: 10px 15px; color: #ffffff !important; font-weight: bold; text-align: center; border-radius: 8px; text-decoration: none; transition: 0.3s ease; }
-        .btn-contacto:hover { transform: translateY(-2px); opacity: 0.9; }
-        .btn-facebook { background-color: #1877f2 !important; border: 1px solid #166fe5 !important; }
-        .btn-whatsapp { background-color: #25d366 !important; border: 1px solid #20ba5a !important; }
-        .qr-contenedor { display: flex; align-items: center; gap: 12px; background-color: #161616; padding: 10px; border-radius: 10px; border: 1px solid #222; }
-        .qr-contenedor img { border: 3px solid #ffffff; border-radius: 4px; width: 70px; height: 70px; }
-        .qr-contenedor h5 { color: #0077ff; margin: 0 0 3px 0; font-size: 13px; }
-        .qr-contenedor p { margin: 0; font-size: 11px; color: #888; }
-        .badge { font-size: 0.85em; margin-left: 8px; font-weight: 600; padding: 1px 6px; border-radius: 12px; display: inline-block; }
-        .badge-deportiva { color: #2ecc71; border: 1px solid #2ecc71; }
-        .badge-informativa { color: #e67e22; border: 1px solid #e67e22; }
-        .badge-religiosa { color: #9b59b6; border: 1px solid #9b59b6; }
-        .badge-comunitaria { color: #3498db; border: 1px solid #3498db; }
-        .badge-musical { color: #e74c3c; border: 1px solid #e74c3c; }
-        .badge-municipal { color: #16a085; border: 1px solid #16a085; }
-        .fab-search { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #0077ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; color: white; cursor: pointer; box-shadow: 0 4px 15px rgba(0,119,255,0.5); z-index: 1000; transition: transform 0.3s; }
-        .fab-search:hover { transform: scale(1.1); }
-        .search-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1001; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .search-modal.active { display: flex; }
-        .search-modal-content { background: #161616; padding: 25px; border-radius: 15px; width: 90%; max-width: 500px; position: relative; border: 1px solid #333; }
-        .close-modal { position: absolute; top: 10px; right: 15px; color: #fff; font-size: 24px; cursor: pointer; transition: 0.2s; }
-        .close-modal:hover { color: #0077ff; }
+
+button.play { 
+    width: 100%; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 12px; 
+    background: #0077ff; 
+    color: #ffffff; 
+    cursor: pointer; 
+    font-weight: bold; 
+    transition: 0.3s; 
+}
+
+button.play.on { 
+    background: #ffffff !important; 
+    color: #000000 !important; 
+}
+
+.share-link { 
+    display: inline-block; 
+    margin-top: 18px; 
+    font-size: 12px; 
+    color: #00ffcc; 
+    cursor: pointer; 
+    text-decoration: none; 
+    border: 1px solid #333; 
+    padding: 5px 10px; 
+    border-radius: 10px; 
+}
+
+.footer-sitio { 
+    background-color: #0d0d0d; 
+    color: #666; 
+    padding: 40px 20px 20px 20px; 
+    margin-top: auto; 
+    border-top: 1px solid #111; 
+    font-size: 13px; 
+}
+
+.footer-contenido { 
+    max-width: 1000px; 
+    margin: 0 auto; 
+    display: flex; 
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+    gap: 25px; 
+    text-align: left; 
+}
+
+.footer-col { 
+    flex: 1; 
+    min-width: 200px; 
+}
+
+.footer-col h3, .footer-col h4 { 
+    color: #fff; 
+    margin-top: 0; 
+    font-size: 15px; 
+}
+
+.footer-bottom { 
+    text-align: center; 
+    margin-top: 30px; 
+    padding-top: 15px; 
+    border-top: 1px solid #1a1a1a; 
+}
+
+.contacto-redes { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    margin-top: 15px; 
+    max-width: 220px; 
+}
+
+.btn-contacto { 
+    display: inline-block; 
+    padding: 10px 15px; 
+    color: #ffffff !important; 
+    font-weight: bold; 
+    text-align: center; 
+    border-radius: 8px; 
+    text-decoration: none; 
+    transition: 0.3s ease; 
+}
+
+.btn-contacto:hover { 
+    transform: translateY(-2px); 
+    opacity: 0.9; 
+}
+
+.btn-facebook { 
+    background-color: #1877f2 !important; 
+    border: 1px solid #166fe5 !important; 
+}
+
+.btn-whatsapp { 
+    background-color: #25d366 !important; 
+    border: 1px solid #20ba5a !important; 
+}
+
+.qr-contenedor { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    background-color: #161616; 
+    padding: 10px; 
+    border-radius: 10px; 
+    border: 1px solid #222; 
+}
+
+.qr-contenedor img { 
+    border: 3px solid #ffffff; 
+    border-radius: 4px; 
+    width: 70px; 
+    height: 70px; 
+}
+
+.qr-contenedor h5 { 
+    color: #0077ff; 
+    margin: 0 0 3px 0; 
+    font-size: 13px; 
+}
+
+.qr-contenedor p { 
+    margin: 0; 
+    font-size: 11px; 
+    color: #888; 
+}
+
+.badge { 
+    font-size: 0.85em; 
+    margin-left: 8px; 
+    font-weight: 600; 
+    padding: 1px 6px; 
+    border-radius: 12px; 
+    display: inline-block; 
+}
+
+.badge-deportiva { 
+    color: #2ecc71; 
+    border: 1px solid #2ecc71; 
+}
+
+.badge-informativa { 
+    color: #e67e22; 
+    border: 1px solid #e67e22; 
+}
+
+.badge-religiosa { 
+    color: #9b59b6; 
+    border: 1px solid #9b59b6; 
+}
+
+.badge-comunitaria { 
+    color: #3498db; 
+    border: 1px solid #3498db; 
+}
+
+.badge-musical { 
+    color: #e74c3c; 
+    border: 1px solid #e74c3c; 
+}
+
+.badge-municipal { 
+    color: #16a085; 
+    border: 1px solid #16a085; 
+}
+
+.fab-search { 
+    position: fixed; 
+    bottom: 30px; 
+    right: 30px; 
+    width: 60px; 
+    height: 60px; 
+    background: #0077ff; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 26px; 
+    color: white; 
+    cursor: pointer; 
+    box-shadow: 0 4px 15px rgba(0,119,255,0.5); 
+    z-index: 1000; 
+    transition: transform 0.3s; 
+}
+
+.fab-search:hover { 
+    transform: scale(1.1); 
+}
+
+.search-modal { 
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.85); 
+    z-index: 1001; 
+    align-items: center; 
+    justify-content: center; 
+    backdrop-filter: blur(5px); 
+}
+
+.search-modal.active { 
+    display: flex; 
+}
+
+.search-modal-content { 
+    background: #161616; 
+    padding: 25px; 
+    border-radius: 15px; 
+    width: 90%; 
+    max-width: 500px; 
+    position: relative; 
+    border: 1px solid #333; 
+}
+
+.close-modal { 
+    position: absolute; 
+    top: 10px; 
+    right: 15px; 
+    color: #fff; 
+    font-size: 24px; 
+    cursor: pointer; 
+    transition: 0.2s; 
+}
+
+.close-modal:hover { 
+    color: #0077ff; 
+}
+
 .marquesina-superior {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #ffeb3b; /* Amarillo de advertencia */
-  color: #000000;
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 10px 0;
-  z-index: 99999;
-  overflow: hidden;
-  white-space: nowrap;
-  
-  /* CAMBIO CLAVE: Borde simple en lugar de sombra difuminada */
-  border-bottom: 2px solid rgba(0,0,0,0.1); 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffeb3b;
+    color: #000000;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 0;
+    z-index: 99999;
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: 2px solid rgba(0,0,0,0.1); 
 }
 
 .marquesina-texto {
-  display: inline-block;
-  padding-left: 100%;
-  
-  /* ACELERACIÓN POR HARDWARE (GPU) para que no use CPU */
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden; /* Para compatibilidad */
-  
-  animation: desplazar 25s linear infinite;
+    display: inline-block;
+    padding-left: 100%;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    animation: desplazar 25s linear infinite;
 }
 
 @keyframes desplazar {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
-
-/* Compensación para que no tape el contenido */
-body {
-  margin-top: 42px !important; 
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
 }
     </style>
 </head>
+<body>
+
+<div class="marquesina-superior">
+    <div class="marquesina-texto">
+        ⚠️ Sr. Radiodifusor: actualice su stream a HTTPS. La versión HTTP quedó obsoleta e insegura. &nbsp;&nbsp;&nbsp;&nbsp; 
+        ⚠️ Sr. Radiodifusor: actualice su stream a HTTPS. La versión HTTP quedó obsoleta e insegura.
+    </div>
+</div>
+    
+<header>     
+    <h1 class="logo-texto"><span class="parentesis">(</span>RADIOS<span class="parentesis">)</span> PATAGÓNICAS</h1>
+    <span class="logo-sub">EL DIAL DEL SUR ARGENTINO</span>
+    <span class="logo-contador" id="contadorEmisoras"></span>
+</header>
+
+<div class="player-container">
+    <div class="now" id="nowPlaying">🎧 Seleccioná una radio para escuchar</div>
+    <div class="player"><audio id="player" controls></audio></div>
+</div>
+
+<div class="slider-container">
+    <div class="slider" id="slider">
+        <div class="slide"><img src="fm-carolina.jpg" alt="FM Carolina" loading="lazy"></div>
+        <div class="slide"><img src="banner-drevanz-2000x240.png" alt="Drevanz" loading="lazy"></div>
+        <div class="slide"><img src="anunciaxtres.png" alt="Anuncia x Tres" loading="lazy"></div>
+    </div>
+    <div class="dots" id="dots">
+        <span class="dot active" onclick="showSlide(0)"></span>
+        <span class="dot" onclick="showSlide(1)"></span>
+        <span class="dot" onclick="showSlide(2)"></span>
+    </div>
+</div>
+
+<div class="ads-container">
+    <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
+    <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
+</div>
+
+<div class="filters">
+    <button class="activo" onclick="filtrarProvincia('todas', this)">Todas</button>
+    <button onclick="filtrarProvincia('rionegro', this)">Río Negro</button>
+    <button onclick="filtrarProvincia('neuquen', this)">Neuquén</button>
+    <button onclick="filtrarProvincia('chubut', this)">Chubut</button>
+    <button onclick="filtrarProvincia('santacruz', this)">Santa Cruz</button>
+    <button onclick="filtrarProvincia('tdf', this)">Tierra del Fuego</button>
+    <button onclick="filtrarProvincia('am', this)">Todas las AM</button>
+    <button onclick="filtrarCategoria('deportiva', this)">⚽ Deportiva</button>
+    <button onclick="filtrarCategoria('informativa', this)">📰 Informativa</button>
+    <button onclick="filtrarCategoria('musical', this)">🎵 Musical</button>
+    <button onclick="filtrarCategoria('religiosa', this)">⛪ Religiosa</button>
+    <button onclick="filtrarCategoria('municipal', this)">🏛️ Municipal</button>
+    <button onclick="filtrarCategoria('comunitaria', this)">🏘️ Comunitaria</button>
+</div>
+
+<div class="search">
+    <input type="text" id="searchInput" onkeyup="buscarRadioRapido()" placeholder="Buscar por nombre, frecuencia o ciudad...">
+</div>
+
+<div class="grid" id="radioGrid"></div>
+
 <script>
 let slideIndex = 0;
 const slides = document.querySelectorAll('.slide');
@@ -297,7 +639,9 @@ function showSlide(index) {
     else slideIndex = index;
     
     const slider = document.querySelector('.slider');
-    slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+    if (slider) {
+        slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+    }
     
     dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === slideIndex);
@@ -309,72 +653,13 @@ function nextSlide() {
 }
 
 // Autoplay cada 4 segundos
-setInterval(nextSlide, 4000);
-
-// Inicializar
-showSlide(slideIndex);
+if (slides.length > 0) {
+    setInterval(nextSlide, 4000);
+    showSlide(slideIndex);
+}
 </script>
-
-    
-<body>
-
-<div class="marquesina-superior">
-  <div class="marquesina-texto">
-    ⚠️ Sr. Radiodifusor: actualice su stream a HTTPS. La versión HTTP quedó obsoleta e insegura. &nbsp;&nbsp;&nbsp;&nbsp; 
-    ⚠️ Sr. Radiodifusor: actualice su stream a HTTPS. La versión HTTP quedó obsoleta e insegura.
-  </div>
-</div>
-    
-    <header>     
-        <h1 class="logo-texto"><span class="parentesis">(</span>RADIOS<span class="parentesis">)</span> PATAGÓNICAS</h1>
-        <span class="logo-sub">EL DIAL DEL SUR ARGENTINO</span>
-        <span class="logo-contador" id="contadorEmisoras"></span>
-    </header>
-
-    <div class="player-container">
-        <div class="now" id="nowPlaying">🎧 Seleccioná una radio para escuchar</div>
-        <div class="player"><audio id="player" controls></audio></div>
-    </div>
-
-    <div class="slider-container">
-        <div class="slider" id="slider">
-            <div class="slide"><img src="fm-carolina.jpg" alt="FM Carolina" loading="lazy"></div>
-            <div class="slide"><img src="banner-drevanz-2000x240.png" alt="Drevanz" loading="lazy"></div>
-            <div class="slide"><img src="anunciaxtres.png" alt="Anuncia x Tres" loading="lazy"></div>
-        </div>
-        <div class="dots" id="dots">
-            <span class="dot active" onclick="showSlide(0)"></span>
-            <span class="dot" onclick="showSlide(1)"></span>
-            <span class="dot" onclick="showSlide(2)"></span>
-        </div>
-    </div>
-
-    <div class="ads-container">
-        <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
-        <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
-    </div>
-
-    <div class="filters">
-        <button class="activo" onclick="filtrarProvincia('todas', this)">Todas</button>
-        <button onclick="filtrarProvincia('rionegro', this)">Río Negro</button>
-        <button onclick="filtrarProvincia('neuquen', this)">Neuquén</button>
-        <button onclick="filtrarProvincia('chubut', this)">Chubut</button>
-        <button onclick="filtrarProvincia('santacruz', this)">Santa Cruz</button>
-        <button onclick="filtrarProvincia('tdf', this)">Tierra del Fuego</button>
-        <button onclick="filtrarProvincia('am', this)">Todas las AM</button>
-        <button onclick="filtrarCategoria('deportiva', this)">⚽ Deportiva</button>
-        <button onclick="filtrarCategoria('informativa', this)">📰 Informativa</button>
-         <button onclick="filtrarCategoria('musical', this)">🎵 Musical</button>
-        <button onclick="filtrarCategoria('religiosa', this)">⛪ Religiosa</button>
-         <button onclick="filtrarCategoria('municipal', this)">🏛️ Municipal</button>
-        <button onclick="filtrarCategoria('comunitaria', this)">🏘️ Comunitaria</button>
-       
-       
-    </div>
-
-    <div class="search">
-        <input type="text" id="searchInput" onkeyup="buscarRadioRapido()" placeholder="Buscar por nombre, frecuencia o ciudad...">
-    </div>
+</body>
+</html>
 
     <div class="grid" id="radioGrid">
         
