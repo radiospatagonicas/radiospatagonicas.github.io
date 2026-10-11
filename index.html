@@ -113,68 +113,13 @@ header {
 }
 
 /* SLIDER */
-.slider-container { 
-    width: 100%; 
-    max-width: 1000px; 
-    margin: 15px auto; 
-    position: relative; 
-    overflow: hidden; 
-    border-radius: 15px; 
-    border: 1px solid #333; 
-    background: #000;
-    box-sizing: border-box;
-}
-
-.slider { 
-    display: flex; 
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;
-}
-
-.slide { 
-    min-width: 100%; 
-    box-sizing: border-box; 
-    background: #000;
-    flex-shrink: 0;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 240px;
-}
-
-.slide img { 
-    max-width: 100%;
-    max-height: 240px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-}
-
-.dots { 
-    text-align: center; 
-    padding: 10px; 
-    background: #0a0a0a; 
-}
-
-.dot { 
-    height: 8px; 
-    width: 8px; 
-    margin: 0 4px; 
-    background-color: #333; 
-    border-radius: 50%; 
-    display: inline-block; 
-    transition: 0.3s; 
-    cursor: pointer; 
-}
-
-.dot.active { 
-    background-color: #0077ff; 
-    width: 20px; 
-    border-radius: 10px; 
-}
+.slider-container{width:100%;max-width:1000px;margin:15px auto;position:relative;overflow:hidden;border-radius:15px;border:1px solid #333;background:#111;box-sizing:border-box}
+.slider{display:flex;transition:transform 0.6s ease;width:100%}
+.slide{min-width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;height:200px;background:#1a1a1a}
+.slide img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.dots{text-align:center;padding:10px;background:#0a0a0a}
+.dot{height:8px;width:8px;margin:0 4px;background-color:#333;border-radius:50%;display:inline-block;transition:0.3s;cursor:pointer}
+.dot.active{background-color:#0077ff;width:20px;border-radius:10px}
 
 .ads-container { 
     display: grid; 
@@ -589,23 +534,18 @@ button.play.on {
 </div>
 
 <div class="slider-container">
-    <div class="slider" id="slider">
-        <div class="slide">
-            <img src="fm-carolina.jpg" alt="FM Carolina" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerText='Falta: fm-carolina.jpg'">
-        </div>
-        <div class="slide">
-            <img src="banner-drevanz-2000x240.png" alt="Drevanz" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerText='Falta: banner-drevanz-2000x240.png'">
-        </div>
-        <div class="slide">
-            <img src="anunciaxtres.png" alt="Anuncia x Tres" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerText='Falta: anunciaxtres.png'">
-        </div>
-    </div>
-    <div class="dots" id="dots">
-        <span class="dot active" onclick="showSlide(0)"></span>
-        <span class="dot" onclick="showSlide(1)"></span>
-        <span class="dot" onclick="showSlide(2)"></span>
-    </div>
+<div class="slider" id="slider">
+<div class="slide"><img src="fm-carolina.jpg" alt="FM Carolina" loading="lazy"></div>
+<div class="slide"><img src="banner-drevanz-2000x240.png" alt="Drevanz" loading="lazy"></div>
+<div class="slide"><img src="anunciaxtres.png" alt="Anuncia x Tres" loading="lazy"></div>
 </div>
+<div class="dots" id="dots">
+<span class="dot active" onclick="showSlide(0)"></span>
+<span class="dot" onclick="showSlide(1)"></span>
+<span class="dot" onclick="showSlide(2)"></span>
+</div>
+</div>
+
 
 <div class="ads-container">
     <div class="ad-box">📢 PUBLICIDAD DISPONIBLE</div>
@@ -635,34 +575,36 @@ button.play.on {
 <div class="grid" id="radioGrid"></div>
 
 <script>
-let slideIndex = 0;
-const slides = document.querySelectorAll('.slide');
-const dots = document.querySelectorAll('.dot');
-
-function showSlide(index) {
-    if (index >= slides.length) slideIndex = 0;
-    if (index < 0) slideIndex = slides.length - 1;
-    else slideIndex = index;
-    
-    const slider = document.querySelector('.slider');
-    if (slider) {
-        slider.style.transform = `translateX(-${slideIndex * 100}%)`;
-    }
-    
-    dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === slideIndex);
-    });
+(function(){
+var idx=0,timer=null;
+function run(){
+var slides=document.querySelectorAll('.slide');
+var dots=document.querySelectorAll('.dot');
+var sl=document.getElementById('slider');
+if(!sl||slides.length===0)return;
+function go(i){
+if(i>=slides.length)i=0;
+if(i<0)i=slides.length-1;
+idx=i;
+sl.style.transform='translateX(-'+(idx*100)+'%)';
+dots.forEach(function(d,j){d.classList.toggle('active',j===idx);});
 }
-
-function nextSlide() {
-    showSlide(slideIndex + 1);
+go(0);
+if(timer)clearInterval(timer);
+timer=setInterval(function(){go(idx+1);},4000);
 }
-
-// Autoplay cada 4 segundos
-if (slides.length > 0) {
-    setInterval(nextSlide, 4000);
-    showSlide(slideIndex);
-}
+window.showSlide=function(i){
+var slides=document.querySelectorAll('.slide');
+var dots=document.querySelectorAll('.dot');
+var sl=document.getElementById('slider');
+if(!sl)return;
+idx=i;
+sl.style.transform='translateX(-'+(idx*100)+'%)';
+dots.forEach(function(d,j){d.classList.toggle('active',j===idx);});
+};
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}
+else{run();}
+})();
 </script>
 
     <!-- ... todo tu contenido de radios y footer va arriba ... -->
