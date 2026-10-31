@@ -14886,172 +14886,164 @@ else{run();}
             <p>&copy; 2026 Radios Patagónicas - Todos los derechos reservados.</p>
         </div>
     </footer>
+<script>
+    // --- REPRODUCTOR ESTABLE Y CONTROLADO ---
+    const player = document.getElementById("player");
+    const now = document.getElementById("nowPlaying");
 
-    <script>
-        let currentSlide = 0;
-        function showSlide(index) {
-            const slider = document.getElementById("slider");
-            const slides = document.querySelectorAll(".slide");
-            const dots = document.querySelectorAll(".dot");
-            if (!slider || slides.length === 0) return;
-            currentSlide = index >= slides.length ? 0 : (index < 0 ? slides.length - 1 : index);
-            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-            dots.forEach(dot => dot.classList.remove("active"));
-            if (dots[currentSlide]) dots[currentSlide].classList.add("active");
-        }       
-        
-                // --- REPRODUCTOR ESTABLE Y CONTROLADO ---
-        const player = document.getElementById("player");
-        const now = document.getElementById("nowPlaying");
+    function playRadio(btn, url) {
+        // 1. Si el botón ya está sonando, ¡DETENEMOS todo!
+        if (btn.classList.contains("on")) {
+            stopRadio();
+            return;
+        }
 
-        function playRadio(btn, url) {
-            // 1. LIMPIEZA TOTAL: Frenar, borrar fuente y forzar recarga del motor de audio
+        // 2. LIMPIEZA TOTAL de cualquier reproducción anterior
+        player.pause();
+        player.removeAttribute('src');
+        player.src = ""; // Clave para cortar el stream
+        player.load();   // Fuerza al navegador a liberar la conexión
+
+        // 3. RESETEAR INTERFAZ de todas las demás tarjetas
+        resetUI();
+
+        // 4. PREPARAR NUEVA CONEXIÓN
+        btn.innerText = "⏳ Conectando...";
+        player.src = url;
+
+        // 5. INTENTAR REPRODUCIR
+        player.play().then(() => {
+            // Si conecta exitosamente:
+            btn.classList.add("on");
+            btn.innerText = "⏹ Detener"; // Cambiamos el texto para que se pueda parar
+            btn.parentElement.classList.add("active");
+            now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
+            now.style.color = "#0077ff";
+        }).catch((error) => {
+            // Si el stream tarda demasiado o está caído:
+            console.error("Error al reproducir:", error);
+            now.innerText = "⚠️ La emisora está tardando en responder o está offline.";
+            now.style.color = "#f39c12";
+            btn.innerText = "▶ Escuchar";
+        });
+    }
+
+    // FUNCIÓN NUEVA: Detiene el audio de raíz y limpia todo
+    function stopRadio() {
+        if (player) {
             player.pause();
             player.removeAttribute('src');
-            player.load(); // Esto es OBLIGATORIO para que el navegador suelte la conexión anterior
-
-            // 2. RESETEAR INTERFAZ: Volver todos los botones a "Escuchar" inmediatamente
-            resetUI();
-
-            // 3. PREPARAR NUEVA CONEXIÓN
-            btn.innerText = "⏳ Conectando...";
-            player.src = url;
-
-            // 4. INTENTAR REPRODUCIR
-            player.play().then(() => {
-                // Si conecta exitosamente:
-                btn.classList.add("on");
-                btn.innerText = "⏸ Sonando...";
-                btn.parentElement.classList.add("active");
-                now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
-                now.style.color = "#0077ff";
-            }).catch((error) => {
-                // Si el stream tarda demasiado o está caído:
-                console.error("Error al reproducir:", error);
-                now.innerText = "⚠️ La emisora está tardando en responder o está offline.";
-                now.style.color = "#f39c12";
-                btn.innerText = "▶ Escuchar";
-            });
+            player.src = ""; 
+            player.load(); // Esto es OBLIGATORIO para que el navegador suelte la conexión
         }
+        resetUI();
+        if (now) {
+            now.innerText = "📻 Transmisión detenida";
+            now.style.color = "#888";
+        }
+    }
 
-        function resetUI() {
-            // Vuelve todos los botones a su estado original
-            document.querySelectorAll(".play").forEach(p => { 
-                p.classList.remove("on"); 
-                p.innerText = "▶ Escuchar"; 
-            });
-            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-            now.style.color = "#0077ff";
-        }
-        function resetUI() {
-            document.querySelectorAll(".play").forEach(p => { 
-                p.classList.remove("on"); 
-                p.innerText = "▶ Escuchar"; 
-            });
-            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-            now.style.color = "#0077ff";
-        }
-
-        function resetUI() {
-            document.querySelectorAll(".play").forEach(p => { 
-                p.classList.remove("on"); 
-                p.innerText = "▶ Escuchar"; 
-            });
-            document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
-            now.style.color = "#0077ff";
-        }
-        let timeoutBusqueda;
-        function buscarRadioRapido() {
-            clearTimeout(timeoutBusqueda);
-            timeoutBusqueda = setTimeout(() => {
-                const input = document.getElementById("searchInput").value.toLowerCase().trim();
-                document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
-                document.querySelectorAll(".card").forEach(card => {
-                    const nombre = (card.dataset.name || "").toLowerCase();
-                    const ciudad = (card.querySelector(".city")?.textContent || "").toLowerCase();
-                    card.style.display = (nombre.includes(input) || ciudad.includes(input)) ? "" : "none";
-                });
-            }, 200);
-        }
-
-        function filtrarProvincia(prov, btnElement) {
-            document.getElementById("searchInput").value = "";
-            document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
-            if (btnElement) btnElement.classList.add("activo");
-            document.querySelectorAll(".card").forEach(card => {
-                const tipo = card.dataset.tipo;
-                const provincia = card.dataset.provincia;
-                let coincide = false;
-                if (prov === "todas") coincide = true;
-                else if (prov === "am") coincide = (tipo === "am");
-                else if (provincia === prov) coincide = true; 
-                card.style.display = coincide ? "" : "none";
-            });
-        }
-
-        function filtrarCategoria(categoria, btnElement) {
-            document.getElementById("searchInput").value = "";
-            document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
-            if (btnElement) btnElement.classList.add("activo");
-            document.querySelectorAll(".card").forEach(card => {
-                const cats = (card.dataset.categoria || "generalista").toLowerCase();
-                card.style.display = (categoria === "todas" || cats.includes(categoria)) ? "" : "none";
-            });
-        }
-
-        function compartir(id, nombre) {
-            const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
-            const texto = `📻 Estoy escuchando *${nombre}* en vivo en Radios Patagónicas:\n${url}`;
-            navigator.clipboard.writeText(url).then(() => {
-                const textoOriginal = now.innerText;
-                now.innerText = `✅ ¡Enlace de ${nombre} copiado!`;
-                now.style.color = "#00ffcc";
-                setTimeout(() => { now.innerText = textoOriginal; now.style.color = "#0077ff"; }, 2500);
-            });
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                setTimeout(() => { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, "_blank"); }, 500);
-            }
-        }
-
-        window.addEventListener("load", () => {
-            const total = document.querySelectorAll(".card").length;
-            const contador = document.getElementById("contadorEmisoras");
-            if (contador) contador.innerText = total + " emisoras en el directorio";
-            const params = new URLSearchParams(window.location.search);
-            const radioId = params.get("radio");
-            if (radioId) {
-                const card = document.getElementById(radioId);
-                if (card) setTimeout(() => card.scrollIntoView({ behavior: "smooth", block: "center" }), 500);
-            }
+    // FUNCIÓN LIMPIA (sin duplicados)
+    function resetUI() {
+        document.querySelectorAll(".play").forEach(p => { 
+            p.classList.remove("on"); 
+            p.innerText = "▶ Escuchar"; 
         });
+        document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
+    }
 
-        function toggleSearchModal() {
-            const modal = document.getElementById("searchModal");
-            modal.classList.toggle("active");
-            if (modal.classList.contains("active")) {
-                const input = document.getElementById("floatingSearchInput");
-                input.value = "";
-                input.focus();
-                document.getElementById("searchInput").value = "";
-                document.querySelectorAll(".card").forEach(c => c.style.display = ""); 
-            }
-        }
-
-        function closeSearchModal(e) {
-            if (e.target.id === "searchModal") toggleSearchModal();
-        }
-
-        function buscarRadioRapidoFloating() {
-            const input = document.getElementById("floatingSearchInput").value.toLowerCase().trim();
-            document.getElementById("searchInput").value = input;
+    let timeoutBusqueda;
+    function buscarRadioRapido() {
+        clearTimeout(timeoutBusqueda);
+        timeoutBusqueda = setTimeout(() => {
+            const input = document.getElementById("searchInput").value.toLowerCase().trim();
             document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
             document.querySelectorAll(".card").forEach(card => {
                 const nombre = (card.dataset.name || "").toLowerCase();
                 const ciudad = (card.querySelector(".city")?.textContent || "").toLowerCase();
                 card.style.display = (nombre.includes(input) || ciudad.includes(input)) ? "" : "none";
             });
+        }, 200);
+    }
+
+    function filtrarProvincia(prov, btnElement) {
+        document.getElementById("searchInput").value = "";
+        document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
+        if (btnElement) btnElement.classList.add("activo");
+        document.querySelectorAll(".card").forEach(card => {
+            const tipo = card.dataset.tipo;
+            const provincia = card.dataset.provincia;
+            let coincide = false;
+            if (prov === "todas") coincide = true;
+            else if (prov === "am") coincide = (tipo === "am");
+            else if (provincia === prov) coincide = true; 
+            card.style.display = coincide ? "" : "none";
+        });
+    }
+
+    function filtrarCategoria(categoria, btnElement) {
+        document.getElementById("searchInput").value = "";
+        document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
+        if (btnElement) btnElement.classList.add("activo");
+        document.querySelectorAll(".card").forEach(card => {
+            const cats = (card.dataset.categoria || "generalista").toLowerCase();
+            card.style.display = (categoria === "todas" || cats.includes(categoria)) ? "" : "none";
+        });
+    }
+
+    function compartir(id, nombre) {
+        const url = `${window.location.origin}${window.location.pathname}?radio=${id}`;
+        const texto = `📻 Estoy escuchando *${nombre}* en vivo en Radios Patagónicas:\n${url}`;
+        navigator.clipboard.writeText(url).then(() => {
+            const textoOriginal = now.innerText;
+            now.innerText = `✅ ¡Enlace de ${nombre} copiado!`;
+            now.style.color = "#00ffcc";
+            setTimeout(() => { now.innerText = textoOriginal; now.style.color = "#0077ff"; }, 2500);
+        });
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            setTimeout(() => { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, "_blank"); }, 500);
         }
-    </script>
+    }
+
+    window.addEventListener("load", () => {
+        const total = document.querySelectorAll(".card").length;
+        const contador = document.getElementById("contadorEmisoras");
+        if (contador) contador.innerText = total + " emisoras en el directorio";
+        const params = new URLSearchParams(window.location.search);
+        const radioId = params.get("radio");
+        if (radioId) {
+            const card = document.getElementById(radioId);
+            if (card) setTimeout(() => card.scrollIntoView({ behavior: "smooth", block: "center" }), 500);
+        }
+    });
+
+    function toggleSearchModal() {
+        const modal = document.getElementById("searchModal");
+        modal.classList.toggle("active");
+        if (modal.classList.contains("active")) {
+            const input = document.getElementById("floatingSearchInput");
+            input.value = "";
+            input.focus();
+            document.getElementById("searchInput").value = "";
+            document.querySelectorAll(".card").forEach(c => c.style.display = ""); 
+        }
+    }
+
+    function closeSearchModal(e) {
+        if (e.target.id === "searchModal") toggleSearchModal();
+    }
+
+    function buscarRadioRapidoFloating() {
+        const input = document.getElementById("floatingSearchInput").value.toLowerCase().trim();
+        document.getElementById("searchInput").value = input;
+        document.querySelectorAll(".filters button").forEach(b => b.classList.remove("activo"));
+        document.querySelectorAll(".card").forEach(card => {
+            const nombre = (card.dataset.name || "").toLowerCase();
+            const ciudad = (card.querySelector(".city")?.textContent || "").toLowerCase();
+            card.style.display = (nombre.includes(input) || ciudad.includes(input)) ? "" : "none";
+        });
+    }
+</script>
 
     <!-- ELEMENTOS FLOTANTES (JUSTO ANTES DE CERRAR EL BODY) -->
     <div class="search-modal" id="searchModal" onclick="closeSearchModal(event)">
