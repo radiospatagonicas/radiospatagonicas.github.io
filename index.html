@@ -14887,54 +14887,52 @@ else{run();}
         </div>
     </footer>
 <script>
-    // --- REPRODUCTOR ESTABLE Y CONTROLADO ---
     const player = document.getElementById("player");
     const now = document.getElementById("nowPlaying");
 
     function playRadio(btn, url) {
-        // 1. Si el botón ya está sonando, ¡DETENEMOS todo!
+        // 1. Si el botón ya está sonando, lo detenemos y salimos
         if (btn.classList.contains("on")) {
             stopRadio();
             return;
         }
 
-        // 2. LIMPIEZA TOTAL de cualquier reproducción anterior
+        // 2. Detenemos cualquier audio previo y cortamos su conexión de red
         player.pause();
-        player.removeAttribute('src');
-        player.src = ""; // Clave para cortar el stream
-        player.load();   // Fuerza al navegador a liberar la conexión
+        player.src = ""; 
 
-        // 3. RESETEAR INTERFAZ de todas las demás tarjetas
+        // 3. Reseteamos la interfaz de todas las tarjetas
         resetUI();
 
-        // 4. PREPARAR NUEVA CONEXIÓN
+        // 4. Preparamos la nueva conexión
         btn.innerText = "⏳ Conectando...";
         player.src = url;
 
-        // 5. INTENTAR REPRODUCIR
-        player.play().then(() => {
-            // Si conecta exitosamente:
-            btn.classList.add("on");
-            btn.innerText = "⏹ Detener"; // Cambiamos el texto para que se pueda parar
-            btn.parentElement.classList.add("active");
-            now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
-            now.style.color = "#0077ff";
-        }).catch((error) => {
-            // Si el stream tarda demasiado o está caído:
-            console.error("Error al reproducir:", error);
-            now.innerText = "⚠️ La emisora está tardando en responder o está offline.";
-            now.style.color = "#f39c12";
-            btn.innerText = "▶ Escuchar";
-        });
+        // 5. Intentamos reproducir
+        const playPromise = player.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                // Éxito: se conectó
+                btn.classList.add("on");
+                btn.innerText = "⏹ Detener";
+                btn.parentElement.classList.add("active");
+                now.innerText = "📻 Sonando: " + btn.parentElement.querySelector(".name").innerText;
+                now.style.color = "#0077ff";
+            }).catch((error) => {
+                // Fallo: stream caído o bloqueado
+                console.error("Error al reproducir:", error);
+                now.innerText = "⚠️ No se pudo conectar. Intenta con otra emisora.";
+                now.style.color = "#f39c12";
+                btn.innerText = "▶ Escuchar";
+            });
+        }
     }
 
-    // FUNCIÓN NUEVA: Detiene el audio de raíz y limpia todo
+    // Función dedicada para detener y liberar la red
     function stopRadio() {
         if (player) {
             player.pause();
-            player.removeAttribute('src');
-            player.src = ""; 
-            player.load(); // Esto es OBLIGATORIO para que el navegador suelte la conexión
+            player.src = ""; // Esto libera la conexión de red inmediatamente
         }
         resetUI();
         if (now) {
@@ -14943,7 +14941,7 @@ else{run();}
         }
     }
 
-    // FUNCIÓN LIMPIA (sin duplicados)
+    // Función limpia para resetear la interfaz
     function resetUI() {
         document.querySelectorAll(".play").forEach(p => { 
             p.classList.remove("on"); 
@@ -14952,6 +14950,7 @@ else{run();}
         document.querySelectorAll(".card").forEach(c => c.classList.remove("active"));
     }
 
+    // --- RESTO DE TUS FUNCIONES (Búsqueda, Filtros, Compartir, etc.) ---
     let timeoutBusqueda;
     function buscarRadioRapido() {
         clearTimeout(timeoutBusqueda);
