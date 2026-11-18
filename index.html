@@ -8085,13 +8085,14 @@ else{run();}
 </div>
 
   <!-- LU4 -->
-<div class="card" id="lu4-am630" data-provincia="chubut" 
+<div class="card" id="lu4-am630" data-provincia="rionegro" data-tipo="am" data-categoria="informativa" data-name="lu 4 patagonia argentina comodoro rivadavia am630">
+    <div class="am-logo">
     data-tipo="am"
     data-name="lu4 radio patagonia argentina comodoro rivadavia am630">
     <div class="am-logo">
         <img src="logos-am/lu4.png" alt="LU4 Radio Patagonia Argentina">
     </div>
-    <div class="name">LU4 Radio Patagonia Argentina</div>
+    <div class="name">LU4 Radio Patagonia Argentina <span class="badge badge-informativa">📰 Informativa</span></div>
     <div class="city">AM 630 — Comodoro Rivadavia</div>
     <button class="play" onclick="playRadio(this, 'https://sa.mp3.icecast.magma.edge-access.net/sc_rad42')">▶ Escuchar</button>
     <div class="share-link" onclick="compartir('lu4-am630', 'LU4 Radio Patagonia Argentina AM 630')">🔗 Compartir</div>
@@ -15187,6 +15188,41 @@ else{run();}
     </div>
 
     <div class="fab-search" onclick="toggleSearchModal()" title="Buscar emisora">🔍</div>
+<script>
+/* AM patagónicas → 📰 Informativa por defecto (solo completa lo que falta) */
+(function () {
+  const informativas = [
+    // Río Negro
+    "lu15-am800","lra2-viedma","lra30-bariloche","lra57-elbolson","am740-carretera",
+    "am880-sierracolorada","am880","am1420-conesa","lu18-am640","lu19-am690","lu16-am1000",
+    // Neuquén
+    "lu5-am600","lra43-neuquen","lra17-zapala","nacional-zapala","lra52-chosmalal",
+    "lra53-sanmartin","lra54-jacobacci","gregorio-alvarez",
+    // Chubut
+    "lu4-am630","lu17-am540","lu20-am580","lra11-comodoro","lra9-esquel",
+    "lra55-altoriosenguer","lra58-riomayo","lrf210-am780","lrf203-am1200","radio3",
+    // Santa Cruz
+    "lu12-am680","lu14-am830","lu23-am730","lra56-peritomoreno","lra18-rioturbio",
+    "rio-turbio","lra59-gobgregores","nacional-gregores","lri200-am740","puerto-deseado",
+    // Tierra del Fuego
+    "lra10-ushuaia","lra24-riogrande"
+  ];
+  // AM a las que solo les falta data-tipo (categoría a definir, ver nota)
+  const soloTipo = ["am800","lujan-valcheta","lu37-am980"];
 
+  document.querySelectorAll(".card").forEach(card => {
+    const id = card.id;
+    if (!informativas.includes(id) && !soloTipo.includes(id)) return;
+    if (!card.dataset.tipo) card.dataset.tipo = "am";
+    if (informativas.includes(id) && !card.dataset.categoria) {
+      card.dataset.categoria = "informativa";
+      const name = card.querySelector(".name");
+      if (name && !name.querySelector(".badge")) {
+        name.insertAdjacentHTML("beforeend", ' <span class="badge badge-informativa">📰 Informativa</span>');
+      }
+    }
+  });
+})();
+</script>
 </body>
 </html>
